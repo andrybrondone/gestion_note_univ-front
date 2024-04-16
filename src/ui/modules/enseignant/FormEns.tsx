@@ -1,0 +1,112 @@
+import axios from "axios";
+import { Form, Formik } from "formik";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
+import * as Yup from "yup";
+import { ShowFormContext } from "../../../context/ShowFormContext";
+import { FormPersonneValues } from "../../../types/crud-props";
+import { Input } from "../../components/form/Input";
+import { Select } from "../../components/form/Select";
+import { Button } from "../../design-system/button/Button";
+import { Typography } from "../../design-system/typography/Typography";
+
+interface FormValues {
+  grade: string;
+  id_pers: string;
+}
+
+export default function FormEns() {
+  const { isOpenFormEns, toggleFormEns } = useContext(ShowFormContext);
+  const [listOfPersonne, setListOfPersonne] = useState([]);
+
+  // Recuperation de la dernière personne qui a été ajoutée
+  useEffect(() => {
+    if (isOpenFormEns) {
+      axios.get("http://localhost:3001/personne").then((response) => {
+        setListOfPersonne(response.data);
+      });
+    }
+  }, [isOpenFormEns]);
+
+  const initialValues: FormValues = {
+    grade: "",
+    id_pers: "",
+  };
+
+  // Validation des données dans le formulaire
+  const validationSchema = Yup.object().shape({
+    grade: Yup.string()
+      .min(3, "Un nom doit contenir au moin 3 caractères")
+      .required("Ce champ est obligatoire"),
+    id_pers: Yup.string()
+      .notOneOf(
+        ["Choisir une personne"],
+        "Veuillez choisir un module pour la matière"
+      )
+      .required("Ce champ est obligatoire"),
+  });
+
+  const onSubmit = (data: FormValues) => {
+    axios
+      .post("http://localhost:3001/enseignant", data)
+      .then(() => {
+        toast.success("L'enseignant a été ajouter avec succès");
+        toggleFormEns();
+      })
+      .catch((error) => {
+        console.error("Error : ", error);
+      });
+  };
+
+  return (
+    <>
+      {isOpenFormEns && (
+        <>
+          <div className="anim-transition top-0 left-0 w-full h-[100vh] bg-gray/10 fixed"></div>
+
+          <div className="fixed w-[550px] max-sm:w-[90%] top-20 left-1/2 -translate-x-1/2  bg-white dark:bg-gray rounded shadow-xl p-6 z-50">
+            <Formik
+              initialValues={initialValues}
+              onSubmit={onSubmit}
+              validationSchema={validationSchema}
+            >
+              <Form className="flex flex-col gap-5">
+                <Typography
+                  variant="lead"
+                  component="h4"
+                  className="text-center mb-5"
+                >
+                  Ajout d'autre information sur l'enseignant
+                </Typography>
+
+                <Select label="Nom" name="id_pers">
+                  <option value="">Choisir une personne</option>
+                  {listOfPersonne.map((item: FormPersonneValues) => {
+                    return (
+                      <option key={item.id} value={item.id}>
+                        {`${item.nom} ${item.prenom}`}
+                      </option>
+                    );
+                  })}
+                </Select>
+
+                <Input
+                  label="Grade"
+                  name="grade"
+                  type="text"
+                  placeholder="ex. Maître de conférence"
+                />
+
+                <div className="flex justify-center items-center mt-5">
+                  <Button type="submit" variant="accent" className=" w-36">
+                    Enregistrer
+                  </Button>
+                </div>
+              </Form>
+            </Formik>
+          </div>
+        </>
+      )}
+    </>
+  );
+}
