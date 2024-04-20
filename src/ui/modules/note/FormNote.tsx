@@ -21,7 +21,7 @@ export default function FormNote() {
     axios.get("http://localhost:3001/etudiant").then((response) => {
       setListOfEtudiant(response.data);
     });
-    axios.get("http://localhost:3001/matiere").then((response) => {
+    axios.get("http://localhost:3001/matiere/nom").then((response) => {
       setListOfMatiere(response.data);
     });
   }, []);
@@ -72,7 +72,7 @@ export default function FormNote() {
         validationSchema={validationSchema}
       >
         <Form className="flex flex-col gap-2">
-          <Typography variant="h3" component="h3" className="text-center mb-4">
+          <Typography variant="h4" component="h4" className="text-center mb-4">
             Ajouter une note
           </Typography>
 

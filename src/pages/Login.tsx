@@ -1,7 +1,7 @@
-import LogoENI from "../assets/images/logoENI.png";
 import { Container } from "../ui/components/container/Container";
 import Formulaire from "../ui/components/form/Formulaire";
 import { Typography } from "../ui/design-system/typography/Typography";
+import LogoENI from "/assets/images/logoENI.png";
 
 export default function Login() {
   return (

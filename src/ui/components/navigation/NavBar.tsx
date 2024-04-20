@@ -41,7 +41,7 @@ export default function NavBar() {
         </NavLink>
         <div className="flex items-center gap-8">
           <Typography
-            variant="caption2"
+            variant="caption1"
             component="div"
             className="flex items-center gap-5 dark:text-white"
           >
@@ -51,7 +51,7 @@ export default function NavBar() {
               <>
                 <ActiveLink
                   href="/"
-                  className="test flex justify-center items-center"
+                  className="flex justify-center items-center"
                 >
                   <AiOutlineHome className="relative bottom-[1px] right-1" />
                   Home

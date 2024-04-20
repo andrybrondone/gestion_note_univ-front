@@ -1,4 +1,4 @@
-import noteImg from "../../../assets/images/note.png";
+import noteImg from "/assets/images/note.png";
 
 interface Props {
   size?: "very-small" | "small" | "medium" | "large";

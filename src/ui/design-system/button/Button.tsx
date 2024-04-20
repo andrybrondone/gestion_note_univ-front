@@ -1,9 +1,7 @@
 import clsx from "clsx";
-import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { LinkType } from "../../../lib/link-type";
 import { IconProps } from "../../../types/iconProps";
-import { DarkModeContext } from "../../components/darkMode/DarkModeGlobal";
 import { Spinner } from "../spinner/Spinner";
 
 interface Props {
@@ -39,10 +37,13 @@ export const Button = ({
   fullWith = false,
   action = () => {},
 }: Props) => {
-  const { isDarkMode } = useContext(DarkModeContext);
   let variantStyle: string = "",
     sizeStyle: string = "",
     icoSize: number = 0;
+
+  if (disabled) {
+    variant = "disabled";
+  }
 
   switch (variant) {
     case "accent": // default
@@ -145,7 +146,6 @@ export const Button = ({
     <button
       type={type}
       className={clsx(
-        isDarkMode && "dark",
         className,
         variantStyle,
         sizeStyle,

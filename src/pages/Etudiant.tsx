@@ -7,7 +7,7 @@ import Header from "../ui/components/header/Header";
 import FormEns from "../ui/modules/enseignant/FormEns";
 import FormEtudiant from "../ui/modules/etudiant/FormEtudiant";
 import FormMatiere from "../ui/modules/matiere/FormMatiere";
-import InfoMatiere from "../ui/modules/matiere/InfoMatiere";
+import InfoMatiere from "../ui/modules/matiere/ListeMatiere";
 
 const allData = [
   {

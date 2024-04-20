@@ -1,5 +1,6 @@
 import { RiMailSendLine, RiNotification2Fill } from "react-icons/ri";
 import { Container } from "../ui/components/container/Container";
+import { Avatar } from "../ui/design-system/avatar/Avatar";
 import { Button } from "../ui/design-system/button/Button";
 import { Logo } from "../ui/design-system/logo/Logo";
 import { Spinner } from "../ui/design-system/spinner/Spinner";
@@ -102,6 +103,16 @@ export default function DesignSystem() {
               <Logo size="small" />
               <Logo />
               <Logo size="large" />
+            </div>
+          </div>
+
+          {/* avatar */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-4 p-10">
+              <Avatar src="/assets/images/1.jpg" alt="test" size="small" />
+              <Avatar src="/assets/images/1.jpg" alt="test" />
+              <Avatar src="/assets/images/1.jpg" alt="test" size="large" />
+              <Avatar src="/assets/images/1.jpg" alt="test" size="very-large" />
             </div>
           </div>
 

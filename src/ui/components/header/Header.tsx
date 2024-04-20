@@ -1,6 +1,6 @@
-import img from "../../../assets/images/logoENI.png";
 import { Typography } from "../../design-system/typography/Typography";
 import { Container } from "../container/Container";
+import img from "/assets/images/logoENI.png";
 
 interface Props {
   name: string;
@@ -11,7 +11,7 @@ export default function Header({ name, info }: Props) {
   return (
     <div className="py-6 bg-primary-200 mb-11">
       <Container className="flex items-center justify-center gap-7">
-        <img src={img} alt="" width={180} />
+        <img src={img} alt="" width={160} />
         <div className="w-[700px]">
           <Typography variant="h2" component="h2" theme="gray">
             Bienvenue

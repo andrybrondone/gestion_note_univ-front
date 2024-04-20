@@ -4,9 +4,8 @@ import { useState } from "react";
 import { Ri24HoursFill } from "react-icons/ri";
 import { Container } from "../ui/components/container/Container";
 import Header from "../ui/components/header/Header";
-import { Logo } from "../ui/design-system/logo/Logo";
-import FormMatiere from "../ui/modules/matiere/FormMatiere";
-import FormModule from "../ui/modules/module/FormModule";
+import ListeMatiere from "../ui/modules/matiere/ListeMatiere";
+import ListeModule from "../ui/modules/module/ListeModule";
 import FormNote from "../ui/modules/note/FormNote";
 import FormPersonne from "../ui/modules/personne/FormPersonne";
 
@@ -21,14 +20,8 @@ const allData = [
     label: "Ajouter une personne",
     component: <FormPersonne />,
   },
-  {
-    icon: <Ri24HoursFill />,
-    label: "Liste des étudiants",
-    component: <Logo />,
-  },
-  { icon: "🥬", label: "Liste des enseignants", component: <Logo /> },
-  { icon: "🧀", label: "Liste des modules", component: <FormModule /> },
-  { icon: "🧀", label: "Liste des matières", component: <FormMatiere /> },
+  { icon: "🧀", label: "Liste des modules", component: <ListeModule /> },
+  { icon: "🧀", label: "Liste des matières", component: <ListeMatiere /> },
 ];
 
 const initialTabs = allData;
@@ -69,7 +62,7 @@ export default function Administrateur() {
             </div>
           ))}
         </div>
-        <div className="flex justify-center py-6 flex-grow select-none">
+        <div className="flex justify-center flex-grow select-none h-[630px] relative">
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedTab ? selectedTab.label : "empty"}

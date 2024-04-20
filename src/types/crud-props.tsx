@@ -8,10 +8,27 @@ export interface FormMatiereValues {
   prenom_ens?: string;
 }
 
+export interface ListeMatiereValues {
+  id: string;
+  nom_mat: string;
+  credit: string;
+  niveau_mat: string;
+  Enseignant: {
+    Personne: {
+      nom: string;
+      prenom: string;
+    };
+  };
+  Module: {
+    nom_module: string;
+  };
+}
+
 export interface InfoEnsProps {
   id: string;
   Personne: {
     prenom?: string;
+    nom?: string;
   };
 }
 

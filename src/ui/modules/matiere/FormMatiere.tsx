@@ -1,8 +1,10 @@
 import axios from "axios";
-import { Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { Form, Formik, FormikHelpers } from "formik";
+import { useContext, useEffect, useState } from "react";
+import { RiCloseFill } from "react-icons/ri";
 import { toast } from "sonner";
 import * as Yup from "yup";
+import { ShowFormContext } from "../../../context/ShowFormContext";
 import {
   FormMatiereValues,
   FormModuleValues,
@@ -14,12 +16,13 @@ import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 
 export default function FormMatiere() {
-  const [listOfEnseignant, setListOfEnseignant] = useState([]);
+  const { isOpenFormMatiere, toggleFormMatiere } = useContext(ShowFormContext);
+  const [nameOfEnseignant, setNameOfEnseignant] = useState([]);
   const [listOfModule, setListOfModule] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:3001/enseignant").then((response) => {
-      setListOfEnseignant(response.data);
+      setNameOfEnseignant(response.data);
     });
     axios.get("http://localhost:3001/module").then((response) => {
       setListOfModule(response.data);
@@ -60,11 +63,16 @@ export default function FormMatiere() {
       .required("Ce champ est obligatoire"),
   });
 
-  const onSubmit = (data: FormMatiereValues) => {
+  const onSubmit = (
+    data: FormMatiereValues,
+    actions: FormikHelpers<FormMatiereValues>
+  ) => {
     axios
       .post("http://localhost:3001/matiere", data)
       .then(() => {
         toast.success("La matière a été ajouter avec succès");
+        actions.resetForm();
+        //toggleFormMatiere();
       })
       .catch((error) => {
         console.error("Error : ", error);
@@ -72,69 +80,89 @@ export default function FormMatiere() {
   };
 
   return (
-    <div className="bg-gray-400 dark:bg-black p-8 rounded w-[600px] text-caption1 shadow-lg">
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-      >
-        <Form className="flex flex-col gap-2">
-          <Typography variant="h3" component="h3" className="text-center mb-4">
-            Ajouter Matière
-          </Typography>
+    <>
+      {isOpenFormMatiere && (
+        <>
+          <div
+            className="anim-transition top-0 left-0 w-full h-[100vh] bg-gray/10 fixed"
+            onClick={toggleFormMatiere}
+          ></div>
 
-          <Input
-            label="Nom de la matière"
-            name="nom_mat"
-            type="text"
-            placeholder="ex. IHM"
-          />
+          <div className="fixed w-[550px] max-sm:w-[90%] top-2 left-1/2 -translate-x-1/2  bg-white dark:bg-gray rounded shadow-xl p-6 z-50">
+            <RiCloseFill
+              className="text-xl bg-gray-500 rounded-full absolute top-2 right-2 cursor-pointer dark:bg-gray-800"
+              onClick={toggleFormMatiere}
+            />
 
-          <Input
-            label="Crédits"
-            name="credit"
-            type="number"
-            placeholder="ex. 12"
-          />
+            <Formik
+              initialValues={initialValues}
+              onSubmit={onSubmit}
+              validationSchema={validationSchema}
+            >
+              <Form className="flex flex-col gap-2">
+                <Typography variant="h5" component="h5" className="text-center">
+                  Ajouter Matière
+                </Typography>
 
-          <Select label="Niveau" name="niveau_mat">
-            <option value="">Choisir un niveau pour la matière</option>
-            <option value="L1">L1</option>
-            <option value="L2">L2</option>
-            <option value="L3">L3</option>
-            <option value="M1">M1</option>
-            <option value="M2">M2</option>
-          </Select>
+                <Input
+                  label="Nom de la matière"
+                  name="nom_mat"
+                  type="text"
+                  placeholder="ex. IHM"
+                />
 
-          <Select label="Enseignant" name="id_ens">
-            <option value="">Choisir un enseignant</option>
-            {listOfEnseignant.map((item: InfoEnsProps) => {
-              return (
-                <option key={item.id} value={item.id}>
-                  {item.Personne.prenom}
-                </option>
-              );
-            })}
-          </Select>
+                <Input
+                  label="Crédits"
+                  name="credit"
+                  type="number"
+                  placeholder="ex. 12"
+                />
 
-          <Select label="Module" name="id_module">
-            <option value="">Choisir un module</option>
-            {listOfModule.map((item: FormModuleValues) => {
-              return (
-                <option key={item.id} value={item.id}>
-                  {item.nom_module}
-                </option>
-              );
-            })}
-          </Select>
+                <Select label="Niveau" name="niveau_mat">
+                  <option value="">Choisir un niveau pour la matière</option>
+                  <option value="L1">L1</option>
+                  <option value="L2">L2</option>
+                  <option value="L3">L3</option>
+                  <option value="M1">M1</option>
+                  <option value="M2">M2</option>
+                </Select>
 
-          <div className="flex justify-center items-center mt-4">
-            <Button type="submit" variant="accent" className=" w-36">
-              Enregistrer
-            </Button>
+                <Select label="Enseignant" name="id_ens">
+                  <option value="">Choisir un enseignant</option>
+                  {nameOfEnseignant.map((item: InfoEnsProps) => {
+                    return (
+                      <option
+                        key={item.id}
+                        value={item.id}
+                        className=" capitalize"
+                      >
+                        {`${item.Personne.nom} ${item.Personne.prenom}`}
+                      </option>
+                    );
+                  })}
+                </Select>
+
+                <Select label="Module" name="id_module">
+                  <option value="">Choisir un module</option>
+                  {listOfModule.map((item: FormModuleValues) => {
+                    return (
+                      <option key={item.id} value={item.id}>
+                        {item.nom_module}
+                      </option>
+                    );
+                  })}
+                </Select>
+
+                <div className="flex justify-center items-center mt-2">
+                  <Button type="submit" variant="accent" className=" w-36">
+                    Enregistrer
+                  </Button>
+                </div>
+              </Form>
+            </Formik>
           </div>
-        </Form>
-      </Formik>
-    </div>
+        </>
+      )}
+    </>
   );
 }

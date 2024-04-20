@@ -5,9 +5,10 @@ import "./App.css";
 import Administrateur from "./pages/Administrateur";
 import Login from "./pages/Login";
 import { Page404 } from "./pages/Page404";
-import DesignSystem from "./pages/design-system";
 import { DarkModeContext } from "./ui/components/darkMode/DarkModeGlobal";
 import { Navigation } from "./ui/components/navigation/Navigation";
+import ListeEns from "./ui/modules/enseignant/ListeEns";
+import ListeEtudiant from "./ui/modules/etudiant/ListeEtudiant";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
       },
       {
         path: "voiture",
-        element: <DesignSystem />,
+        element: <ListeEtudiant />,
       },
       {
         path: "contact",
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "inscription",
-        element: <div>inscription</div>,
+        element: <ListeEns />,
       },
       {
         path: "connection",

@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { useContext } from "react";
-import error404 from "../assets/images/error-404.png";
 import { DarkModeContext } from "../ui/components/darkMode/DarkModeGlobal";
 import { Typography } from "../ui/design-system/typography/Typography";
+import error404 from "/assets/images/error-404.png";
 
 export function Page404() {
   const { isDarkMode } = useContext(DarkModeContext);
