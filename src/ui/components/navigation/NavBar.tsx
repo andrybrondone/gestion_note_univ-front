@@ -34,7 +34,7 @@ export default function NavBar() {
                 component="p"
                 className="text-gray-600 dark:text-gray-600"
               >
-                d'un établissement universitaire
+                D'un établissement universitaire
               </Typography>
             </div>
           </div>

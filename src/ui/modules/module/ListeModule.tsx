@@ -1,21 +1,36 @@
-import { useContext, useEffect } from "react";
+import axios from "axios";
+import { useContext, useEffect, useRef } from "react";
 import {
   RiAddCircleLine,
   RiDeleteBin2Fill,
   RiPencilFill,
 } from "react-icons/ri";
+import { toast } from "sonner";
+import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { ShowFormContext } from "../../../context/ShowFormContext";
+import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
 import { FormModuleValues } from "../../../types/crud-props";
 import { Container } from "../../components/container/Container";
 import { Button } from "../../design-system/button/Button";
+import ConfirmModale from "../../design-system/confirm-modale/ConfirmModale";
 import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
 import FormModule from "./FormModule";
 
 export default function ListeModule() {
+  // Hook pour savoir l'état du formulaire module
   const { isOpenFormModule, toggleFormModule } = useContext(ShowFormContext);
+
+  // Hook pour recupérer les données par son identifiant
+  const { getListModuleById } = useContext(DataFetcherByIdContext);
+
+  // Hook pour savoir si l'utilisateur à cliquer sur le boutton edit
+  const { toggleEditModuleForm, isConfirmDialog, toggleConfirmDialog } =
+    useContext(ToggleEditFormContext);
+
+  // Hoock pour la recupération des données et faire la pagination
   const {
     isLoading,
     isError,
@@ -29,11 +44,42 @@ export default function ListeModule() {
     processData: (data) => data.modules,
   });
 
+  // Pour recharger les données dans le tableau quand on ferme le formulaire
   useEffect(() => {
     if (!isOpenFormModule) {
       refetch();
     }
   }, [isOpenFormModule, refetch]);
+
+  const handleClicEdit = async (id: number | undefined) => {
+    await getListModuleById(id);
+    toggleEditModuleForm();
+    toggleFormModule();
+  };
+
+  // Pour supprimer une module de la BD
+  const deleteModule = (id: number | undefined) => {
+    axios
+      .delete(`http://localhost:3001/module/${id}`)
+      .then((res) => {
+        if (res.data.Message !== "Error") {
+          toast.success("Le module a été supprimé définitivement");
+          refetch();
+        } else {
+          axios
+            .put(`http://localhost:3001/module/softdelete/${id}`)
+            .then(() => {
+              toast.success("Le module a été supprimé avec succès");
+              refetch();
+            });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const refIdModule = useRef<number | undefined>();
 
   if (isLoading)
     return (
@@ -43,6 +89,7 @@ export default function ListeModule() {
         </div>
       </Container>
     );
+
   if (isError)
     return (
       <Container className="h-[57vh]">
@@ -89,8 +136,19 @@ export default function ListeModule() {
                   >
                     <td className="py-2"> {value.nom_module}</td>
                     <td className="flex items-center justify-center py-2 text-3xl gap-2 max-sm:text-2xl">
-                      <RiPencilFill className="text-alert-warning cursor-pointer" />
-                      <RiDeleteBin2Fill className="text-alert-danger cursor-pointer" />
+                      <RiPencilFill
+                        className="text-alert-warning cursor-pointer"
+                        onClick={() => {
+                          handleClicEdit(value.id);
+                        }}
+                      />
+                      <RiDeleteBin2Fill
+                        className="text-alert-danger cursor-pointer"
+                        onClick={() => {
+                          refIdModule.current = value.id;
+                          toggleConfirmDialog();
+                        }}
+                      />
                     </td>
                   </tr>
                 );
@@ -111,6 +169,16 @@ export default function ListeModule() {
       )}
 
       <FormModule />
+
+      {isConfirmDialog && (
+        <ConfirmModale
+          message="Voulez vous vraiment supprimer définitivement ce module ?"
+          action={() => {
+            deleteModule(refIdModule.current);
+            toggleConfirmDialog();
+          }}
+        />
+      )}
     </div>
   );
 }

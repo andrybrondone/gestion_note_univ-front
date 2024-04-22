@@ -2,13 +2,13 @@ import axios from "axios";
 import { Form, Formik } from "formik";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import * as Yup from "yup";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { FormPersonneValues } from "../../../types/crud-props";
 import { Input } from "../../components/form/Input";
 import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
+import { validationSchemaEns } from "../validation-schemas-yup/ValidationSchemasYup";
 
 interface FormValues {
   grade: string;
@@ -33,19 +33,6 @@ export default function FormEns() {
     id_pers: "",
   };
 
-  // Validation des données dans le formulaire
-  const validationSchema = Yup.object().shape({
-    grade: Yup.string()
-      .min(3, "Un nom doit contenir au moin 3 caractères")
-      .required("Ce champ est obligatoire"),
-    id_pers: Yup.string()
-      .notOneOf(
-        ["Choisir une personne"],
-        "Veuillez choisir un module pour la matière"
-      )
-      .required("Ce champ est obligatoire"),
-  });
-
   const onSubmit = (data: FormValues) => {
     axios
       .post("http://localhost:3001/enseignant", data)
@@ -68,7 +55,7 @@ export default function FormEns() {
             <Formik
               initialValues={initialValues}
               onSubmit={onSubmit}
-              validationSchema={validationSchema}
+              validationSchema={validationSchemaEns}
             >
               <Form className="flex flex-col gap-5">
                 <Typography

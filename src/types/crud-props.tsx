@@ -1,5 +1,5 @@
 export interface FormMatiereValues {
-  id?: string;
+  id?: number;
   id_ens: string;
   id_module: string;
   nom_mat: string;
@@ -9,7 +9,7 @@ export interface FormMatiereValues {
 }
 
 export interface ListeMatiereValues {
-  id: string;
+  id: number;
   nom_mat: string;
   credit: string;
   niveau_mat: string;
@@ -33,7 +33,7 @@ export interface InfoEnsProps {
 }
 
 export interface FormModuleValues {
-  id?: string;
+  id?: number;
   nom_module: string;
 }
 

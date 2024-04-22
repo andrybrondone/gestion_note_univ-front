@@ -2,7 +2,6 @@ import axios from "axios";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import * as Yup from "yup";
 import {
   FormMatiereValues,
   FormNoteValues,
@@ -12,6 +11,7 @@ import { Input } from "../../components/form/Input";
 import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
+import { validationSchemaNote } from "../validation-schemas-yup/ValidationSchemasYup";
 
 export default function FormNote() {
   const [listOfEtudiant, setListOfEtudiant] = useState([]);
@@ -32,27 +32,6 @@ export default function FormNote() {
     note: "",
   };
 
-  // Validation des données dans le formulaire
-  const validationSchema = Yup.object().shape({
-    note: Yup.number()
-      .integer("Des nombres entier seulement")
-      .min(0, "Une note ne doit pas être negative")
-      .max(20, "Une note ne doit pas être supérieur à 20")
-      .required("Ce champ est obligatoire"),
-    id_et: Yup.string()
-      .notOneOf(
-        ["Choisir un Etudiant"],
-        "Veuillez choisir un Etudiant pour la matière"
-      )
-      .required("Ce champ est obligatoire"),
-    id_mat: Yup.string()
-      .notOneOf(
-        ["Choisir un Matiere"],
-        "Veuillez choisir un Matiere pour la matière"
-      )
-      .required("Ce champ est obligatoire"),
-  });
-
   const onSubmit = (data: FormNoteValues) => {
     axios
       .post("http://localhost:3001/note", data)
@@ -69,7 +48,7 @@ export default function FormNote() {
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
-        validationSchema={validationSchema}
+        validationSchema={validationSchemaNote}
       >
         <Form className="flex flex-col gap-2">
           <Typography variant="h4" component="h4" className="text-center mb-4">

@@ -38,7 +38,8 @@ export function useDataFetcher<T>({
   }, []);
 
   //: Promise<EtudiantData[]>
-  const fetchPageData = async ({ page = currentPage, limit = 10 }) => {
+  const fetchPageData = async ({ page = currentPage }) => {
+    const limit = 10;
     const offset = (page - 1) * limit;
     const response = await axios.get(endpoint, {
       params: { ...queryParameters, limit, offset },

@@ -5,15 +5,23 @@ import { InputHTMLAttributes } from "react";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   className?: string;
+  classNameMain?: string;
+  classNameSpan?: string;
 }
 
-export function Input({ label, className, ...props }: InputProps) {
+export function Input({
+  label,
+  className,
+  classNameSpan,
+  ...props
+}: InputProps) {
   const [field, meta] = useField(props as FieldAttributes<string>);
 
   return (
     <div className="flex flex-col gap-1">
       <label>
-        {label} <span className="text-alert-danger">*</span>
+        {label}{" "}
+        <span className={clsx("text-alert-danger", classNameSpan)}>*</span>
       </label>
 
       <input

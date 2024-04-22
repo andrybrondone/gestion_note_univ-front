@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import { Page404 } from "./pages/Page404";
 import { DarkModeContext } from "./ui/components/darkMode/DarkModeGlobal";
 import { Navigation } from "./ui/components/navigation/Navigation";
+import AllInfoUser from "./ui/modules/components/AllInfoUser";
 import ListeEns from "./ui/modules/enseignant/ListeEns";
 import ListeEtudiant from "./ui/modules/etudiant/ListeEtudiant";
 
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
       },
       {
         path: "connection",
-        element: <div>connection</div>,
+        element: <AllInfoUser />,
       },
       {
         path: "*",

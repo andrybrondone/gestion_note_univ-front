@@ -6,7 +6,7 @@ import { Spinner } from "../spinner/Spinner";
 
 interface Props {
   size?: "small" | "medium" | "large";
-  variant?: "accent" | "secondary" | "outline" | "disabled" | "ico";
+  variant?: "accent" | "secondary" | "outline" | "disabled" | "ico" | "warning";
   icon?: IconProps;
   iconTheme?: "accent" | "secondary" | "gray";
   iconPosition?: "left" | "right";
@@ -56,9 +56,14 @@ export const Button = ({
         "text-primary rounded border border-primary dark:text-white dark:border-gray-700 dark:hover:shadow-darkgray";
       break;
 
+    case "warning":
+      variantStyle =
+        "text-alert-warning rounded border border-alert-warning hover:bg-alert-warning hover:text-white dark:text-white dark:border-gray-700 dark:hover:shadow-darkgray";
+      break;
+
     case "outline":
       variantStyle =
-        "bg-white hover:bg-gray-400/50 border border-gray-500 text-gray-900 rounded";
+        "bg-white hover:bg-gray-400/60 border border-gray-600 text-gray-900 rounded";
       break;
 
     case "disabled":
@@ -83,7 +88,7 @@ export const Button = ({
 
   switch (size) {
     case "small":
-      sizeStyle = `text-caption4 font-medium ${
+      sizeStyle = `text-caption3 font-medium ${
         variant === "ico"
           ? "flex items-center justify-center w-[40px] h-[40px]"
           : "px-[14px] h-[40px]"
@@ -92,7 +97,7 @@ export const Button = ({
       break;
 
     case "medium": // Default
-      sizeStyle = `text-caption3 font-medium ${
+      sizeStyle = `text-caption2 font-medium ${
         variant === "ico"
           ? "flex items-center justify-center w-[50px] h-[50px]"
           : "h-[45px] px-[13px]"
@@ -101,7 +106,7 @@ export const Button = ({
       break;
 
     case "large":
-      sizeStyle = `text-caption2 font-medium ${
+      sizeStyle = `text-caption1 font-medium ${
         variant === "ico"
           ? "flex items-center justify-center w-[60px] h-[60px]"
           : "px-[20px] h-[50px]"
