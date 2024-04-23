@@ -65,6 +65,7 @@ export default function ListeEns() {
                 prenom={value.Personne.prenom}
                 email={value.Personne.email}
                 statut="enseignant"
+                idEns={value.id}
               />
             );
           })

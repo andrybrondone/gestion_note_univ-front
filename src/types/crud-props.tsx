@@ -56,3 +56,18 @@ export interface FormNoteValues {
   id_mat: string;
   note: string;
 }
+
+export interface FormAllUsersValues {
+  id?: string;
+  nom: string;
+  prenom: string;
+  email: string;
+  adresse: string;
+  lieu_nais: string;
+  date_nais: string;
+  matricule?: string;
+  statut?: string;
+  niveau?: string;
+  parcours?: string;
+  grade?: string;
+}

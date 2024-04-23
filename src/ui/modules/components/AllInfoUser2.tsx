@@ -20,7 +20,7 @@ interface Props {
   statutPers: "etudiant" | "enseignant" | "administrateur";
 }
 
-export default function AllInfoUser({ statutPers }: Props) {
+export default function AllInfoUser2({ statutPers }: Props) {
   const { value: disabled, toggleValue: toggleDisabled } = useToggle(true);
 
   // Hook pour savoir si l'utilisateur à cliquer sur le boutton edit
@@ -41,19 +41,7 @@ export default function AllInfoUser({ statutPers }: Props) {
     className = "border-white ";
   }
 
-  let initialValues: FormAllUsersValues = {
-    nom: "",
-    prenom: "",
-    email: "",
-    adresse: "",
-    lieu_nais: "",
-    date_nais: "",
-    matricule: "",
-    statut: "",
-    niveau: "",
-    parcours: "",
-    grade: "",
-  };
+  let initialValues: FormAllUsersValues;
 
   if (isEditEtudiantForm) {
     initialValues = {
@@ -68,9 +56,7 @@ export default function AllInfoUser({ statutPers }: Props) {
       niveau: listEtudiantById.niveau,
       parcours: listEtudiantById.parcours,
     };
-  }
-
-  if (isEditEnseignantForm) {
+  } else if (isEditEnseignantForm) {
     initialValues = {
       nom: listEnseignantById.Personne.nom,
       prenom: listEnseignantById.Personne.prenom,
@@ -79,6 +65,20 @@ export default function AllInfoUser({ statutPers }: Props) {
       lieu_nais: listEnseignantById.Personne.lieu_nais,
       date_nais: listEnseignantById.Personne.date_nais,
       grade: listEnseignantById.grade,
+    };
+  } else {
+    initialValues = {
+      nom: "",
+      prenom: "",
+      email: "",
+      adresse: "",
+      lieu_nais: "",
+      date_nais: "",
+      matricule: "",
+      statut: "",
+      niveau: "",
+      parcours: "",
+      grade: "",
     };
   }
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { FormikHelpers } from "formik";
 import { toast } from "sonner";
-import { FormPersonneValues } from "../types/crud-props";
+import { FormAllUsersValues, FormPersonneValues } from "../types/crud-props";
 
 export const onSubmitPersonne = (
   data: FormPersonneValues,
@@ -21,6 +21,27 @@ export const onSubmitPersonne = (
       if (data.statue == "enseignant") {
         toggleFormEns();
       }
+
+      // Pour effacer les champs dans le formulaire
+      actions.resetForm();
+    })
+    .catch((error) => {
+      if (error.message === "Network Error") {
+        toast.message("Verifier votre connexion internet !");
+      } else {
+        console.error("Error : ", error);
+      }
+    });
+};
+
+export const onSubmitUsersInfo = (
+  data: FormAllUsersValues,
+  actions: FormikHelpers<FormAllUsersValues>
+) => {
+  axios
+    .post("http://localhost:3001/personne", data)
+    .then(() => {
+      toast.success("La personne a été ajouter avec succès");
 
       // Pour effacer les champs dans le formulaire
       actions.resetForm();

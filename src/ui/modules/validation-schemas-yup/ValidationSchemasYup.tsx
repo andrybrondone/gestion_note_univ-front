@@ -146,4 +146,7 @@ export const validationSchemaAllInfoUser = Yup.object().shape({
   parcours: Yup.string()
     .oneOf(["IG", "GB", "ASR", "GID", "OCC"], "Veuillez choisir le parcours")
     .required("Ce champ est obligatoire"),
+  grade: Yup.string()
+    .min(3, "Un nom doit contenir au moin 3 caractères")
+    .required("Ce champ est obligatoire"),
 });

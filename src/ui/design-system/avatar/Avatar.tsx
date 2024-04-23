@@ -25,7 +25,7 @@ export const Avatar = ({ size = "medium", src, alt }: Props) => {
   }
 
   return (
-    <div className={clsx(sizeStyle, "bg-gray-400 rounded-full relative")}>
+    <div className={clsx(sizeStyle, "bg-gray-300 rounded-full relative")}>
       <img
         src={src}
         alt={alt}

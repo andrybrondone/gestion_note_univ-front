@@ -6,7 +6,15 @@ import { Spinner } from "../spinner/Spinner";
 
 interface Props {
   size?: "small" | "medium" | "large";
-  variant?: "accent" | "secondary" | "outline" | "disabled" | "ico" | "warning";
+  variant?:
+    | "accent"
+    | "secondary"
+    | "outline"
+    | "disabled"
+    | "ico"
+    | "warning"
+    | "update"
+    | "delete";
   icon?: IconProps;
   iconTheme?: "accent" | "secondary" | "gray";
   iconPosition?: "left" | "right";
@@ -48,12 +56,12 @@ export const Button = ({
   switch (variant) {
     case "accent": // default
       variantStyle =
-        "bg-primary dark:bg-primary-400 text-white hover:bg-primary-400 rounded dark:hover:shadow-primary-400";
+        "bg-primary hover:bg-primary-400 border border-primary  dark:bg-primary-400 text-white rounded dark:hover:shadow-primary-400";
       break;
 
     case "secondary":
       variantStyle =
-        "text-primary rounded border border-primary dark:text-white dark:border-gray-700 dark:hover:shadow-darkgray";
+        "text-primary hover:bg-primary dark:hover:bg-gray-900 hover:text-white rounded border border-primary dark:text-white dark:border-gray-700 dark:hover:shadow-darkgray";
       break;
 
     case "warning":
@@ -69,6 +77,15 @@ export const Button = ({
     case "disabled":
       variantStyle =
         "bg-gray-400 border border-gray-500 text-gray-600 rounded cursor-not-allowed dark:bg-gray-700 dark:border-gray-600/20 dark:text-white/50";
+      break;
+
+    case "update":
+      variantStyle =
+        "border text-alert-warning rounded py-2 px-3 cursor-pointer";
+      break;
+    case "delete":
+      variantStyle =
+        "border text-alert-danger hover:bg-alert-danger hover:text-white rounded py-2 px-3 cursor-pointer";
       break;
 
     case "ico":
@@ -91,7 +108,7 @@ export const Button = ({
       sizeStyle = `text-caption3 font-medium ${
         variant === "ico"
           ? "flex items-center justify-center w-[40px] h-[40px]"
-          : "px-[14px] h-[40px]"
+          : "flex justify-center items-center px-[14px] h-[40px]"
       }`;
       icoSize = 18;
       break;
@@ -100,16 +117,16 @@ export const Button = ({
       sizeStyle = `text-caption2 font-medium ${
         variant === "ico"
           ? "flex items-center justify-center w-[50px] h-[50px]"
-          : "h-[45px] px-[13px]"
+          : "flex justify-center items-center h-[45px] px-[16px]"
       }`;
-      icoSize = 24;
+      icoSize = 22;
       break;
 
     case "large":
       sizeStyle = `text-caption1 font-medium ${
         variant === "ico"
           ? "flex items-center justify-center w-[60px] h-[60px]"
-          : "px-[20px] h-[50px]"
+          : "flex justify-center items-center px-[20px] h-[50px]"
       }`;
       icoSize = 26;
       break;

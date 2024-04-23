@@ -5,6 +5,12 @@ interface Props {
 }
 
 export const ToggleEditFormContext = createContext({
+  // Etudiant
+  isEditEtudiantForm: false,
+  toggleEditEtudiantForm: () => {},
+  // Enseignant
+  isEditEnseignantForm: false,
+  toggleEditEnseignantForm: () => {},
   // Module
   isEditModuleForm: false,
   toggleEditModuleForm: () => {},
@@ -17,6 +23,16 @@ export const ToggleEditFormContext = createContext({
 });
 
 export const ToggleEditFormProvider = ({ children }: Props) => {
+  //Etudiant
+  const [isEditEtudiantForm, setIsEditEtudiantForm] = useState(false);
+  const toggleEditEtudiantForm = () =>
+    setIsEditEtudiantForm(!isEditEtudiantForm);
+
+  // Enseignant
+  const [isEditEnseignantForm, setIsEditEnseignantForm] = useState(false);
+  const toggleEditEnseignantForm = () =>
+    setIsEditEnseignantForm(!isEditEnseignantForm);
+
   // Module
   const [isEditModuleForm, setIsEditModuleForm] = useState(false);
   const toggleEditModuleForm = () => setIsEditModuleForm(!isEditModuleForm);
@@ -32,6 +48,10 @@ export const ToggleEditFormProvider = ({ children }: Props) => {
   return (
     <ToggleEditFormContext.Provider
       value={{
+        isEditEtudiantForm,
+        toggleEditEtudiantForm,
+        isEditEnseignantForm,
+        toggleEditEnseignantForm,
         isEditModuleForm,
         toggleEditModuleForm,
         isEditMatiereForm,

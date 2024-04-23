@@ -65,6 +65,7 @@ export default function ListeEtudiant() {
                 prenom={value.Personne.prenom}
                 email={value.Personne.email}
                 statut="etudiant"
+                idEt={value.id}
               />
             );
           })
