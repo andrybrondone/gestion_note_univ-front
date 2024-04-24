@@ -1,3 +1,5 @@
+import { useContext, useEffect } from "react";
+import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
 import { Container } from "../../components/container/Container";
 import { Spinner } from "../../design-system/spinner/Spinner";
@@ -9,6 +11,7 @@ interface EnseignantData {
   id: number;
   grade: string;
   Personne: {
+    id: number;
     nom: string;
     prenom: string;
     email: string;
@@ -17,11 +20,28 @@ interface EnseignantData {
 }
 
 export default function ListeEns() {
-  const { isLoading, isError, data, currentPage, totalPage, setCurrentPage } =
-    useDataFetcher<EnseignantData[]>({
-      endpoint: `http://localhost:3001/enseignant/info`,
-      processData: (data) => data.enseignants,
-    });
+  const { isEditEnseignantForm } = useContext(ToggleEditFormContext);
+
+  const {
+    isLoading,
+    isError,
+    data,
+    currentPage,
+    totalPage,
+    setCurrentPage,
+    refetch,
+  } = useDataFetcher<EnseignantData[]>({
+    endpoint: `http://localhost:3001/enseignant/info`,
+    processData: (data) => data.enseignants,
+  });
+
+  console.log(data);
+
+  useEffect(() => {
+    if (!isEditEnseignantForm) {
+      refetch();
+    }
+  }, [isEditEnseignantForm, refetch]);
 
   if (isLoading)
     return (
@@ -53,20 +73,23 @@ export default function ListeEns() {
         La liste des enseignants à l' ENI
       </Typography>
 
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 gap-4">
         {data.length > 0 ? (
           data.map((value: EnseignantData) => {
             return (
-              <ListInfoUser
-                key={value.id}
-                photo={value.Personne.photo}
-                grade={value.grade}
-                nom={value.Personne.nom}
-                prenom={value.Personne.prenom}
-                email={value.Personne.email}
-                statut="enseignant"
-                idEns={value.id}
-              />
+              <div key={value.id}>
+                <ListInfoUser
+                  photo={value.Personne.photo}
+                  grade={value.grade}
+                  nom={value.Personne.nom}
+                  prenom={value.Personne.prenom}
+                  email={value.Personne.email}
+                  statut="enseignant"
+                  idEns={value.id}
+                  refetch={refetch}
+                  idPers={value.Personne.id}
+                />
+              </div>
             );
           })
         ) : (

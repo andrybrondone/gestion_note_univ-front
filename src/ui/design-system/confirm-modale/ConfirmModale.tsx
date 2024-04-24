@@ -15,11 +15,11 @@ export default function ConfirmModale({ message, action }: Props) {
   return (
     <>
       <div
-        className="anim-transition top-0 left-0 w-full h-[100vh] bg-gray/10 fixed"
+        className="anim-transition top-0 left-0 w-full h-[100vh] bg-gray/10 fixed z-20"
         onClick={toggleConfirmDialog}
       ></div>
 
-      <div className="fixed w-[450px] max-sm:w-[90%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  bg-white dark:bg-gray rounded shadow-xl py-6 px-9 z-50">
+      <div className="fixed w-[450px] max-sm:w-[90%] top-40 left-1/2 -translate-x-1/2  bg-white dark:bg-gray rounded shadow-xl py-6 px-9 z-50">
         <RiCloseFill
           className="text-xl bg-gray-500 rounded-full absolute top-2 right-2 cursor-pointer dark:bg-gray-800"
           onClick={toggleConfirmDialog}
@@ -33,7 +33,7 @@ export default function ConfirmModale({ message, action }: Props) {
           >
             Attention
           </Typography>
-          <Typography variant="body-sm" component="p">
+          <Typography variant="body-sm" component="p" className="text-justify">
             {message}
           </Typography>
 

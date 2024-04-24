@@ -1,12 +1,14 @@
+import axios from "axios";
 import { useContext } from "react";
 import { RiAddLine, RiDeleteBin2Line } from "react-icons/ri";
+import { toast } from "sonner";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { Avatar } from "../../design-system/avatar/Avatar";
 import { Button } from "../../design-system/button/Button";
+import ConfirmModale from "../../design-system/confirm-modale/ConfirmModale";
 import { Typography } from "../../design-system/typography/Typography";
 import AllInfoUser from "./AllInfoUser";
-import AllInfoUser2 from "./AllInfoUser2";
 
 interface Props {
   photo: string | undefined;
@@ -18,6 +20,8 @@ interface Props {
   statut: "etudiant" | "enseignant" | "administrateur";
   idEt?: number;
   idEns?: number;
+  idPers?: number;
+  refetch: () => void;
 }
 
 export default function ListInfoUser({
@@ -30,6 +34,8 @@ export default function ListInfoUser({
   statut,
   idEt,
   idEns,
+  idPers,
+  refetch,
 }: Props) {
   const { getListEtudiantById, getListEnseignantById } = useContext(
     DataFetcherByIdContext
@@ -41,6 +47,8 @@ export default function ListInfoUser({
     toggleEditEtudiantForm,
     isEditEnseignantForm,
     isEditEtudiantForm,
+    isConfirmDialog,
+    toggleConfirmDialog,
   } = useContext(ToggleEditFormContext);
 
   const handleClicEditEt = async (id: number | undefined) => {
@@ -53,9 +61,37 @@ export default function ListInfoUser({
     toggleEditEnseignantForm();
   };
 
+  const deletePersonne = (id: number | undefined) => {
+    axios
+      .delete(`http://localhost:3001/personne/${id}`)
+      .then(() => {
+        toast.success(
+          "Les informations sur cette étudiant ont été supprimé définitivement"
+        );
+        refetch();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const updateStatutEns = (id: number | undefined) => {
+    axios
+      .put(`http://localhost:3001/enseignant/statut/${id}`)
+      .then(() => {
+        toast.success(
+          "L'enseignant a été supprimer de la liste des enseignants actif de l'ENI"
+        );
+        refetch();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <>
-      <div className="flex gap-5 mb-16">
+      <div className="flex gap-5 mb-3 bg-gray-300/50 p-8 rounded shadow">
         <Avatar
           src={`http://localhost:3001/images/${photo}`}
           alt=""
@@ -173,6 +209,7 @@ export default function ListInfoUser({
               variant="delete"
               icon={{ icon: RiDeleteBin2Line }}
               iconPosition="left"
+              action={toggleConfirmDialog}
             >
               Supprimer
             </Button>
@@ -181,10 +218,30 @@ export default function ListInfoUser({
       </div>
 
       {statut === "etudiant" && isEditEtudiantForm && (
-        <AllInfoUser2 statutPers="etudiant" />
+        <AllInfoUser statutPers="etudiant" />
       )}
       {statut === "enseignant" && isEditEnseignantForm && (
-        <AllInfoUser2 statutPers="enseignant" />
+        <AllInfoUser statutPers="enseignant" />
+      )}
+
+      {isConfirmDialog && statut === "etudiant" && (
+        <ConfirmModale
+          message="Voulez-vous vraiment supprimer cette étudiant ? Tous les informations qui lui sont reliées seront supprimées définitivement, y compris ces notes"
+          action={() => {
+            deletePersonne(idPers);
+            toggleConfirmDialog();
+          }}
+        />
+      )}
+
+      {isConfirmDialog && statut === "enseignant" && (
+        <ConfirmModale
+          message="Vous êtes sur le point de supprimer cette personne de la liste des enseignants actif. Vous avez toujours la possibiliter de voir ces informations dans la liste des anciens enseignants de l'ENI"
+          action={() => {
+            updateStatutEns(idPers);
+            toggleConfirmDialog();
+          }}
+        />
       )}
     </>
   );
