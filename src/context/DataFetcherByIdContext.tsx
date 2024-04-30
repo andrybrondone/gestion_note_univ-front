@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useState } from "react";
-import { FormModuleValues } from "../types/crud-props";
+import { FormModuleValues, ListeNoteValues } from "../types/crud-props";
 
 interface Props {
   children: React.ReactNode;
@@ -26,6 +26,7 @@ interface InfoAllUserProps {
   Personne: {
     nom: string;
     prenom: string;
+    phone: string;
     email: string;
     adresse: string;
     lieu_nais: string;
@@ -46,6 +47,9 @@ export const DataFetcherByIdContext = createContext({
   // Matiere
   listMatiereById: {} as ListMatiereProps,
   getListMatiereById: Function(),
+  // Note
+  listNoteById: {} as ListeNoteValues,
+  getListNoteById: Function(),
 });
 
 export const DataFetcherByIdProvider = ({ children }: Props) => {
@@ -59,6 +63,7 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
   const [listMatiereById, setMatiereListById] = useState(
     {} as ListMatiereProps
   );
+  const [listNoteById, setNoteListById] = useState({} as ListeNoteValues);
 
   const getListEtudiantById = (id: number | undefined) => {
     return axios
@@ -104,6 +109,17 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
       });
   };
 
+  const getListNoteById = (id: number | undefined) => {
+    return axios
+      .get(`http://localhost:3001/note/byId/${id}`)
+      .then((response) => {
+        setNoteListById(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <DataFetcherByIdContext.Provider
       value={{
@@ -115,6 +131,8 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
         getListModuleById,
         listMatiereById,
         getListMatiereById,
+        listNoteById,
+        getListNoteById,
       }}
     >
       {children}

@@ -1,13 +1,15 @@
 import axios from "axios";
 import { useContext } from "react";
-import { RiAddLine, RiDeleteBin2Line } from "react-icons/ri";
+import { RiAddCircleLine, RiAddLine, RiDeleteBin2Line } from "react-icons/ri";
 import { toast } from "sonner";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { Avatar } from "../../design-system/avatar/Avatar";
 import { Button } from "../../design-system/button/Button";
 import ConfirmModale from "../../design-system/confirm-modale/ConfirmModale";
 import { Typography } from "../../design-system/typography/Typography";
+import FormNote from "../note/FormNote";
 import AllInfoUser from "./AllInfoUser";
 
 interface Props {
@@ -16,11 +18,11 @@ interface Props {
   grade?: string;
   nom: string;
   prenom: string;
+  phone: string;
   email: string;
   statut: "etudiant" | "enseignant" | "administrateur";
   idEt?: number;
   idEns?: number;
-  idPers?: number;
   refetch: () => void;
 }
 
@@ -30,16 +32,21 @@ export default function ListInfoUser({
   grade,
   nom,
   prenom,
+  phone,
   email,
   statut,
   idEt,
   idEns,
-  idPers,
   refetch,
 }: Props) {
-  const { getListEtudiantById, getListEnseignantById } = useContext(
-    DataFetcherByIdContext
-  );
+  const { toggleFormNote } = useContext(ShowFormContext);
+
+  const {
+    listEtudiantById,
+    getListEtudiantById,
+    listEnseignantById,
+    getListEnseignantById,
+  } = useContext(DataFetcherByIdContext);
 
   // Hook pour savoir si l'utilisateur à cliquer sur le boutton voir +
   const {
@@ -51,17 +58,32 @@ export default function ListInfoUser({
     toggleConfirmDialog,
   } = useContext(ToggleEditFormContext);
 
-  const handleClicEditEt = async (id: number | undefined) => {
+  const handleClickAddNote = async (id: number | undefined) => {
+    await getListEtudiantById(id);
+    toggleFormNote();
+  };
+
+  const handleClickDeleteEns = async (id: number | undefined) => {
+    await getListEnseignantById(id);
+    toggleConfirmDialog();
+  };
+
+  const handleClickDeleteEt = async (id: number | undefined) => {
+    await getListEtudiantById(id);
+    toggleConfirmDialog();
+  };
+
+  const handleClickEditEt = async (id: number | undefined) => {
     await getListEtudiantById(id);
     toggleEditEtudiantForm();
   };
 
-  const handleClicEditEns = async (id: number | undefined) => {
+  const handleClickEditEns = async (id: number | undefined) => {
     await getListEnseignantById(id);
     toggleEditEnseignantForm();
   };
 
-  const deletePersonne = (id: number | undefined) => {
+  const hardDeleteEtudiant = (id: number | undefined) => {
     axios
       .delete(`http://localhost:3001/personne/${id}`)
       .then(() => {
@@ -172,6 +194,22 @@ export default function ListInfoUser({
             component="div"
             className="flex items-center gap-3"
           >
+            N° de téléphone :
+            <Typography
+              variant="body-base"
+              component="p"
+              className="font-semibold"
+            >
+              {phone}
+            </Typography>
+          </Typography>
+
+          <Typography
+            variant="body-sm"
+            theme="gray"
+            component="div"
+            className="flex items-center gap-3"
+          >
             Adresse e-mail :
             <Typography
               variant="caption1"
@@ -185,37 +223,73 @@ export default function ListInfoUser({
           <div className=" flex items-center gap-3 mt-3">
             {statut === "etudiant" && (
               <Button
-                variant="secondary"
+                size="small"
+                variant="blue"
                 action={() => {
-                  handleClicEditEt(idEt);
+                  handleClickEditEt(idEt);
                 }}
                 icon={{ icon: RiAddLine }}
               >
                 Voir
               </Button>
             )}
+
             {statut === "enseignant" && (
               <Button
-                variant="secondary"
+                size="small"
+                variant="blue"
                 action={() => {
-                  handleClicEditEns(idEns);
+                  handleClickEditEns(idEns);
                 }}
                 icon={{ icon: RiAddLine }}
               >
                 Voir
               </Button>
             )}
-            <Button
-              variant="delete"
-              icon={{ icon: RiDeleteBin2Line }}
-              iconPosition="left"
-              action={toggleConfirmDialog}
-            >
-              Supprimer
-            </Button>
+
+            {statut === "etudiant" && (
+              <Button
+                size="small"
+                variant="secondary"
+                icon={{ icon: RiAddCircleLine }}
+                action={() => {
+                  handleClickAddNote(idEt);
+                }}
+              >
+                Ajouter note
+              </Button>
+            )}
+
+            {statut === "enseignant" && (
+              <Button
+                size="small"
+                variant="delete"
+                icon={{ icon: RiDeleteBin2Line }}
+                action={() => {
+                  handleClickDeleteEns(idEns);
+                }}
+              >
+                Supprimer
+              </Button>
+            )}
+
+            {statut === "etudiant" && (
+              <Button
+                size="small"
+                variant="delete"
+                icon={{ icon: RiDeleteBin2Line }}
+                action={() => {
+                  handleClickDeleteEt(idEt);
+                }}
+              >
+                Supprimer
+              </Button>
+            )}
           </div>
         </div>
       </div>
+
+      {statut === "etudiant" && <FormNote idEt={listEtudiantById.id} />}
 
       {statut === "etudiant" && isEditEtudiantForm && (
         <AllInfoUser statutPers="etudiant" />
@@ -228,7 +302,7 @@ export default function ListInfoUser({
         <ConfirmModale
           message="Voulez-vous vraiment supprimer cette étudiant ? Tous les informations qui lui sont reliées seront supprimées définitivement, y compris ces notes"
           action={() => {
-            deletePersonne(idPers);
+            hardDeleteEtudiant(listEtudiantById.PersonneId);
             toggleConfirmDialog();
           }}
         />
@@ -238,7 +312,7 @@ export default function ListInfoUser({
         <ConfirmModale
           message="Vous êtes sur le point de supprimer cette personne de la liste des enseignants actif. Vous avez toujours la possibiliter de voir ces informations dans la liste des anciens enseignants de l'ENI"
           action={() => {
-            updateStatutEns(idPers);
+            updateStatutEns(listEnseignantById.PersonneId);
             toggleConfirmDialog();
           }}
         />

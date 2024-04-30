@@ -14,7 +14,8 @@ interface Props {
     | "ico"
     | "warning"
     | "update"
-    | "delete";
+    | "delete"
+    | "blue";
   icon?: IconProps;
   iconTheme?: "accent" | "secondary" | "gray";
   iconPosition?: "left" | "right";
@@ -81,11 +82,15 @@ export const Button = ({
 
     case "update":
       variantStyle =
-        "border text-alert-warning rounded py-2 px-3 cursor-pointer";
+        "border border-alert-warning text-alert-warning rounded py-2 px-3 cursor-pointer";
       break;
     case "delete":
       variantStyle =
-        "border text-alert-danger hover:bg-alert-danger hover:text-white rounded py-2 px-3 cursor-pointer";
+        "border border-alert-danger text-alert-danger hover:bg-alert-danger hover:text-white rounded py-2 px-3 cursor-pointer";
+      break;
+    case "blue":
+      variantStyle =
+        "border border-secondary-blue text-secondary-blue hover:bg-secondary-blue hover:text-white rounded py-2 px-3 cursor-pointer";
       break;
 
     case "ico":

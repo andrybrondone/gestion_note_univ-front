@@ -87,7 +87,7 @@ export default function FormModule() {
       {isOpenFormModule && (
         <>
           <div
-            className="anim-transition top-0 left-0 w-full h-[100vh] bg-gray/10 fixed"
+            className="anim-transition top-0 left-0 w-full h-[100vh] bg-gray/10 fixed z-50"
             onClick={handleClick}
           ></div>
 

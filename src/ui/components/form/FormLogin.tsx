@@ -1,40 +1,67 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useContext } from "react";
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import * as Yup from "yup";
+import { AuthContext } from "../../../context/AuthContext";
+import useToggle from "../../../hook/useToggle";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { Input } from "./Input";
 
-export default function Formulaire() {
-  const [eyeClick, setEyeClick] = useState(false);
+interface LoginProps {
+  email: string;
+  mdp: string;
+}
+
+interface AxiosResponseProps {
+  error: string;
+  nom: string;
+  token: string;
+  id: number;
+  statut: string;
+}
+
+export default function FormLogin() {
+  const { setAuthState } = useContext(AuthContext);
+  const { value: eyeClick, toggleValue: toggleEyeClick } = useToggle(false);
+  const navigate = useNavigate();
   let typePwd: string = "password";
 
   if (eyeClick) {
     typePwd = "text";
   }
 
-  const handleClickEye = () => {
-    setEyeClick(!eyeClick);
-  };
-
-  const initialValues = {
-    identifiant: "",
+  const initialValues: LoginProps = {
+    email: "",
     mdp: "",
   };
 
   // Validation des données dans le formulaire
   const validationSchema = Yup.object().shape({
-    identifiant: Yup.string().required("Ce champ est obligatoire"),
+    email: Yup.string().required("Ce champ est obligatoire"),
     mdp: Yup.string().required("Ce champ est obligatoire"),
   });
 
-  const onSubmit = (data: object) => {
-    axios.post("http://localhost:3001/locations", data).then(() => {
-      console.log(data);
-      console.log("ok");
-    });
+  const onSubmit = (data: LoginProps) => {
+    axios
+      .post("http://localhost:3001/personne/login", data)
+      .then((res: AxiosResponse<AxiosResponseProps>) => {
+        if (res.data.error) {
+          toast.error(res.data.error);
+        } else {
+          localStorage.setItem("accessToken", res.data.token);
+          setAuthState({
+            nom: res.data.nom,
+            id: res.data.id,
+            statut: res.data.statut,
+            statusAuth: true,
+          });
+          navigate("/accueil");
+        }
+      });
   };
 
   return (
@@ -50,10 +77,10 @@ export default function Formulaire() {
           </Typography>
 
           <Input
-            label="E-mail ou N° Matricule"
-            name="identifiant"
+            label="Adresse e-mail"
+            name="email"
             type="text"
-            placeholder="ex. 1332 H-F ou andry.brondone@gmail.com"
+            placeholder="ex. andry.brondone@gmail.com"
           />
 
           <Input
@@ -65,17 +92,17 @@ export default function Formulaire() {
 
           {eyeClick ? (
             <div
-              onClick={handleClickEye}
+              onClick={toggleEyeClick}
               className="absolute right-8 bottom-[111.5px] cursor-pointer p-3 pr-4"
             >
-              <RiEyeLine className=" text-sm text-secondary-600" />
+              <RiEyeLine className=" text-lg text-secondary-600 dark:text-secondary-300" />
             </div>
           ) : (
             <div
-              onClick={handleClickEye}
+              onClick={toggleEyeClick}
               className="absolute right-8 bottom-[111.5px]  cursor-pointer p-3 pr-4"
             >
-              <RiEyeOffLine className=" text-sm text-secondary-600" />
+              <RiEyeOffLine className=" text-lg text-secondary-600 dark:text-secondary-300" />
             </div>
           )}
 

@@ -17,6 +17,9 @@ export const ToggleEditFormContext = createContext({
   // Matiere
   isEditMatiereForm: false,
   toggleEditMatiereForm: () => {},
+  // Note
+  isEditNoteForm: false,
+  toggleEditNoteForm: () => {},
   // Confirm dialog
   isConfirmDialog: false,
   toggleConfirmDialog: () => {},
@@ -41,6 +44,10 @@ export const ToggleEditFormProvider = ({ children }: Props) => {
   const [isEditMatiereForm, setIsEditMatiereForm] = useState(false);
   const toggleEditMatiereForm = () => setIsEditMatiereForm(!isEditMatiereForm);
 
+  //Note
+  const [isEditNoteForm, setIsEditNoteForm] = useState(false);
+  const toggleEditNoteForm = () => setIsEditNoteForm(!isEditNoteForm);
+
   // Confirm Dialog
   const [isConfirmDialog, setIsConfirmDialog] = useState(false);
   const toggleConfirmDialog = () => setIsConfirmDialog(!isConfirmDialog);
@@ -56,6 +63,8 @@ export const ToggleEditFormProvider = ({ children }: Props) => {
         toggleEditModuleForm,
         isEditMatiereForm,
         toggleEditMatiereForm,
+        isEditNoteForm,
+        toggleEditNoteForm,
         isConfirmDialog,
         toggleConfirmDialog,
       }}

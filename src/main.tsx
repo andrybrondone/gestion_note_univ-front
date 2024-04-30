@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Toaster } from "sonner";
 import App from "./App.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 import { DataFetcherByIdProvider } from "./context/DataFetcherByIdContext.tsx";
 import { ShowFormProvider } from "./context/ShowFormContext.tsx";
 import { ToggleEditFormProvider } from "./context/ToggleEditFormContext.tsx";
@@ -19,13 +20,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <ShowFormProvider>
           <DataFetcherByIdProvider>
             <ToggleEditFormProvider>
-              <App />
-              <Toaster
-                richColors
-                position="top-center"
-                duration={10000}
-                closeButton
-              />
+              <AuthProvider>
+                <App />
+                <Toaster
+                  richColors
+                  position="top-center"
+                  duration={10000}
+                  closeButton
+                />
+              </AuthProvider>
             </ToggleEditFormProvider>
           </DataFetcherByIdProvider>
         </ShowFormProvider>

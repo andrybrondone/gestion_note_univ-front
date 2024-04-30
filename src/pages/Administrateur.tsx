@@ -1,19 +1,20 @@
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Ri24HoursFill } from "react-icons/ri";
+import { AuthContext } from "../context/AuthContext";
 import { Container } from "../ui/components/container/Container";
 import Header from "../ui/components/header/Header";
 import ListeMatiere from "../ui/modules/matiere/ListeMatiere";
 import ListeModule from "../ui/modules/module/ListeModule";
-import FormNote from "../ui/modules/note/FormNote";
+import ListeNote from "../ui/modules/note/ListeNote";
 import FormPersonne from "../ui/modules/personne/FormPersonne";
 
 const allData = [
   {
     icon: <Ri24HoursFill />,
     label: "Statistique",
-    component: <FormNote />,
+    component: <ListeNote />,
   },
   {
     icon: <Ri24HoursFill />,
@@ -28,11 +29,12 @@ const initialTabs = allData;
 
 export default function Administrateur() {
   const [selectedTab, setSelectedTab] = useState(initialTabs[0]);
+  const { authState } = useContext(AuthContext);
 
   return (
     <>
       <Header
-        name="ANDRIAMBOLOLOMANANA"
+        name={authState.nom.toUpperCase()}
         info="En tant qu'administrateur de cette application, vous avez le droit de consulter
             la liste des étudiants, des enseignants et des matières et vous avez également le droit d'en ajouter des nouvelles"
       />

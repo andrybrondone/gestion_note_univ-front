@@ -20,6 +20,7 @@ export default {
         400: "#0BE1B2",
         DEFAULT: "#04DBAC",
         600: "#17B996",
+        blue: "#129AE8",
       },
       gray: {
         300: "#fafafa",

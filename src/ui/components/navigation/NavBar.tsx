@@ -1,6 +1,8 @@
-import { useMemo } from "react";
+import { useContext } from "react";
 import { AiOutlineHome } from "react-icons/ai";
-import { NavLink, useLocation } from "react-router-dom";
+import { RiLogoutCircleLine } from "react-icons/ri";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
 import { Button } from "../../design-system/button/Button";
 import { Logo } from "../../design-system/logo/Logo";
 import { Typography } from "../../design-system/typography/Typography";
@@ -9,11 +11,19 @@ import { ToggleBtn } from "../darkMode/ToggleBtn";
 import ActiveLink from "./ActiveLink";
 
 export default function NavBar() {
-  const location = useLocation();
+  const { authState, setAuthState } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const isConnexion: boolean = useMemo(() => {
-    return location.pathname !== "";
-  }, [location.pathname]);
+  const logOut = () => {
+    localStorage.removeItem("accessToken");
+    setAuthState({
+      nom: "",
+      id: 0,
+      statut: "",
+      statusAuth: false,
+    });
+    navigate("/");
+  };
 
   return (
     <div className="border-b-2 border-gray-400 dark:border-gray-800 dark:bg-gray-900">
@@ -47,26 +57,33 @@ export default function NavBar() {
           >
             <ToggleBtn />
 
-            {isConnexion && (
+            {authState.statusAuth && (
               <>
                 <ActiveLink
-                  href="/"
-                  className="flex justify-center items-center"
+                  href="/accueil"
+                  className="flex justify-center items-center gap-1"
                 >
-                  <AiOutlineHome className="relative bottom-[1px] right-1" />
-                  Home
+                  <AiOutlineHome />
+                  Accueil
                 </ActiveLink>
-                <ActiveLink href="/voiture">Voiture</ActiveLink>
-                <ActiveLink href="/contact">Contact</ActiveLink>
+                <ActiveLink href="/etudiants">Etudiants</ActiveLink>
+                <ActiveLink href="/enseignants">Enseignants</ActiveLink>
               </>
             )}
           </Typography>
-          {isConnexion && (
+          {authState.statusAuth && (
             <div className="flex items-center gap-2">
               <Button baseUrl="/inscription" variant="secondary">
                 S'inscrir
               </Button>
-              <Button baseUrl="/connection">Se connecter</Button>
+              <Button
+                variant="secondary"
+                action={logOut}
+                icon={{ icon: RiLogoutCircleLine }}
+                iconPosition="left"
+              >
+                Deconnexion
+              </Button>
             </div>
           )}
         </div>

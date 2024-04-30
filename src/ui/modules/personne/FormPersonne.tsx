@@ -17,6 +17,7 @@ export default function FormPersonne() {
   const initialValues: FormPersonneValues = {
     nom: "",
     prenom: "",
+    phone: "",
     email: "",
     adresse: "",
     lieu_nais: "",
@@ -41,7 +42,7 @@ export default function FormPersonne() {
           onSubmit={onSubmit}
           validationSchema={validationSchemaPersonne}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, values }) => (
             <Form className="flex flex-col gap-5">
               <Typography
                 variant="h4"
@@ -68,6 +69,13 @@ export default function FormPersonne() {
                   />
 
                   <Input
+                    label="Numéro de téléphone"
+                    name="phone"
+                    type="text"
+                    placeholder="ex. 034 91 572 36"
+                  />
+
+                  <Input
                     label="E-mail"
                     name="email"
                     type="email"
@@ -75,10 +83,10 @@ export default function FormPersonne() {
                   />
 
                   <Input
-                    label="Mot de passe par défaut"
                     name="mdp"
                     type="text"
-                    placeholder="ex. 123456"
+                    value={values.email}
+                    classNameSpan="hidden"
                   />
                 </div>
 
@@ -113,7 +121,7 @@ export default function FormPersonne() {
                 </div>
               </div>
 
-              <div className="flex justify-center items-center mt-5">
+              <div className="flex justify-center items-center">
                 <Button
                   disabled={isSubmitting}
                   type="submit"

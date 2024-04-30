@@ -17,6 +17,9 @@ export const ShowFormContext = createContext({
   // Module
   isOpenFormModule: false,
   toggleFormModule: () => {},
+  // Note
+  isOpenFormNote: false,
+  toggleFormNote: () => {},
 });
 
 export const ShowFormProvider = ({ children }: Props) => {
@@ -24,6 +27,7 @@ export const ShowFormProvider = ({ children }: Props) => {
   const [isOpenFormEns, setIsOpenFormEns] = useState(false);
   const [isOpenFormMatiere, setIsOpenFormMatiere] = useState(false);
   const [isOpenFormModule, setIsOpenFormModule] = useState(false);
+  const [isOpenFormNote, setIsOpenFormNote] = useState(false);
 
   const toggleFormEt = () => {
     setIsOpenFormEt(!isOpenFormEt);
@@ -37,6 +41,9 @@ export const ShowFormProvider = ({ children }: Props) => {
   const toggleFormModule = () => {
     setIsOpenFormModule(!isOpenFormModule);
   };
+  const toggleFormNote = () => {
+    setIsOpenFormNote(!isOpenFormNote);
+  };
 
   return (
     <ShowFormContext.Provider
@@ -49,6 +56,8 @@ export const ShowFormProvider = ({ children }: Props) => {
         toggleFormMatiere,
         isOpenFormModule,
         toggleFormModule,
+        isOpenFormNote,
+        toggleFormNote,
       }}
     >
       {children}

@@ -24,6 +24,22 @@ export interface ListeMatiereValues {
   };
 }
 
+export interface ListeNoteValues {
+  id: number;
+  note: string;
+  MatiereId: string;
+  Etudiant: {
+    matricule: string;
+    Personne: {
+      nom: string;
+      prenom: string;
+    };
+  };
+  Matiere: {
+    nom_mat: string;
+  };
+}
+
 export interface InfoEnsProps {
   id: string;
   Personne: {
@@ -41,6 +57,7 @@ export interface FormPersonneValues {
   id?: string;
   nom: string;
   prenom: string;
+  phone: string;
   email: string;
   adresse: string;
   lieu_nais: string;
@@ -52,7 +69,7 @@ export interface FormPersonneValues {
 
 export interface FormNoteValues {
   id?: string;
-  id_et: string;
+  id_et: number | undefined;
   id_mat: string;
   note: string;
 }
@@ -61,6 +78,7 @@ export interface FormAllUsersValues {
   id?: string;
   nom: string;
   prenom: string;
+  phone: string;
   email: string;
   adresse: string;
   lieu_nais: string;

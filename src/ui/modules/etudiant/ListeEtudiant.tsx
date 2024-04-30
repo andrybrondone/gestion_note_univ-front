@@ -14,6 +14,7 @@ interface EtudiantData {
     id: number;
     nom: string;
     prenom: string;
+    phone: string;
     email: string;
     photo?: string;
   };
@@ -75,20 +76,18 @@ export default function ListeEtudiant() {
         {data.length > 0 ? (
           data.map((value: EtudiantData) => {
             return (
-              <div key={value.id}>
-                <ListInfoUser
-                  key={value.id}
-                  photo={value.Personne.photo}
-                  matricule={value.matricule}
-                  nom={value.Personne.nom}
-                  prenom={value.Personne.prenom}
-                  email={value.Personne.email}
-                  statut="etudiant"
-                  idEt={value.id}
-                  idPers={value.Personne.id}
-                  refetch={refetch}
-                />
-              </div>
+              <ListInfoUser
+                key={value.id}
+                photo={value.Personne.photo}
+                matricule={value.matricule}
+                nom={value.Personne.nom}
+                prenom={value.Personne.prenom}
+                phone={value.Personne.phone}
+                email={value.Personne.email}
+                statut="etudiant"
+                idEt={value.id}
+                refetch={refetch}
+              />
             );
           })
         ) : (

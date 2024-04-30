@@ -97,6 +97,10 @@ export const validationSchemaPersonne = Yup.object().shape({
   prenom: Yup.string()
     .min(3, "Un prénom doit contenir au moin 3 caractères")
     .required("Ce champ est obligatoire"),
+  phone: Yup.string()
+    .min(10, "Un numéro de téléphone doit être composer de 10 chiffre")
+    .max(10, "Un numéro de téléphone doit être composer de 10 chiffre")
+    .required("Ce champ est obligatoire"),
   email: Yup.string()
     .email("Entrez une adresse mail valide")
     .required("Ce champ est obligatoire"),
@@ -123,6 +127,10 @@ export const validationSchemaAllInfoUser = Yup.object().shape({
     .required("Ce champ est obligatoire"),
   prenom: Yup.string()
     .min(3, "Un prénom doit contenir au moin 3 caractères")
+    .required("Ce champ est obligatoire"),
+  phone: Yup.string()
+    .min(10, "Un numéro de téléphone doit être composer de 10 chiffre")
+    .max(10, "Un numéro de téléphone doit être composer de 10 chiffre")
     .required("Ce champ est obligatoire"),
   email: Yup.string()
     .email("Entrez une adresse mail valide")

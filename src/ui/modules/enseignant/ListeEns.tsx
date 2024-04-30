@@ -14,6 +14,7 @@ interface EnseignantData {
     id: number;
     nom: string;
     prenom: string;
+    phone: string;
     email: string;
     photo?: string;
   };
@@ -34,8 +35,6 @@ export default function ListeEns() {
     endpoint: `http://localhost:3001/enseignant/info`,
     processData: (data) => data.enseignants,
   });
-
-  console.log(data);
 
   useEffect(() => {
     if (!isEditEnseignantForm) {
@@ -84,10 +83,10 @@ export default function ListeEns() {
                   nom={value.Personne.nom}
                   prenom={value.Personne.prenom}
                   email={value.Personne.email}
+                  phone={value.Personne.phone}
                   statut="enseignant"
                   idEns={value.id}
                   refetch={refetch}
-                  idPers={value.Personne.id}
                 />
               </div>
             );
