@@ -2,15 +2,15 @@ import axios from "axios";
 import clsx from "clsx";
 import { useContext, useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import "./App.css";
 import { AuthContext } from "./context/AuthContext";
-import Administrateur from "./pages/Administrateur";
+import Accueil from "./pages/Accueil";
+import Enseignant from "./pages/Enseignant";
+import Etudiant from "./pages/Etudiant";
+import InfoCompte from "./pages/InfoCompte";
 import Login from "./pages/Login";
 import { Page404 } from "./pages/Page404";
 import { DarkModeContext } from "./ui/components/darkMode/DarkModeGlobal";
 import { Navigation } from "./ui/components/navigation/Navigation";
-import ListeEns from "./ui/modules/enseignant/ListeEns";
-import ListeEtudiant from "./ui/modules/etudiant/ListeEtudiant";
 
 const router = createBrowserRouter([
   {
@@ -23,15 +23,19 @@ const router = createBrowserRouter([
       },
       {
         path: "accueil",
-        element: <Administrateur />,
+        element: <Accueil />,
       },
       {
         path: "etudiants",
-        element: <ListeEtudiant />,
+        element: <Etudiant />,
       },
       {
         path: "enseignants",
-        element: <ListeEns />,
+        element: <Enseignant />,
+      },
+      {
+        path: "information-compte",
+        element: <InfoCompte />,
       },
       {
         path: "*",

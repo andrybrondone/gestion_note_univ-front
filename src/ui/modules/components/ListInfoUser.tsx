@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { RiAddCircleLine, RiAddLine, RiDeleteBin2Line } from "react-icons/ri";
 import { toast } from "sonner";
+import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
@@ -39,6 +40,8 @@ export default function ListInfoUser({
   idEns,
   refetch,
 }: Props) {
+  const { authState } = useContext(AuthContext);
+
   const { toggleFormNote } = useContext(ShowFormContext);
 
   const {
@@ -131,7 +134,8 @@ export default function ListInfoUser({
               <Typography
                 variant="body-sm"
                 component="p"
-                className="font-semibold capitalize"
+                weight="bold"
+                className="capitalize"
               >
                 {grade}
               </Typography>
@@ -149,7 +153,8 @@ export default function ListInfoUser({
               <Typography
                 variant="body-sm"
                 component="p"
-                className="font-semibold uppercase"
+                weight="bold"
+                className="uppercase"
               >
                 {matricule}
               </Typography>
@@ -166,7 +171,8 @@ export default function ListInfoUser({
             <Typography
               variant="body-lg"
               component="h5"
-              className=" font-semibold uppercase"
+              weight="bold"
+              className="uppercase"
             >
               {nom}
             </Typography>
@@ -182,7 +188,8 @@ export default function ListInfoUser({
             <Typography
               variant="body-lg"
               component="h5"
-              className=" capitalize font-semibold"
+              weight="bold"
+              className=" capitalize"
             >
               {prenom}
             </Typography>
@@ -195,11 +202,7 @@ export default function ListInfoUser({
             className="flex items-center gap-3"
           >
             N° de téléphone :
-            <Typography
-              variant="body-base"
-              component="p"
-              className="font-semibold"
-            >
+            <Typography variant="body-base" component="p" weight="bold">
               {phone}
             </Typography>
           </Typography>
@@ -211,81 +214,82 @@ export default function ListInfoUser({
             className="flex items-center gap-3"
           >
             Adresse e-mail :
-            <Typography
-              variant="caption1"
-              component="p"
-              className="font-semibold"
-            >
+            <Typography variant="caption1" component="p" weight="bold">
               {email}
             </Typography>
           </Typography>
 
-          <div className=" flex items-center gap-3 mt-3">
-            {statut === "etudiant" && (
-              <Button
-                size="small"
-                variant="blue"
-                action={() => {
-                  handleClickEditEt(idEt);
-                }}
-                icon={{ icon: RiAddLine }}
-              >
-                Voir
-              </Button>
-            )}
+          {authState.statut !== "etudiant" && (
+            <div className=" flex items-center gap-3 mt-3">
+              {authState.statut === "enseignant" && (
+                <>
+                  {statut === "etudiant" && (
+                    <Button
+                      variant="secondary"
+                      icon={{ icon: RiAddCircleLine }}
+                      action={() => {
+                        handleClickAddNote(idEt);
+                      }}
+                    >
+                      Ajouter note
+                    </Button>
+                  )}
+                </>
+              )}
 
-            {statut === "enseignant" && (
-              <Button
-                size="small"
-                variant="blue"
-                action={() => {
-                  handleClickEditEns(idEns);
-                }}
-                icon={{ icon: RiAddLine }}
-              >
-                Voir
-              </Button>
-            )}
+              {authState.statut === "administrateur" && (
+                <>
+                  {statut === "etudiant" && (
+                    <Button
+                      variant="blue"
+                      action={() => {
+                        handleClickEditEt(idEt);
+                      }}
+                      icon={{ icon: RiAddLine }}
+                    >
+                      Voir
+                    </Button>
+                  )}
 
-            {statut === "etudiant" && (
-              <Button
-                size="small"
-                variant="secondary"
-                icon={{ icon: RiAddCircleLine }}
-                action={() => {
-                  handleClickAddNote(idEt);
-                }}
-              >
-                Ajouter note
-              </Button>
-            )}
+                  {statut === "enseignant" && (
+                    <Button
+                      variant="blue"
+                      action={() => {
+                        handleClickEditEns(idEns);
+                      }}
+                      icon={{ icon: RiAddLine }}
+                    >
+                      Voir
+                    </Button>
+                  )}
 
-            {statut === "enseignant" && (
-              <Button
-                size="small"
-                variant="delete"
-                icon={{ icon: RiDeleteBin2Line }}
-                action={() => {
-                  handleClickDeleteEns(idEns);
-                }}
-              >
-                Supprimer
-              </Button>
-            )}
+                  {statut === "enseignant" && (
+                    <Button
+                      variant="delete"
+                      icon={{ icon: RiDeleteBin2Line }}
+                      action={() => {
+                        handleClickDeleteEns(idEns);
+                      }}
+                    >
+                      Supprimer
+                    </Button>
+                  )}
 
-            {statut === "etudiant" && (
-              <Button
-                size="small"
-                variant="delete"
-                icon={{ icon: RiDeleteBin2Line }}
-                action={() => {
-                  handleClickDeleteEt(idEt);
-                }}
-              >
-                Supprimer
-              </Button>
-            )}
-          </div>
+                  {statut === "etudiant" && (
+                    <Button
+                      variant="delete"
+                      icon={{ icon: RiDeleteBin2Line }}
+                      action={() => {
+                        handleClickDeleteEt(idEt);
+                      }}
+                    >
+                      Supprimer
+                    </Button>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

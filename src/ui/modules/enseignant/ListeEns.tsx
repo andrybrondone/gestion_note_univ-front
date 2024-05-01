@@ -68,7 +68,12 @@ export default function ListeEns() {
 
   return (
     <Container className="pt-8">
-      <Typography variant="h1" component="h1" className="mb-14 text-center">
+      <Typography
+        weight="bold"
+        variant="h1"
+        component="h1"
+        className="mb-14 text-center"
+      >
         La liste des enseignants à l' ENI
       </Typography>
 

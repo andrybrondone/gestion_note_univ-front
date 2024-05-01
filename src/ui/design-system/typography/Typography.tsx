@@ -28,7 +28,7 @@ interface Props {
     | "danger"
     | "success"
     | "warning";
-  weight?: "regular" | "medium";
+  weight?: "regular" | "medium" | "bold";
   className?: string;
   children: React.ReactNode;
 }
@@ -44,7 +44,8 @@ export const Typography = ({
   const { isDarkMode } = useContext(DarkModeContext);
 
   let variantStyles: string = "",
-    colorStyles: string = "";
+    colorStyles: string = "",
+    font: string = "";
 
   switch (variant) {
     case "display":
@@ -116,13 +117,24 @@ export const Typography = ({
       colorStyles = "text-alert-warning";
       break;
   }
+  switch (weight) {
+    case "regular": // Default
+      font = "font-normal";
+      break;
+    case "medium":
+      font = "font-medium";
+      break;
+    case "bold":
+      font = "font-bold";
+      break;
+  }
 
   return (
     <Component
       className={clsx(
         variantStyles,
         colorStyles,
-        weight == "medium" && "font-medium",
+        font,
         className,
         isDarkMode && "dark"
       )}

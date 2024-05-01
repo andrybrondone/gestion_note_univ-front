@@ -7,9 +7,9 @@ import { toast } from "sonner";
 import * as Yup from "yup";
 import { AuthContext } from "../../../context/AuthContext";
 import useToggle from "../../../hook/useToggle";
+import { Input } from "../../components/form/Input";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
-import { Input } from "./Input";
 
 interface LoginProps {
   email: string;

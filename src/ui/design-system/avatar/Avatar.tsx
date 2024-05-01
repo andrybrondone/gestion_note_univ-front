@@ -4,9 +4,10 @@ interface Props {
   size?: "small" | "medium" | "large" | "very-large";
   src: string;
   alt: string;
+  className?: string;
 }
 
-export const Avatar = ({ size = "medium", src, alt }: Props) => {
+export const Avatar = ({ size = "medium", src, alt, className }: Props) => {
   let sizeStyle: string;
 
   switch (size) {
@@ -31,7 +32,8 @@ export const Avatar = ({ size = "medium", src, alt }: Props) => {
         alt={alt}
         className={clsx(
           sizeStyle,
-          "rounded-full object-cover object-center absolute"
+          "rounded-full object-cover object-center absolute",
+          className
         )}
       />
     </div>

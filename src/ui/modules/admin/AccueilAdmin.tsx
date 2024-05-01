@@ -2,13 +2,13 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext, useState } from "react";
 import { Ri24HoursFill } from "react-icons/ri";
-import { AuthContext } from "../context/AuthContext";
-import { Container } from "../ui/components/container/Container";
-import Header from "../ui/components/header/Header";
-import ListeMatiere from "../ui/modules/matiere/ListeMatiere";
-import ListeModule from "../ui/modules/module/ListeModule";
-import ListeNote from "../ui/modules/note/ListeNote";
-import FormPersonne from "../ui/modules/personne/FormPersonne";
+import { AuthContext } from "../../../context/AuthContext";
+import { Container } from "../../components/container/Container";
+import Header from "../../components/header/Header";
+import ListeMatiere from "../matiere/ListeMatiere";
+import ListeModule from "../module/ListeModule";
+import ListeNote from "../note/ListeNote";
+import FormPersonne from "../personne/FormPersonne";
 
 const allData = [
   {
@@ -27,7 +27,7 @@ const allData = [
 
 const initialTabs = allData;
 
-export default function Administrateur() {
+export default function AccueilAdmin() {
   const [selectedTab, setSelectedTab] = useState(initialTabs[0]);
   const { authState } = useContext(AuthContext);
 
@@ -36,7 +36,7 @@ export default function Administrateur() {
       <Header
         name={authState.nom.toUpperCase()}
         info="En tant qu'administrateur de cette application, vous avez le droit de consulter
-            la liste des étudiants, des enseignants et des matières et vous avez également le droit d'en ajouter des nouvelles"
+            la liste des étudiants, des enseignants et des matières et vous avez également le droit d'en ajouter des nouvelles !"
       />
       <Container className="mb-11 flex items-center justify-between gap-4">
         <div className="flex flex-col gap-5 ">
@@ -44,7 +44,7 @@ export default function Administrateur() {
             <div className="relative group" key={item.label}>
               <p
                 className={clsx(
-                  "px-8 py-4 cursor-pointer flex items-center gap-2 text-caption1",
+                  "px-8 py-4 cursor-pointer flex items-center gap-2 text-caption1 font-medium",
                   item === selectedTab
                     ? "selecte bg-secondary-200/10"
                     : " hover:bg-secondary-200/10 transition"

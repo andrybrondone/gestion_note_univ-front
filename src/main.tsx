@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <Toaster
                   richColors
                   position="top-center"
-                  duration={10000}
+                  duration={6000}
                   closeButton
                 />
               </AuthProvider>

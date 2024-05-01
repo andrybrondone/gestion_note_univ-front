@@ -20,7 +20,7 @@ export function ButtonPagination({
         Précédent
       </Button>
 
-      <Typography variant="caption1" component="p" className=" font-bold">
+      <Typography variant="body-sm" component="p" weight="bold">
         Page {currentPage}
       </Typography>
 
