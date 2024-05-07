@@ -11,11 +11,20 @@ import {
   FormModuleValues,
   InfoEnsProps,
 } from "../../../types/crud-props";
+import { CheckBox } from "../../components/form/CheckBox";
 import { Input } from "../../components/form/Input";
 import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaMatiere } from "../validation-schemas-yup/ValidationSchemasYup";
+
+const parcoursOptions = [
+  { value: "IG", label: "IG" },
+  { value: "GBD", label: "GBD" },
+  { value: "ASR", label: "ASR" },
+  { value: "GID", label: "GID" },
+  { value: "OCC", label: "OCC" },
+];
 
 export default function FormMatiere() {
   const { isOpenFormMatiere, toggleFormMatiere } = useContext(ShowFormContext);
@@ -51,6 +60,7 @@ export default function FormMatiere() {
       nom_mat: listMatiereById.nom_mat,
       credit: listMatiereById.credit,
       niveau_mat: listMatiereById.niveau_mat,
+      parcours: listMatiereById.parcours,
     };
   } else {
     initialValues = {
@@ -59,6 +69,7 @@ export default function FormMatiere() {
       nom_mat: "",
       credit: "",
       niveau_mat: "",
+      parcours: "",
     };
   }
 
@@ -120,69 +131,95 @@ export default function FormMatiere() {
               onSubmit={onSubmit}
               validationSchema={validationSchemaMatiere}
             >
-              <Form className="flex flex-col gap-2">
-                <Typography variant="h5" component="h5" className="text-center">
-                  {isEditMatiereForm
-                    ? "Modifier la matière"
-                    : "Ajouter une matière"}
-                </Typography>
+              {({ values, handleChange }) => (
+                <Form className="flex flex-col gap-2">
+                  <Typography
+                    variant="h5"
+                    component="h5"
+                    className="text-center"
+                  >
+                    {isEditMatiereForm
+                      ? "Modifier la matière"
+                      : "Ajouter une matière"}
+                  </Typography>
 
-                <Input
-                  label="Nom de la matière"
-                  name="nom_mat"
-                  type="text"
-                  placeholder="ex. IHM"
-                />
+                  <Input
+                    label="Nom de la matière"
+                    name="nom_mat"
+                    type="text"
+                    placeholder="ex. IHM"
+                  />
 
-                <Select label="Niveau" name="niveau_mat">
-                  <option value="">Choisir un niveau pour la matière</option>
-                  <option value="L1">L1</option>
-                  <option value="L2">L2</option>
-                  <option value="L3">L3</option>
-                  <option value="M1">M1</option>
-                  <option value="M2">M2</option>
-                </Select>
+                  <Select label="Niveau" name="niveau_mat">
+                    <option value="">Choisir un niveau pour la matière</option>
+                    <option value="L1">L1</option>
+                    <option value="L2">L2</option>
+                    <option value="L3">L3</option>
+                    <option value="M1">M1</option>
+                    <option value="M2">M2</option>
+                  </Select>
 
-                <Input
-                  label="Crédits"
-                  name="credit"
-                  type="number"
-                  min={0}
-                  placeholder="ex. 12"
-                />
+                  <p>
+                    Parcours <span className="text-alert-danger">*</span>
+                  </p>
+                  <div className="flex items-center justify-between">
+                    {parcoursOptions.map((option) => (
+                      <div key={option.value}>
+                        <CheckBox
+                          label={option.label}
+                          type="checkbox"
+                          id={option.value}
+                          htmlFor={option.value}
+                          name="parcours"
+                          value={option.value}
+                          checked={values.parcours.includes(option.value)}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    ))}
+                  </div>
 
-                <Select label="Enseignant" name="id_ens">
-                  <option value="">Choisir un enseignant</option>
-                  {nameOfEnseignant.map((item: InfoEnsProps) => {
-                    return (
-                      <option
-                        key={item.id}
-                        value={item.id}
-                        className=" capitalize"
-                      >
-                        {`${item.Personne.nom} ${item.Personne.prenom}`}
-                      </option>
-                    );
-                  })}
-                </Select>
+                  <Input
+                    label="Crédits"
+                    name="credit"
+                    type="number"
+                    min={0}
+                    placeholder="ex. 12"
+                  />
 
-                <Select label="Module" name="id_module">
-                  <option value="">Choisir un module</option>
-                  {listOfModule.map((item: FormModuleValues) => {
-                    return (
-                      <option key={item.id} value={item.id}>
-                        {item.nom_module}
-                      </option>
-                    );
-                  })}
-                </Select>
+                  <Select label="Enseignant" name="id_ens">
+                    <option value="">Choisir un enseignant</option>
+                    {nameOfEnseignant.map((item: InfoEnsProps) => {
+                      return (
+                        <option
+                          key={item.id}
+                          value={item.id}
+                          className=" capitalize"
+                        >
+                          {`${item.Personne.nom} ${item.Personne.prenom}`}
+                        </option>
+                      );
+                    })}
+                  </Select>
 
-                <div className="flex justify-center items-center mt-2">
-                  <Button type="submit" variant="accent" className=" w-36">
-                    Enregistrer
-                  </Button>
-                </div>
-              </Form>
+                  <Select label="Module" name="id_module">
+                    <option value="">Choisir un module</option>
+                    {listOfModule.map((item: FormModuleValues) => {
+                      return (
+                        <option key={item.id} value={item.id}>
+                          {item.nom_module}
+                        </option>
+                      );
+                    })}
+                  </Select>
+
+                  <div className="flex justify-center items-center mt-2">
+                    <Button type="submit" variant="accent" className=" w-36">
+                      Enregistrer
+                    </Button>
+                  </div>
+                </Form>
+              )}
             </Formik>
           </div>
         </>

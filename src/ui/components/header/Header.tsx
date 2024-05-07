@@ -9,7 +9,7 @@ interface Props {
 
 export default function Header({ name, info }: Props) {
   return (
-    <div className="py-6 bg-primary-200 mb-11">
+    <div className="py-6 bg-primary-200/70 mb-11">
       <Container className="flex items-center justify-center gap-7">
         <img src={img} alt="" width={160} />
         <div className="w-[700px] flex flex-col gap-2">

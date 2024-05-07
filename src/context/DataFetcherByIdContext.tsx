@@ -13,6 +13,7 @@ interface ListMatiereProps {
   nom_mat: string;
   credit: string;
   niveau_mat: string;
+  parcours: string;
 }
 
 interface InfoAllUserProps {
@@ -34,7 +35,52 @@ interface InfoAllUserProps {
   };
 }
 
+interface PersonnesProps {
+  nom: string;
+  prenom: string;
+  phone: string;
+  email: string;
+  adresse: string;
+  lieu_nais: string;
+  date_nais: string;
+
+  Etudiants?: [
+    {
+      matricule: string;
+      niveau: string;
+      parcours: string;
+      statut: string;
+    }
+  ];
+
+  Enseignants?: [
+    {
+      grade: string;
+    }
+  ];
+}
+
+interface FormPersonneValues {
+  nom: string;
+  prenom: string;
+  phone: string;
+  email: string;
+  adresse: string;
+  lieu_nais: string;
+  date_nais: string;
+  photo: string;
+}
+
 export const DataFetcherByIdContext = createContext({
+  // Personne
+  listPersonneById: {} as FormPersonneValues,
+  getListPersonneById: Function(),
+  // PersonneEt
+  listPersonneEtById: {} as PersonnesProps,
+  getListPersonneEtById: Function(),
+  // PersonneEns
+  listPersonneEnsById: {} as PersonnesProps,
+  getListPersonneEnsById: Function(),
   // Etudiant
   listEtudiantById: {} as InfoAllUserProps,
   getListEtudiantById: Function(),
@@ -53,6 +99,15 @@ export const DataFetcherByIdContext = createContext({
 });
 
 export const DataFetcherByIdProvider = ({ children }: Props) => {
+  const [listPersonneById, setPersonneListById] = useState(
+    {} as FormPersonneValues
+  );
+  const [listPersonneEtById, setPersonneEtListById] = useState(
+    {} as PersonnesProps
+  );
+  const [listPersonneEnsById, setPersonneEnsListById] = useState(
+    {} as PersonnesProps
+  );
   const [listEtudiantById, setEtudiantListById] = useState(
     {} as InfoAllUserProps
   );
@@ -64,6 +119,39 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
     {} as ListMatiereProps
   );
   const [listNoteById, setNoteListById] = useState({} as ListeNoteValues);
+
+  const getListPersonneById = (id: number | undefined) => {
+    return axios
+      .get(`http://localhost:3001/personne/byId/${id}`)
+      .then((response) => {
+        setPersonneListById(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getListPersonneEtById = (id: number | undefined) => {
+    return axios
+      .get(`http://localhost:3001/personne/etudiant/byId/${id}`)
+      .then((response) => {
+        setPersonneEtListById(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getListPersonneEnsById = (id: number | undefined) => {
+    return axios
+      .get(`http://localhost:3001/personne/enseignant/byId/${id}`)
+      .then((response) => {
+        setPersonneEnsListById(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const getListEtudiantById = (id: number | undefined) => {
     return axios
@@ -123,6 +211,12 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
   return (
     <DataFetcherByIdContext.Provider
       value={{
+        listPersonneById,
+        getListPersonneById,
+        listPersonneEtById,
+        getListPersonneEtById,
+        listPersonneEnsById,
+        getListPersonneEnsById,
         listEtudiantById,
         getListEtudiantById,
         listEnseignantById,

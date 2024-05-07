@@ -10,8 +10,8 @@ export default {
       black: "#100F0F",
       primary: {
         200: "#E1F8E1",
-        300: "#C8F8C8",
-        400: "#16BF16",
+        300: "#5CF864",
+        400: "#16BF1F",
         DEFAULT: "#2FB42F",
       },
       secondary: {
@@ -35,7 +35,7 @@ export default {
       alert: {
         danger: "#FF4E4E",
         success: "#10E649",
-        warning: "#FEB72F",
+        warning: "#FFB300",
       },
     },
 
@@ -44,7 +44,7 @@ export default {
         "58px",
         {
           lineHeight: "80px",
-          letterSpacing: "-5px",
+          letterSpacing: "-1.9px",
           fontWeight: "500",
         },
       ],
@@ -52,7 +52,7 @@ export default {
         "39px",
         {
           lineHeight: "50px",
-          letterSpacing: "-2px",
+          letterSpacing: "-1.6px",
           fontWeight: "600",
         },
       ],
@@ -60,7 +60,7 @@ export default {
         "34px",
         {
           lineHeight: "40px",
-          letterSpacing: "-2px",
+          letterSpacing: "-1.3px",
           fontWeight: "500",
         },
       ],

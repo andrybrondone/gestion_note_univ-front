@@ -10,6 +10,8 @@ import ListInfoUser from "../components/ListInfoUser";
 interface EtudiantData {
   id: number;
   matricule: string;
+  niveau: string;
+  parcours: string;
   Personne: {
     id: number;
     nom: string;
@@ -77,7 +79,7 @@ export default function ListeEtudiant() {
         La liste des etudiants à l' ENI
       </Typography>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 max-[870px]:grid-cols-1">
         {data.length > 0 ? (
           data.map((value: EtudiantData) => {
             return (
@@ -87,6 +89,8 @@ export default function ListeEtudiant() {
                 matricule={value.matricule}
                 nom={value.Personne.nom}
                 prenom={value.Personne.prenom}
+                niveau={value.niveau}
+                parcours={value.parcours}
                 phone={value.Personne.phone}
                 email={value.Personne.email}
                 statut="etudiant"

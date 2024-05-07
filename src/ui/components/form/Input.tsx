@@ -5,7 +5,6 @@ import { InputHTMLAttributes } from "react";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   className?: string;
-  classNameMain?: string;
   classNameSpan?: string;
 }
 

@@ -284,7 +284,7 @@ export default function AllInfoUser({ statutPers }: Props) {
                           >
                             <option value="">Choisir le parcours</option>
                             <option value="IG">IG</option>
-                            <option value="GB">GB</option>
+                            <option value="GBD">GBD</option>
                             <option value="ASR">ASR</option>
                             <option value="GID">GID</option>
                             <option value="OCC">OCC</option>

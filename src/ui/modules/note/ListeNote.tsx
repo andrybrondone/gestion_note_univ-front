@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useRef } from "react";
 import { RiDeleteBin2Fill, RiPencilFill } from "react-icons/ri";
 import { toast } from "sonner";
+import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
@@ -15,6 +16,8 @@ import { ButtonPagination } from "../components/ButtonPagination";
 import FormNote from "./FormNote";
 
 export default function ListeNote() {
+  const { authState } = useContext(AuthContext);
+
   // Hook pour savoir l'état du formulaire matiere
   const { isOpenFormNote, toggleFormNote } = useContext(ShowFormContext);
 
@@ -102,7 +105,7 @@ export default function ListeNote() {
                 <th>Prénom</th>
                 <th>Matière</th>
                 <th>Note</th>
-                <th>Actions</th>
+                {authState.statut === "enseignant" && <th>Actions</th>}
               </tr>
             </thead>
             <tbody className="text-center capitalize">
@@ -117,21 +120,23 @@ export default function ListeNote() {
                     <td>{value.Etudiant.Personne.prenom}</td>
                     <td>{value.Matiere.nom_mat}</td>
                     <td>{value.note}</td>
-                    <td className="flex items-center justify-center py-2 text-3xl gap-2 max-sm:text-2xl">
-                      <RiPencilFill
-                        className="text-alert-warning cursor-pointer"
-                        onClick={() => {
-                          handleClicEdit(value.id);
-                        }}
-                      />
-                      <RiDeleteBin2Fill
-                        className="text-alert-danger cursor-pointer"
-                        onClick={() => {
-                          refIdNote.current = value.id;
-                          toggleConfirmDialog();
-                        }}
-                      />
-                    </td>
+                    {authState.statut === "enseignant" && (
+                      <td className="flex items-center justify-center py-2 text-3xl gap-2 max-sm:text-2xl">
+                        <RiPencilFill
+                          className="text-alert-warning cursor-pointer"
+                          onClick={() => {
+                            handleClicEdit(value.id);
+                          }}
+                        />
+                        <RiDeleteBin2Fill
+                          className="text-alert-danger cursor-pointer"
+                          onClick={() => {
+                            refIdNote.current = value.id;
+                            toggleConfirmDialog();
+                          }}
+                        />
+                      </td>
+                    )}
                   </tr>
                 );
               })}

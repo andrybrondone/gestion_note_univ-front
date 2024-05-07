@@ -25,7 +25,7 @@ export const validationSchemaEtudiant = Yup.object().shape({
     .oneOf(["Passant", "Redoublant", "Diplômé"], "Veuillez choisir le statut")
     .required("Ce champ est obligatoire"),
   parcours: Yup.string()
-    .oneOf(["IG", "GB", "ASR", "GID", "OCC"], "Veuillez choisir le parcours")
+    .oneOf(["IG", "GBD", "ASR", "GID", "OCC"], "Veuillez choisir le parcours")
     .required("Ce champ est obligatoire"),
   id_pers: Yup.string()
     .notOneOf(
@@ -59,6 +59,15 @@ export const validationSchemaMatiere = Yup.object().shape({
   niveau_mat: Yup.string()
     .oneOf(["L1", "L2", "L3", "M1", "M2"], "Veuillez choisir le niveau")
     .required("Ce champ est obligatoire"),
+  parcours: Yup.array()
+    .of(
+      Yup.string().oneOf(
+        ["IG", "GBD", "ASR", "GID", "OCC"],
+        "Veuillez choisir le parcours"
+      )
+    )
+    .min(1, "Sélectionnez au moins un parcours")
+    .max(5, "Vous ne pouvez sélectionner que 5 parcours maximum"),
 });
 
 // Module
@@ -152,7 +161,7 @@ export const validationSchemaAllInfoUser = Yup.object().shape({
     .oneOf(["Passant", "Redoublant", "Diplômé"], "Veuillez choisir le statut")
     .required("Ce champ est obligatoire"),
   parcours: Yup.string()
-    .oneOf(["IG", "GB", "ASR", "GID", "OCC"], "Veuillez choisir le parcours")
+    .oneOf(["IG", "GBD", "ASR", "GID", "OCC"], "Veuillez choisir le parcours")
     .required("Ce champ est obligatoire"),
   grade: Yup.string()
     .min(3, "Un nom doit contenir au moin 3 caractères")

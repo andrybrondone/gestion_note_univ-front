@@ -18,6 +18,7 @@ interface Props {
 }
 
 export default function FormNote({ idEt }: Props) {
+  const { listEtudiantById } = useContext(DataFetcherByIdContext);
   const { isOpenFormNote, toggleFormNote } = useContext(ShowFormContext);
 
   const [listOfMatiere, setListOfMatiere] = useState([]);
@@ -30,10 +31,12 @@ export default function FormNote({ idEt }: Props) {
   );
 
   useEffect(() => {
-    axios.get("http://localhost:3001/matiere/nom").then((response) => {
-      setListOfMatiere(response.data);
-    });
-  }, []);
+    axios
+      .get(`http://localhost:3001/matiere/nom/${listEtudiantById.niveau}`)
+      .then((response) => {
+        setListOfMatiere(response.data);
+      });
+  }, [listEtudiantById.niveau]);
 
   // valeur initial dans le formulaire
   let initialValues: FormNoteValues;
@@ -63,9 +66,15 @@ export default function FormNote({ idEt }: Props) {
     if (!isEditNoteForm) {
       axios
         .post("http://localhost:3001/note", data)
-        .then(() => {
-          toast.success("La note a été ajouter avec succès");
-          toggleFormNote();
+        .then((res) => {
+          if (res.data.error === "error") {
+            toast.error(
+              "Vous avez déjà attribuer une note à ce matière pour cette étudiant !"
+            );
+          } else {
+            toast.success("La note a été ajouter avec succès");
+            toggleFormNote();
+          }
         })
         .catch((error) => {
           console.error("Error : ", error);

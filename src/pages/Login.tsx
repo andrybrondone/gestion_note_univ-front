@@ -19,13 +19,13 @@ export default function Login() {
   return (
     <>
       {authState.statut === "" && (
-        <Container className="dark:text-white grid grid-cols-2 max-md:grid-cols-1 items-center gap-10 max-lg:gap-3 py-24 max-md:py-16 max-md:px-10 max-[500px]:px-5">
-          <div className="flex items-center gap-4 flex-col text-center">
+        <Container className="dark:text-white grid grid-cols-2 max-md:grid-cols-1 items-center gap-10 max-lg:gap-3 pt-14 pb-6  max-[500px]:px-5">
+          <div className="flex items-center gap-4 flex-col text-center max-md:hidden">
             <img src={LogoENI} alt="Logo ENI" width={150} />
             <Typography
               variant="body-sm"
               component="p"
-              className="max-md:hidden"
+              className="max-[900px]:text-caption1"
             >
               Bienvenue sur cette application de gestion de note pour un
               établissement universitaire. <br />

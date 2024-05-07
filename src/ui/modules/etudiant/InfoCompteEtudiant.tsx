@@ -1,82 +1,89 @@
 import { useContext } from "react";
-import { RiPencilFill } from "react-icons/ri";
-import { AuthContext } from "../../../context/AuthContext";
+import { RiDeleteBin2Line, RiPencilLine } from "react-icons/ri";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { Container } from "../../components/container/Container";
+import { Button } from "../../design-system/button/Button";
+import { Typography } from "../../design-system/typography/Typography";
+import RowsTr from "../components/RowsTr";
 
 export default function InfoCompteEtudiant() {
-  const { listEtudiantById } = useContext(DataFetcherByIdContext);
-  const { authState } = useContext(AuthContext);
-  console.log(listEtudiantById);
+  const { listPersonneEtById } = useContext(DataFetcherByIdContext);
 
   return (
     <>
       <Container>
-        <table>
-          <tbody>
-            <tr>
-              <th>Numéro matricule</th>
-              <td>{listEtudiantById.matricule}</td>
-              <td>
-                <RiPencilFill className="text-alert-warning cursor-pointer" />
-              </td>
-            </tr>
-            <tr>
-              <th>Nom</th>
-              <td>{authState.nom}</td>
-              <td>
-                <RiPencilFill className="text-alert-warning cursor-pointer" />
-              </td>
-            </tr>
-            <tr>
-              <th>Prénom</th>
-              <td>{listEtudiantById.Personne.prenom}</td>
-              <td>
-                <RiPencilFill className="text-alert-warning cursor-pointer" />
-              </td>
-            </tr>
-            <tr>
-              <th>Numéro de téléphone</th>
-              <td>{listEtudiantById.Personne.phone}</td>
-              <td>
-                <RiPencilFill className="text-alert-warning cursor-pointer" />
-              </td>
-            </tr>
-            <tr>
-              <th>Adresse e-mail</th>
-              <td>{listEtudiantById.Personne.email}</td>
-              <td>
-                <RiPencilFill className="text-alert-warning cursor-pointer" />
-              </td>
-            </tr>
-            <tr>
-              <th>Date et lieu de naissance</th>
-              <td>{`${listEtudiantById.Personne.date_nais} à ${listEtudiantById.Personne.lieu_nais}`}</td>
-              <td>
-                <RiPencilFill className="text-alert-warning cursor-pointer" />
-              </td>
-            </tr>
-            <tr>
-              <th>Adresse</th>
-              <td>{listEtudiantById.Personne.adresse}</td>
-              <td>
-                <RiPencilFill className="text-alert-warning cursor-pointer" />
-              </td>
-            </tr>
-            <tr>
-              <th>Niveau</th>
-              <td>{listEtudiantById.niveau}</td>
-            </tr>
-            <tr>
-              <th>Parcours</th>
-              <td>{listEtudiantById.parcours}</td>
-            </tr>
-            <tr>
-              <th>Statut</th>
-              <td>{listEtudiantById.statut}</td>
-            </tr>
-          </tbody>
+        <Typography
+          weight="bold"
+          theme="gray"
+          component="h1"
+          variant="display"
+          className="text-center mt-6 max-sm:text-6xl max-sm:font-bold"
+        >
+          Vos informations
+        </Typography>
+        <table className="flex items-center justify-center bg-gray-300 dark:bg-black rounded shadow-sm py-8 mt-3">
+          {listPersonneEtById.Etudiants?.map((value) => {
+            return (
+              <tbody key={value.matricule}>
+                <RowsTr
+                  title="Numéro matricule :"
+                  value={value.matricule}
+                  classNameIcon="hidden"
+                />
+                <RowsTr title="Nom :" value={listPersonneEtById.nom} />
+                <RowsTr title="Prénom :" value={listPersonneEtById.prenom} />
+                <RowsTr
+                  title="Niveau :"
+                  value={value.niveau}
+                  classNameIcon="hidden"
+                />
+                <RowsTr
+                  title="Parcours :"
+                  value={value.parcours}
+                  classNameIcon="hidden"
+                />
+                <RowsTr
+                  title="Numéro de téléphone :"
+                  value={listPersonneEtById.phone}
+                />
+                <RowsTr
+                  title="Adresse e-mail :"
+                  value={listPersonneEtById.email}
+                />
+                <RowsTr
+                  title="Date et lieu de naissance :"
+                  value={`${listPersonneEtById.date_nais} à ${listPersonneEtById.lieu_nais}`}
+                />
+                <RowsTr title="Adresse :" value={listPersonneEtById.adresse} />
+                <RowsTr
+                  title="Statut :"
+                  value={value.statut}
+                  classNameIcon="hidden"
+                />
+              </tbody>
+            );
+          })}
         </table>
+        <div className="mt-10 flex items-center justify-center gap-7 max-sm:gap-5 max-sm:flex-col">
+          <Button
+            variant="update"
+            icon={{ icon: RiPencilLine }}
+            iconPosition="left"
+            size="large"
+            className="max-sm:w-full"
+          >
+            Changer de mot de passe
+          </Button>
+          <Button
+            variant="delete"
+            icon={{ icon: RiDeleteBin2Line }}
+            iconPosition="left"
+            size="large"
+            className="max-sm:w-full"
+          >
+            Supprimer votre compte
+          </Button>
+        </div>
       </Container>
     </>
   );

@@ -19,6 +19,8 @@ interface Props {
   grade?: string;
   nom: string;
   prenom: string;
+  niveau?: string;
+  parcours?: string;
   phone: string;
   email: string;
   statut: "etudiant" | "enseignant" | "administrateur";
@@ -33,6 +35,8 @@ export default function ListInfoUser({
   grade,
   nom,
   prenom,
+  niveau,
+  parcours,
   phone,
   email,
   statut,
@@ -116,32 +120,13 @@ export default function ListInfoUser({
 
   return (
     <>
-      <div className="flex gap-5 mb-3 bg-gray-300/50 p-8 rounded shadow">
+      <div className="flex max-[870px]:justify-center gap-5 mb-3 bg-gray-300/50 p-8 max-lg:p-5 rounded shadow">
         <Avatar
           src={`http://localhost:3001/images/${photo}`}
           alt=""
           size="very-large"
         />
         <div className="flex flex-col gap-2">
-          {statut === "enseignant" && (
-            <Typography
-              variant="body-sm"
-              theme="gray"
-              component="div"
-              className="flex items-center gap-3"
-            >
-              Grade :
-              <Typography
-                variant="body-sm"
-                component="p"
-                weight="bold"
-                className="capitalize"
-              >
-                {grade}
-              </Typography>
-            </Typography>
-          )}
-
           {statut === "etudiant" && (
             <Typography
               variant="body-sm"
@@ -151,7 +136,7 @@ export default function ListInfoUser({
             >
               N° matricule :
               <Typography
-                variant="body-sm"
+                variant="body-base"
                 component="p"
                 weight="bold"
                 className="uppercase"
@@ -169,8 +154,8 @@ export default function ListInfoUser({
           >
             Nom :
             <Typography
-              variant="body-lg"
-              component="h5"
+              variant="body-base"
+              component="p"
               weight="bold"
               className="uppercase"
             >
@@ -186,8 +171,8 @@ export default function ListInfoUser({
           >
             Prénom :
             <Typography
-              variant="body-lg"
-              component="h5"
+              variant="body-base"
+              component="p"
               weight="bold"
               className=" capitalize"
             >
@@ -195,29 +180,69 @@ export default function ListInfoUser({
             </Typography>
           </Typography>
 
-          <Typography
-            variant="body-sm"
-            theme="gray"
-            component="div"
-            className="flex items-center gap-3"
-          >
-            N° de téléphone :
-            <Typography variant="body-base" component="p" weight="bold">
-              {phone}
+          {statut === "etudiant" && (
+            <Typography
+              variant="body-sm"
+              theme="gray"
+              component="div"
+              className="flex items-center gap-3"
+            >
+              Classe :
+              <Typography
+                variant="body-base"
+                component="p"
+                weight="bold"
+                className="capitalize"
+              >
+                {`${niveau} ${parcours}`}
+              </Typography>
             </Typography>
-          </Typography>
+          )}
 
-          <Typography
-            variant="body-sm"
-            theme="gray"
-            component="div"
-            className="flex items-center gap-3"
-          >
-            Adresse e-mail :
-            <Typography variant="caption1" component="p" weight="bold">
-              {email}
-            </Typography>
-          </Typography>
+          {statut === "enseignant" && (
+            <>
+              <Typography
+                variant="body-sm"
+                theme="gray"
+                component="div"
+                className="flex items-center gap-3"
+              >
+                Grade :
+                <Typography
+                  variant="body-base"
+                  component="p"
+                  weight="bold"
+                  className="capitalize"
+                >
+                  {grade}
+                </Typography>
+              </Typography>
+
+              <Typography
+                variant="body-sm"
+                theme="gray"
+                component="div"
+                className="flex items-center gap-3"
+              >
+                N° de téléphone :
+                <Typography variant="body-base" component="p" weight="bold">
+                  {phone}
+                </Typography>
+              </Typography>
+
+              <Typography
+                variant="body-sm"
+                theme="gray"
+                component="div"
+                className="flex items-center gap-3"
+              >
+                Adresse e-mail :
+                <Typography variant="body-base" component="p" weight="bold">
+                  {email}
+                </Typography>
+              </Typography>
+            </>
+          )}
 
           {authState.statut !== "etudiant" && (
             <div className=" flex items-center gap-3 mt-3">

@@ -5,13 +5,24 @@ interface Props {
 }
 
 export const AuthContext = createContext({
-  authState: { nom: "", id: 0, statut: "", statusAuth: false },
+  authState: {
+    nom: "",
+    id: 0,
+    statut: "",
+    statusAuth: false,
+    niveau: "",
+    matricule: "",
+    parcours: "",
+  },
   setAuthState: {} as React.Dispatch<
     SetStateAction<{
       nom: string;
       id: number;
       statut: string;
       statusAuth: boolean;
+      niveau: string;
+      matricule: string;
+      parcours: string;
     }>
   >,
 });
@@ -22,6 +33,9 @@ export const AuthProvider = ({ children }: Props) => {
     id: 0,
     statut: "",
     statusAuth: false,
+    niveau: "",
+    matricule: "",
+    parcours: "",
   });
 
   return (

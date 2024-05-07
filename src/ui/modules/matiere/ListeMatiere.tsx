@@ -114,6 +114,7 @@ export default function ListeMatiere() {
               <tr className=" bg-gray/70 dark:bg-black text-white text-caption1 max-sm:text-caption4">
                 <th className="py-4">Matière</th>
                 <th>Niveau</th>
+                <th>Parcours</th>
                 <th>Crédit</th>
                 <th>Enseignant</th>
                 <th>Module</th>
@@ -129,6 +130,7 @@ export default function ListeMatiere() {
                   >
                     <td className="py-2"> {value.nom_mat}</td>
                     <td>{value.niveau_mat}</td>
+                    <td>{value.parcours.join(", ")}</td>
                     <td>{value.credit}</td>
                     <td>{`${value.Enseignant.Personne.nom} ${value.Enseignant.Personne.prenom}`}</td>
                     <td>{value.Module.nom_module}</td>

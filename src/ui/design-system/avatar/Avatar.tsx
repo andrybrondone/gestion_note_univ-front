@@ -21,7 +21,7 @@ export const Avatar = ({ size = "medium", src, alt, className }: Props) => {
       sizeStyle = "w-[80px] h-[80px]";
       break;
     case "very-large":
-      sizeStyle = "w-[130px] h-[130px]";
+      sizeStyle = "w-[130px] h-[130px] max-lg:w-[115px] max-lg:h-[115px]";
       break;
   }
 

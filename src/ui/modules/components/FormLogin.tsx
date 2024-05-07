@@ -22,6 +22,9 @@ interface AxiosResponseProps {
   token: string;
   id: number;
   statut: string;
+  niveau: string;
+  matricule: string;
+  parcours: string;
 }
 
 export default function FormLogin() {
@@ -58,21 +61,29 @@ export default function FormLogin() {
             id: res.data.id,
             statut: res.data.statut,
             statusAuth: true,
+            niveau: res.data.niveau,
+            matricule: res.data.matricule,
+            parcours: res.data.parcours,
           });
           navigate("/accueil");
+        }
+      })
+      .catch((err) => {
+        if (err.message === "Network Error") {
+          toast.message("Verifier votre connexion internet !");
         }
       });
   };
 
   return (
-    <div className="bg-gray-400 relative dark:bg-black p-8 rounded shadow-lg">
+    <div className="bg-gray-400 relative dark:bg-black px-8 py-10 rounded shadow-lg">
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
         <Form className="flex flex-col gap-2">
-          <Typography variant="h3" component="h3" className="text-center mb-4">
+          <Typography variant="h3" component="h3" className="text-center mb-10">
             Connexion
           </Typography>
 
@@ -93,14 +104,14 @@ export default function FormLogin() {
           {eyeClick ? (
             <div
               onClick={toggleEyeClick}
-              className="absolute right-8 bottom-[111.5px] cursor-pointer p-3 pr-4"
+              className="absolute right-8 bottom-[121px] cursor-pointer p-3 pr-4"
             >
               <RiEyeLine className=" text-lg text-secondary-600 dark:text-secondary-300" />
             </div>
           ) : (
             <div
               onClick={toggleEyeClick}
-              className="absolute right-8 bottom-[111.5px]  cursor-pointer p-3 pr-4"
+              className="absolute right-8 bottom-[121px]  cursor-pointer p-3 pr-4"
             >
               <RiEyeOffLine className=" text-lg text-secondary-600 dark:text-secondary-300" />
             </div>

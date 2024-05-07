@@ -5,6 +5,7 @@ import { Ri24HoursFill } from "react-icons/ri";
 import { AuthContext } from "../../../context/AuthContext";
 import { Container } from "../../components/container/Container";
 import Header from "../../components/header/Header";
+import { Logo } from "../../design-system/logo/Logo";
 import ListeMatiere from "../matiere/ListeMatiere";
 import ListeModule from "../module/ListeModule";
 import ListeNote from "../note/ListeNote";
@@ -14,7 +15,7 @@ const allData = [
   {
     icon: <Ri24HoursFill />,
     label: "Statistique",
-    component: <ListeNote />,
+    component: <Logo />,
   },
   {
     icon: <Ri24HoursFill />,
@@ -23,6 +24,7 @@ const allData = [
   },
   { icon: "🧀", label: "Liste des modules", component: <ListeModule /> },
   { icon: "🧀", label: "Liste des matières", component: <ListeMatiere /> },
+  { icon: "🧀", label: "Liste des notes", component: <ListeNote /> },
 ];
 
 const initialTabs = allData;

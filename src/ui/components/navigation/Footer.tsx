@@ -6,7 +6,7 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="bg-gray mt-10 dark:bg-black dark-transition">
+    <div className="bg-gray mt-10 dark:bg-black">
       <Container className="pt-12 pb-5 max-md:pt-8 max-md:pb-0 space-y-5 text-white">
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-10">
           <div className="absolute left-1/2 -translate-x-1/2 max-md:hidden">

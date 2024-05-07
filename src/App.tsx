@@ -65,6 +65,9 @@ function App() {
             id: res.data.id,
             statut: res.data.statut,
             statusAuth: true,
+            niveau: res.data.niveau,
+            matricule: res.data.matricule,
+            parcours: res.data.parcours,
           });
         }
       });

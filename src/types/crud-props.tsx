@@ -5,6 +5,7 @@ export interface FormMatiereValues {
   nom_mat: string;
   credit: string;
   niveau_mat: string;
+  parcours: string;
   prenom_ens?: string;
 }
 
@@ -13,6 +14,7 @@ export interface ListeMatiereValues {
   nom_mat: string;
   credit: string;
   niveau_mat: string;
+  parcours: [];
   Enseignant: {
     Personne: {
       nom: string;

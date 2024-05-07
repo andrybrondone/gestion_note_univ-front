@@ -62,7 +62,7 @@ export const Button = ({
 
     case "secondary":
       variantStyle =
-        "text-primary hover:bg-primary dark:hover:bg-gray-900 hover:text-white rounded border border-primary dark:text-white dark:border-gray-700 dark:hover:shadow-darkgray";
+        "text-primary dark:text-primary-300 hover:bg-primary-400 dark:hover:bg-primary-400 dark:hover:text-white hover:text-white rounded border border-primary dark:border-primary-300 dark:hover:border-primary-400";
       break;
 
     case "warning":
@@ -82,7 +82,7 @@ export const Button = ({
 
     case "update":
       variantStyle =
-        "border border-alert-warning text-alert-warning rounded py-2 px-3 cursor-pointer";
+        "border border-alert-warning text-alert-warning hover:bg-alert-warning hover:text-white  rounded py-2 px-3 cursor-pointer";
       break;
     case "delete":
       variantStyle =
