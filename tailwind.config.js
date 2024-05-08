@@ -45,7 +45,6 @@ export default {
         {
           lineHeight: "80px",
           letterSpacing: "-1.9px",
-          fontWeight: "500",
         },
       ],
       "7xl": [
@@ -53,7 +52,6 @@ export default {
         {
           lineHeight: "50px",
           letterSpacing: "-1.6px",
-          fontWeight: "600",
         },
       ],
       "6xl": [
@@ -61,7 +59,6 @@ export default {
         {
           lineHeight: "40px",
           letterSpacing: "-1.3px",
-          fontWeight: "500",
         },
       ],
       "5xl": [
@@ -69,7 +66,6 @@ export default {
         {
           lineHeight: "38px",
           letterSpacing: "-1.600000023841858px",
-          fontWeight: "500",
         },
       ],
       "4xl": [
@@ -77,7 +73,6 @@ export default {
         {
           lineHeight: "32px",
           letterSpacing: "-0.5px",
-          fontWeight: "500",
         },
       ],
       "3xl": [
@@ -85,7 +80,6 @@ export default {
         {
           lineHeight: "34px",
           letterSpacing: "-0.800000011920929px",
-          fontWeight: "500",
         },
       ],
       "2xl": [
@@ -93,7 +87,6 @@ export default {
         {
           lineHeight: "30px",
           letterSpacing: "-1px",
-          fontWeight: "400",
         },
       ],
       xl: [
@@ -101,7 +94,6 @@ export default {
         {
           lineHeight: "30px",
           letterSpacing: "-1px",
-          fontWeight: "400",
         },
       ],
       lg: [
@@ -109,49 +101,42 @@ export default {
         {
           lineHeight: "30px",
           letterSpacing: "-0.800000011920929px",
-          fontWeight: "400",
         },
       ],
       base: [
         "19px",
         {
           lineHeight: "27px",
-          fontWeight: "400",
         },
       ],
       sm: [
         "17px",
         {
           lineHeight: "25px",
-          fontWeight: "400",
         },
       ],
       caption1: [
         "16px",
         {
           lineHeight: "24px",
-          fontWeight: "400",
         },
       ],
       caption2: [
         "15px",
         {
           lineHeight: "20px",
-          fontWeight: "400",
         },
       ],
       caption3: [
         "14px",
         {
           lineHeight: "18px",
-          fontWeight: "400",
         },
       ],
       caption4: [
         "13px",
         {
           lineHeight: "15px",
-          fontWeight: "400",
         },
       ],
     },

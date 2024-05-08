@@ -6,7 +6,6 @@ import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import useToggle from "../../../hook/useToggle";
 import { Avatar } from "../../design-system/avatar/Avatar";
-import { Button } from "../../design-system/button/Button";
 import { Logo } from "../../design-system/logo/Logo";
 import { Typography } from "../../design-system/typography/Typography";
 import { Container } from "../container/Container";
@@ -114,7 +113,7 @@ export default function NavBar() {
                     />
                   </div>
                   {menu && (
-                    <div className="absolute text-caption1 bg-white/80 px-6 py-2 shadow rounded leading-8 z-30 max-lg:right-2">
+                    <div className="absolute text-caption1 bg-white/80 px-6 py-2 shadow rounded leading-8 z-30 right-2">
                       <Link to="/information-compte" onClick={toggleMenu}>
                         <p className="flex items-center gap-1 hover:text-secondary-600 transition">
                           <RiAccountPinCircleLine className="text-base" /> Mon
@@ -122,7 +121,7 @@ export default function NavBar() {
                         </p>
                       </Link>
                       <p
-                        className="lg:hidden cursor-pointer flex items-center gap-1 hover:text-secondary-600 transition"
+                        className="cursor-pointer flex items-center gap-1 hover:text-secondary-600 transition"
                         onClick={logOut}
                       >
                         <RiLogoutCircleLine className="text-base" />
@@ -131,15 +130,6 @@ export default function NavBar() {
                     </div>
                   )}
                 </div>
-                <Button
-                  variant="secondary"
-                  action={logOut}
-                  icon={{ icon: RiLogoutCircleLine }}
-                  iconPosition="left"
-                  className="max-lg:hidden"
-                >
-                  Deconnexion
-                </Button>
               </div>
             )}
           </div>

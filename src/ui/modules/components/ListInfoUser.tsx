@@ -237,7 +237,7 @@ export default function ListInfoUser({
                 className="flex items-center gap-3"
               >
                 Adresse e-mail :
-                <Typography variant="body-base" component="p" weight="bold">
+                <Typography variant="body-sm" component="p" weight="bold">
                   {email}
                 </Typography>
               </Typography>

@@ -57,7 +57,6 @@ export default function InfoCompteEns() {
             variant="update"
             icon={{ icon: RiPencilLine }}
             iconPosition="left"
-            size="large"
             className="max-sm:w-full"
           >
             Changer de mot de passe
@@ -66,7 +65,6 @@ export default function InfoCompteEns() {
             variant="delete"
             icon={{ icon: RiDeleteBin2Line }}
             iconPosition="left"
-            size="large"
             className="max-sm:w-full"
           >
             Supprimer votre compte

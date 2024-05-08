@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
+import { useScreenSize } from "../../../hook/useScreenSize";
 import { LinkType } from "../../../lib/link-type";
 import { IconProps } from "../../../types/iconProps";
 import { Spinner } from "../spinner/Spinner";
 
 interface Props {
-  size?: "small" | "medium" | "large";
   variant?:
     | "accent"
     | "secondary"
@@ -32,7 +32,6 @@ interface Props {
 
 export const Button = ({
   className,
-  size = "medium",
   variant = "accent",
   icon,
   iconTheme = "accent",
@@ -46,6 +45,23 @@ export const Button = ({
   fullWith = false,
   action = () => {},
 }: Props) => {
+  const size = useScreenSize();
+
+  let sizeForScreen;
+  switch (size) {
+    case "lg": // default
+      sizeForScreen = "large";
+      break;
+    case "md":
+      sizeForScreen = "medium";
+      break;
+    case "sm":
+      sizeForScreen = "small";
+      break;
+  }
+
+  const sizeAdjusted = sizeForScreen; // Taille ajustée en fonction de la taille de l'écran
+
   let variantStyle: string = "",
     sizeStyle: string = "",
     icoSize: number = 0;
@@ -108,30 +124,32 @@ export const Button = ({
       break;
   }
 
-  switch (size) {
+  switch (
+    sizeAdjusted // Utilisation de la taille ajustée
+  ) {
     case "small":
       sizeStyle = `text-caption3 font-medium ${
         variant === "ico"
-          ? "flex items-center justify-center w-[40px] h-[40px]"
-          : "flex justify-center items-center px-[14px] h-[40px]"
+          ? "flex items-center justify-center w-[50px] h-[50px]"
+          : "flex justify-center items-center h-[42px] px-[12px]"
       }`;
-      icoSize = 18;
+      icoSize = 22;
       break;
 
     case "medium": // Default
       sizeStyle = `text-caption2 font-medium ${
         variant === "ico"
-          ? "flex items-center justify-center w-[50px] h-[50px]"
+          ? "flex items-center justify-center w-[54px] h-[54px]"
           : "flex justify-center items-center h-[45px] px-[16px]"
       }`;
-      icoSize = 22;
+      icoSize = 24;
       break;
 
     case "large":
       sizeStyle = `text-caption1 font-medium ${
         variant === "ico"
-          ? "flex items-center justify-center w-[60px] h-[60px]"
-          : "flex justify-center items-center px-[20px] h-[50px]"
+          ? "flex items-center justify-center w-[58px] h-[58px]"
+          : "flex justify-center items-center px-[17px] h-[47px]"
       }`;
       icoSize = 26;
       break;

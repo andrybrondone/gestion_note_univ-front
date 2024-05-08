@@ -19,7 +19,7 @@ export default function ConfirmModale({ message, action }: Props) {
         onClick={toggleConfirmDialog}
       ></div>
 
-      <div className="fixed w-[450px] max-sm:w-[90%] top-40 left-1/2 -translate-x-1/2  bg-white dark:bg-gray rounded shadow-xl py-6 px-9 z-50">
+      <div className="fixed w-[450px] max-[500px]:w-[90%] top-40 left-1/2 -translate-x-1/2  bg-white dark:bg-gray rounded shadow-xl py-6 px-9 z-50">
         <RiCloseFill
           className="text-xl bg-gray-500 rounded-full absolute top-2 right-2 cursor-pointer dark:bg-gray-800"
           onClick={toggleConfirmDialog}
@@ -38,10 +38,10 @@ export default function ConfirmModale({ message, action }: Props) {
           </Typography>
 
           <div className="flex gap-4 justify-end mt-4">
-            <Button variant="warning" size="small" action={action}>
+            <Button variant="warning" action={action}>
               Oui
             </Button>
-            <Button variant="outline" size="small" action={toggleConfirmDialog}>
+            <Button variant="outline" action={toggleConfirmDialog}>
               Non
             </Button>
           </div>

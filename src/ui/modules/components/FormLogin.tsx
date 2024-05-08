@@ -104,20 +104,20 @@ export default function FormLogin() {
           {eyeClick ? (
             <div
               onClick={toggleEyeClick}
-              className="absolute right-8 bottom-[121px] cursor-pointer p-3 pr-4"
+              className="absolute right-8 bottom-[123px] cursor-pointer p-3 pr-4"
             >
               <RiEyeLine className=" text-lg text-secondary-600 dark:text-secondary-300" />
             </div>
           ) : (
             <div
               onClick={toggleEyeClick}
-              className="absolute right-8 bottom-[121px]  cursor-pointer p-3 pr-4"
+              className="absolute right-8 bottom-[123px]  cursor-pointer p-3 pr-4"
             >
               <RiEyeOffLine className=" text-lg text-secondary-600 dark:text-secondary-300" />
             </div>
           )}
 
-          <div className="flex justify-center items-center mt-2">
+          <div className="flex justify-center items-center h-14">
             <Button type="submit" variant="accent" className=" w-36">
               Se connecter
             </Button>
