@@ -77,7 +77,7 @@ export default function ListeEns() {
         La liste des enseignants à l' ENI
       </Typography>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 max-[870px]:grid-cols-1">
         {data.length > 0 ? (
           data.map((value: EnseignantData) => {
             return (

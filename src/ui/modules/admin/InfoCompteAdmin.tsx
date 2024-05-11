@@ -1,13 +1,17 @@
 import { useContext } from "react";
 import { RiDeleteBin2Line, RiPencilLine } from "react-icons/ri";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import useSelecteImage from "../../../hook/useSelecteImage";
 import { Container } from "../../components/container/Container";
+import UploadAvatar from "../../components/upload-avatar/UploadAvatar";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import RowsTr from "../components/RowsTr";
 
 export default function InfoCompteAdmin() {
   const { listPersonneById } = useContext(DataFetcherByIdContext);
+  const { selectedImage, imagePreview, handleImageSelect, handleUploadImage } =
+    useSelecteImage();
 
   return (
     <>
@@ -17,10 +21,23 @@ export default function InfoCompteAdmin() {
           theme="gray"
           component="h1"
           variant="display"
-          className="text-center mt-6 max-sm:text-6xl max-sm:font-bold"
+          className="text-center m-6"
         >
           Vos informations
         </Typography>
+        <div className="flex justify-evenly items-center gap-5">
+          <UploadAvatar
+            photo={listPersonneById.photo}
+            handleImageSelect={handleImageSelect}
+            imagePreview={imagePreview}
+          />
+          <Button
+            disabled={selectedImage === null ? Boolean(true) : Boolean(false)}
+            action={handleUploadImage}
+          >
+            Enregistrer la photo
+          </Button>
+        </div>
         <table className="flex items-center justify-center bg-gray-300 dark:bg-black rounded shadow-sm py-8 mt-3">
           <tbody>
             <RowsTr title="Nom :" value={listPersonneById.nom.toUpperCase()} />

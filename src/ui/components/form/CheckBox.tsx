@@ -34,7 +34,12 @@ export function CheckBox({
             className
           )}
         />
-        <label htmlFor={htmlFor}>{label}</label>
+        <label
+          className="max-md:text-caption2 max-sm:text-caption4"
+          htmlFor={htmlFor}
+        >
+          {label}
+        </label>
       </div>
       <div className="h-3">
         {meta.touched && meta.error && (

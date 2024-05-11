@@ -42,7 +42,7 @@ export default function FormPersonne() {
           onSubmit={onSubmit}
           validationSchema={validationSchemaPersonne}
         >
-          {({ isSubmitting, values }) => (
+          {({ isSubmitting, setFieldValue, handleChange }) => (
             <Form className="flex flex-col gap-5">
               <Typography
                 variant="h4"
@@ -79,15 +79,14 @@ export default function FormPersonne() {
                     label="E-mail"
                     name="email"
                     type="email"
+                    onChange={(e) => {
+                      handleChange(e);
+                      setFieldValue("mdp", e.target.value); // Répliquer la valeur dans le champ "Mot de passe"
+                    }}
                     placeholder="ex. andry.brondone@gmail.com"
                   />
 
-                  <Input
-                    name="mdp"
-                    type="text"
-                    value={values.email}
-                    classNameSpan="hidden"
-                  />
+                  <Input name="mdp" type="text" classNameSpan="hidden" />
                 </div>
 
                 <div className="flex flex-col gap-2">

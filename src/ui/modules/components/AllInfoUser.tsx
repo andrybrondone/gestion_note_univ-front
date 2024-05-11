@@ -4,6 +4,7 @@ import { Form, Formik } from "formik";
 import { useContext } from "react";
 import { RiArrowLeftLine, RiSave2Line } from "react-icons/ri";
 import { toast } from "sonner";
+import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import useToggle from "../../../hook/useToggle";
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export default function AllInfoUser({ statutPers }: Props) {
+  const { authState } = useContext(AuthContext);
   const { value: disabled, toggleValue: toggleDisabled } = useToggle(true);
 
   // Hook pour savoir si l'utilisateur à cliquer sur le boutton edit
@@ -166,14 +168,14 @@ export default function AllInfoUser({ statutPers }: Props) {
                 >
                   {isEditEtudiantForm ? (
                     <>
-                      Voici tous les informations consernant l'étudiant{" "}
+                      Tous les informations consernant l'étudiant{" "}
                       <span className=" uppercase text-secondary-600">
                         {listEtudiantById.Personne.nom}
                       </span>
                     </>
                   ) : (
                     <>
-                      Voici tous les informations consernant l'enseignant{" "}
+                      Tous les informations consernant l'enseignant{" "}
                       <span className=" uppercase text-secondary-600">
                         {listEnseignantById.Personne.nom}
                       </span>
@@ -195,7 +197,7 @@ export default function AllInfoUser({ statutPers }: Props) {
               >
                 {({ isSubmitting }) => (
                   <Form className="flex flex-col gap-5">
-                    <div className="grid grid-cols-2 gap-10">
+                    <div className="grid grid-cols-2 gap-10 max-sm:grid-cols-1 max-sm:gap-0">
                       <div className="flex flex-col gap-2">
                         {statutPers === "etudiant" && (
                           <Input
@@ -353,42 +355,44 @@ export default function AllInfoUser({ statutPers }: Props) {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center mt-5 gap-4">
-                      <div onClick={toggleDisabled}>
-                        <Typography
-                          variant="body-sm"
-                          component="p"
-                          theme="warning"
-                          className="cursor-pointer inline-block hover:underline"
-                        >
-                          {disabled
-                            ? "Faire des modifications ?"
-                            : "Annuler la modification ?"}
-                        </Typography>
-                      </div>
-                      <div className="flex gap-3">
-                        {!disabled && (
-                          <Button
-                            disabled={isSubmitting}
-                            type="submit"
-                            variant="secondary"
-                            icon={{ icon: RiSave2Line }}
-                            iconPosition="left"
+                    {authState.statut === "administrateur" && (
+                      <div className="flex justify-between items-center mt-5 gap-4">
+                        <div onClick={toggleDisabled}>
+                          <Typography
+                            variant="body-sm"
+                            component="p"
+                            theme="warning"
+                            className="cursor-pointer inline-block hover:underline"
                           >
-                            Enregistrer
+                            {disabled
+                              ? "Faire des modifications ?"
+                              : "Annuler la modification ?"}
+                          </Typography>
+                        </div>
+                        <div className="flex gap-3">
+                          {!disabled && (
+                            <Button
+                              disabled={isSubmitting}
+                              type="submit"
+                              variant="secondary"
+                              icon={{ icon: RiSave2Line }}
+                              iconPosition="left"
+                            >
+                              Enregistrer
+                            </Button>
+                          )}
+                          <Button
+                            type="button"
+                            variant="outline"
+                            icon={{ icon: RiArrowLeftLine }}
+                            iconPosition="left"
+                            action={handleClickBack}
+                          >
+                            Retour
                           </Button>
-                        )}
-                        <Button
-                          type="button"
-                          variant="outline"
-                          icon={{ icon: RiArrowLeftLine }}
-                          iconPosition="left"
-                          action={handleClickBack}
-                        >
-                          Retour
-                        </Button>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </Form>
                 )}
               </Formik>

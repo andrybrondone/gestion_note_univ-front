@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { RiDeleteBin2Line, RiPencilLine } from "react-icons/ri";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { Container } from "../../components/container/Container";
+import { Avatar } from "../../design-system/avatar/Avatar";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import RowsTr from "../components/RowsTr";
@@ -17,11 +18,12 @@ export default function InfoCompteEns() {
           theme="gray"
           component="h1"
           variant="display"
-          className="text-center mt-6 max-sm:text-6xl max-sm:font-bold"
+          className="text-center mt-6"
         >
           Vos informations
         </Typography>
         <table className="flex items-center justify-center bg-gray-300 dark:bg-black rounded shadow-sm py-8 mt-3">
+          <Avatar src="" alt="" size="large" />
           {listPersonneEnsById.Enseignants?.map((value, i) => {
             return (
               <tbody key={i}>

@@ -110,33 +110,33 @@ export default {
         },
       ],
       sm: [
-        "17px",
+        "18px",
         {
           lineHeight: "25px",
         },
       ],
       caption1: [
-        "16px",
+        "17px",
         {
           lineHeight: "24px",
         },
       ],
       caption2: [
-        "15px",
+        "16px",
         {
-          lineHeight: "20px",
+          lineHeight: "21px",
         },
       ],
       caption3: [
-        "14px",
+        "15px",
         {
-          lineHeight: "18px",
+          lineHeight: "17px",
         },
       ],
       caption4: [
-        "13px",
+        "14px",
         {
-          lineHeight: "15px",
+          lineHeight: "16px",
         },
       ],
     },

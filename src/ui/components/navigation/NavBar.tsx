@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { RiAccountPinCircleLine, RiLogoutCircleLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,7 +13,13 @@ import { Container } from "../container/Container";
 import { ToggleBtn } from "../darkMode/ToggleBtn";
 import ActiveLink from "./ActiveLink";
 
+interface PhotoProps {
+  photo: string;
+}
+
 export default function NavBar() {
+  const [photoById, setPhotoById] = useState({} as PhotoProps);
+
   const { value: menu, toggleValue: toggleMenu } = useToggle(false);
   const { getListPersonneEtById, getListPersonneEnsById, getListPersonneById } =
     useContext(DataFetcherByIdContext);
@@ -45,8 +52,22 @@ export default function NavBar() {
       matricule: "",
       parcours: "",
     });
+    toggleMenu();
     navigate("/");
   };
+
+  useEffect(() => {
+    if (authState.id !== 0) {
+      axios
+        .get(`http://localhost:3001/personne/photo/${authState.id}`)
+        .then((response) => {
+          setPhotoById(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [authState.id]);
 
   return (
     <>
@@ -65,7 +86,7 @@ export default function NavBar() {
                 weight="bold"
                 variant="h4"
                 component="h2"
-                className="text-gray dark:text-white max-sm:text-3xl max-sm:font-bold"
+                className="text-gray dark:text-white"
               >
                 Gestion de note
               </Typography>
@@ -103,11 +124,11 @@ export default function NavBar() {
             </Typography>
             {authState.statusAuth && (
               <div className="flex items-center gap-5">
-                <div className="max-md:hidden">
+                <div>
                   <div onClick={() => handleClickShowProfile(authState.id)}>
                     <Avatar
                       size="small"
-                      src="http://localhost:3001/images/default_photo.jpg"
+                      src={`http://localhost:3001/images/${photoById.photo}`}
                       alt=""
                       className="cursor-pointer"
                     />
@@ -115,13 +136,13 @@ export default function NavBar() {
                   {menu && (
                     <div className="absolute text-caption1 bg-white/80 px-6 py-2 shadow rounded leading-8 z-30 right-2">
                       <Link to="/information-compte" onClick={toggleMenu}>
-                        <p className="flex items-center gap-1 hover:text-secondary-600 transition">
+                        <p className="flex items-center gap-2 hover:text-secondary-600 transition">
                           <RiAccountPinCircleLine className="text-base" /> Mon
                           compte
                         </p>
                       </Link>
                       <p
-                        className="cursor-pointer flex items-center gap-1 hover:text-secondary-600 transition"
+                        className="cursor-pointer flex items-center gap-2 hover:text-secondary-600 transition"
                         onClick={logOut}
                       >
                         <RiLogoutCircleLine className="text-base" />

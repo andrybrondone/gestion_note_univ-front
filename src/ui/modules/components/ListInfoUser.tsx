@@ -120,23 +120,25 @@ export default function ListInfoUser({
 
   return (
     <>
-      <div className="flex max-[870px]:justify-center gap-5 mb-3 bg-gray-300/50 p-8 max-lg:p-5 rounded shadow">
-        <Avatar
-          src={`http://localhost:3001/images/${photo}`}
-          alt=""
-          size="very-large"
-        />
+      <div className="flex max-[870px]:justify-center gap-4 mb-3 bg-gray-300/50 p-6 max-lg:p-4 rounded shadow">
+        <div className="max-sm:hidden">
+          <Avatar
+            src={`http://localhost:3001/images/${photo}`}
+            alt=""
+            size="very-large"
+          />
+        </div>
         <div className="flex flex-col gap-2">
           {statut === "etudiant" && (
             <Typography
-              variant="body-sm"
+              variant="caption1"
               theme="gray"
               component="div"
               className="flex items-center gap-3"
             >
               N° matricule :
               <Typography
-                variant="body-base"
+                variant="body-sm"
                 component="p"
                 weight="bold"
                 className="uppercase"
@@ -147,14 +149,14 @@ export default function ListInfoUser({
           )}
 
           <Typography
-            variant="body-sm"
+            variant="caption1"
             theme="gray"
             component="div"
             className="flex items-center gap-3"
           >
             Nom :
             <Typography
-              variant="body-base"
+              variant="body-sm"
               component="p"
               weight="bold"
               className="uppercase"
@@ -164,14 +166,14 @@ export default function ListInfoUser({
           </Typography>
 
           <Typography
-            variant="body-sm"
+            variant="caption1"
             theme="gray"
             component="div"
             className="flex items-center gap-3"
           >
             Prénom :
             <Typography
-              variant="body-base"
+              variant="body-sm"
               component="p"
               weight="bold"
               className=" capitalize"
@@ -182,14 +184,14 @@ export default function ListInfoUser({
 
           {statut === "etudiant" && (
             <Typography
-              variant="body-sm"
+              variant="caption1"
               theme="gray"
               component="div"
               className="flex items-center gap-3"
             >
               Classe :
               <Typography
-                variant="body-base"
+                variant="body-sm"
                 component="p"
                 weight="bold"
                 className="capitalize"
@@ -202,14 +204,14 @@ export default function ListInfoUser({
           {statut === "enseignant" && (
             <>
               <Typography
-                variant="body-sm"
+                variant="caption1"
                 theme="gray"
                 component="div"
                 className="flex items-center gap-3"
               >
                 Grade :
                 <Typography
-                  variant="body-base"
+                  variant="body-sm"
                   component="p"
                   weight="bold"
                   className="capitalize"
@@ -217,104 +219,102 @@ export default function ListInfoUser({
                   {grade}
                 </Typography>
               </Typography>
-
-              <Typography
-                variant="body-sm"
-                theme="gray"
-                component="div"
-                className="flex items-center gap-3"
-              >
-                N° de téléphone :
-                <Typography variant="body-base" component="p" weight="bold">
-                  {phone}
-                </Typography>
-              </Typography>
-
-              <Typography
-                variant="body-sm"
-                theme="gray"
-                component="div"
-                className="flex items-center gap-3"
-              >
-                Adresse e-mail :
-                <Typography variant="body-sm" component="p" weight="bold">
-                  {email}
-                </Typography>
-              </Typography>
             </>
           )}
 
-          {authState.statut !== "etudiant" && (
-            <div className=" flex items-center gap-3 mt-3">
-              {authState.statut === "enseignant" && (
-                <>
-                  {statut === "etudiant" && (
-                    <Button
-                      variant="secondary"
-                      icon={{ icon: RiAddCircleLine }}
-                      action={() => {
-                        handleClickAddNote(idEt);
-                      }}
-                    >
-                      Ajouter note
-                    </Button>
-                  )}
-                </>
-              )}
+          <Typography
+            variant="caption1"
+            theme="gray"
+            component="div"
+            className="flex items-center gap-3"
+          >
+            N° de téléphone :
+            <Typography variant="body-sm" component="p" weight="bold">
+              {phone}
+            </Typography>
+          </Typography>
 
-              {authState.statut === "administrateur" && (
-                <>
-                  {statut === "etudiant" && (
-                    <Button
-                      variant="blue"
-                      action={() => {
-                        handleClickEditEt(idEt);
-                      }}
-                      icon={{ icon: RiAddLine }}
-                    >
-                      Voir
-                    </Button>
-                  )}
+          <Typography
+            variant="caption1"
+            theme="gray"
+            component="div"
+            className="flex items-center gap-3"
+          >
+            Adresse e-mail :
+            <Typography variant="caption1" component="p" weight="bold">
+              {email}
+            </Typography>
+          </Typography>
 
-                  {statut === "enseignant" && (
-                    <Button
-                      variant="blue"
-                      action={() => {
-                        handleClickEditEns(idEns);
-                      }}
-                      icon={{ icon: RiAddLine }}
-                    >
-                      Voir
-                    </Button>
-                  )}
+          <div className=" flex items-center gap-3 mt-3">
+            {authState.statut === "enseignant" && (
+              <>
+                {statut === "etudiant" && (
+                  <Button
+                    variant="secondary"
+                    icon={{ icon: RiAddCircleLine }}
+                    action={() => {
+                      handleClickAddNote(idEt);
+                    }}
+                  >
+                    Ajouter note
+                  </Button>
+                )}
+              </>
+            )}
 
-                  {statut === "enseignant" && (
-                    <Button
-                      variant="delete"
-                      icon={{ icon: RiDeleteBin2Line }}
-                      action={() => {
-                        handleClickDeleteEns(idEns);
-                      }}
-                    >
-                      Supprimer
-                    </Button>
-                  )}
+            {statut === "etudiant" && (
+              <Button
+                variant="blue"
+                action={() => {
+                  handleClickEditEt(idEt);
+                }}
+                icon={{ icon: RiAddLine }}
+              >
+                Voir
+              </Button>
+            )}
 
-                  {statut === "etudiant" && (
-                    <Button
-                      variant="delete"
-                      icon={{ icon: RiDeleteBin2Line }}
-                      action={() => {
-                        handleClickDeleteEt(idEt);
-                      }}
-                    >
-                      Supprimer
-                    </Button>
-                  )}
-                </>
-              )}
-            </div>
-          )}
+            {statut === "enseignant" && (
+              <Button
+                variant="blue"
+                action={() => {
+                  handleClickEditEns(idEns);
+                }}
+                icon={{ icon: RiAddLine }}
+              >
+                Voir
+              </Button>
+            )}
+
+            {authState.statut === "administrateur" && (
+              <>
+                {statut === "enseignant" && (
+                  <Button
+                    variant="delete"
+                    icon={{ icon: RiDeleteBin2Line }}
+                    action={() => {
+                      handleClickDeleteEns(idEns);
+                    }}
+                  >
+                    Supprimer
+                  </Button>
+                )}
+
+                {statut === "etudiant" && (
+                  <Button
+                    variant="delete"
+                    icon={{ icon: RiDeleteBin2Line }}
+                    action={() => {
+                      handleClickDeleteEt(idEt);
+                    }}
+                  >
+                    Supprimer
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
 

@@ -133,7 +133,7 @@ export const Button = ({
           ? "flex items-center justify-center w-[50px] h-[50px]"
           : "flex justify-center items-center h-[42px] px-[12px]"
       }`;
-      icoSize = 22;
+      variant === "ico" ? (icoSize = 22) : (icoSize = 19);
       break;
 
     case "medium": // Default
@@ -142,7 +142,7 @@ export const Button = ({
           ? "flex items-center justify-center w-[54px] h-[54px]"
           : "flex justify-center items-center h-[45px] px-[16px]"
       }`;
-      icoSize = 24;
+      variant === "ico" ? (icoSize = 24) : (icoSize = 21);
       break;
 
     case "large":
@@ -151,7 +151,7 @@ export const Button = ({
           ? "flex items-center justify-center w-[58px] h-[58px]"
           : "flex justify-center items-center px-[17px] h-[47px]"
       }`;
-      icoSize = 26;
+      variant === "ico" ? (icoSize = 26) : (icoSize = 22);
       break;
   }
 

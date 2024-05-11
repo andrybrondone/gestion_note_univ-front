@@ -49,43 +49,43 @@ export const Typography = ({
 
   switch (variant) {
     case "display":
-      variantStyles = "text-8xl max-lg:text-7xl";
+      variantStyles = "text-8xl max-lg:text-7xl max-sm:text-6xl";
       break;
     case "h1":
-      variantStyles = "text-7xl max-lg:text-6xl";
+      variantStyles = "text-7xl max-lg:text-6xl max-sm:text-5xl";
       break;
     case "h2":
-      variantStyles = "text-6xl max-lg:text-5xl";
+      variantStyles = "text-6xl max-lg:text-5xl max-sm:text-4xl";
       break;
     case "h3": //Default
-      variantStyles = "text-5xl max-lg:text-4xl";
+      variantStyles = "text-5xl max-lg:text-4xl max-sm:text-3xl";
       break;
     case "h4":
-      variantStyles = "text-4xl max-lg:text-3xl";
+      variantStyles = "text-4xl max-lg:text-3xl max-sm:text-2xl";
       break;
     case "h5":
-      variantStyles = "text-3xl max-lg:text-2xl";
+      variantStyles = "text-3xl max-lg:text-2xl max-sm:text-lg";
       break;
     case "lead":
-      variantStyles = "text-2xl max-lg:text-lg";
+      variantStyles = "text-2xl max-lg:text-lg max-sm:text-base";
       break;
     case "body-lg":
-      variantStyles = "text-lg max-lg:text-base";
+      variantStyles = "text-lg max-lg:text-base max-sm:text-sm";
       break;
     case "body-base":
-      variantStyles = "text-base max-lg:text-sm";
+      variantStyles = "text-base max-lg:text-sm max-sm:text-caption1";
       break;
     case "body-sm":
-      variantStyles = "text-sm max-lg:text-caption1";
+      variantStyles = "text-sm max-lg:text-caption1 max-sm:text-caption2";
       break;
     case "caption1":
-      variantStyles = "text-caption1";
+      variantStyles = "text-caption1 max-sm:text-caption2";
       break;
     case "caption2":
-      variantStyles = "text-caption2";
+      variantStyles = "text-caption2 max-sm:text-caption3";
       break;
     case "caption3":
-      variantStyles = "text-caption3";
+      variantStyles = "text-caption3 max-sm:text-caption4";
       break;
     case "caption4":
       variantStyles = "text-caption4";

@@ -10,19 +10,30 @@ interface Props {
 export default function Header({ name, info }: Props) {
   return (
     <div className="py-6 bg-primary-200/70 mb-11">
-      <Container className="flex items-center justify-center gap-7">
-        <img src={img} alt="" width={160} />
-        <div className="w-[700px] flex flex-col gap-2">
-          <Typography weight="medium" variant="h2" component="h2" theme="gray">
-            Bienvenue
-          </Typography>
+      <Container className="flex items-center justify-center gap-7 max-lg:gap-4 max-sm:flex-col">
+        <img
+          src={img}
+          alt=""
+          width={160}
+          className="max-md:w-[130px] max-sm:hidden"
+        />
+        <div className="w-[700px] flex flex-col gap-2 max-sm:w-full max-sm:text-center">
           <Typography
-            weight="bold"
-            variant="h1"
-            component="h1"
-            className=" text-gray-900"
+            weight="medium"
+            variant="h2"
+            component="div"
+            theme="gray"
+            className="max-sm:flex max-sm:items-center max-sm:justify-center max-sm:gap-3"
           >
-            {name} .
+            Bienvenue
+            <Typography
+              weight="bold"
+              variant="h1"
+              component="h1"
+              className=" text-gray-900"
+            >
+              {name} .
+            </Typography>
           </Typography>
           <Typography variant="caption1" theme="gray">
             {info}
