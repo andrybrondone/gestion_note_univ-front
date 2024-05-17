@@ -14,6 +14,7 @@ import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
 import FormNote from "./FormNote";
+import DataEmpty from "../../../pages/DataEmpty";
 
 export default function ListeNote() {
   const { authState } = useContext(AuthContext);
@@ -144,7 +145,7 @@ export default function ListeNote() {
           </table>
         </div>
       ) : (
-        <div>non</div>
+        <DataEmpty />
       )}
 
       {data.length > 0 && (

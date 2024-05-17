@@ -1,10 +1,15 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
-import { RiAccountPinCircleLine, RiLogoutCircleLine } from "react-icons/ri";
+import {
+  RiAccountPinCircleLine,
+  RiLogoutCircleLine,
+  RiNotification3Line,
+} from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import { ToggleNavContext } from "../../../context/ToggleNavContext";
 import useToggle from "../../../hook/useToggle";
 import { Avatar } from "../../design-system/avatar/Avatar";
 import { Logo } from "../../design-system/logo/Logo";
@@ -12,12 +17,15 @@ import { Typography } from "../../design-system/typography/Typography";
 import { Container } from "../container/Container";
 import { ToggleBtn } from "../darkMode/ToggleBtn";
 import ActiveLink from "./ActiveLink";
+import LinkMobile from "./LinkMobile";
 
 interface PhotoProps {
   photo: string;
 }
 
 export default function NavBar() {
+  const { isMobile, toggleNav } = useContext(ToggleNavContext);
+
   const [photoById, setPhotoById] = useState({} as PhotoProps);
 
   const { value: menu, toggleValue: toggleMenu } = useToggle(false);
@@ -69,6 +77,12 @@ export default function NavBar() {
     }
   }, [authState.id]);
 
+  const clickMenuBurger = () => {
+    const menutoggel = document.getElementById("menuBurger");
+    menutoggel?.classList.toggle("active");
+    toggleNav();
+  };
+
   return (
     <>
       {menu && (
@@ -80,20 +94,20 @@ export default function NavBar() {
       <div className="border-b-2 border-gray-400 dark:border-gray-800 dark:bg-gray-900">
         <Container className="flex items-center justify-between py-3 max-sm:py-2 gap-7 transition">
           <div className="flex items-center gap-2.5 max-sm:gap-1.5">
-            <Logo size="very-small" />
+            <Logo size="very-small" className="max-md:w-[25px]" />
             <div className="flex flex-col">
               <Typography
                 weight="bold"
                 variant="h4"
                 component="h2"
-                className="text-gray dark:text-white"
+                className="text-gray dark:text-white max-[360px]:text-lg"
               >
                 Gestion de note
               </Typography>
               <Typography
                 variant="caption2"
                 component="p"
-                className="text-gray-600 dark:text-gray-600"
+                className="text-gray-600 dark:text-gray-600 max-md:hidden"
               >
                 D'un établissement universitaire
               </Typography>
@@ -124,6 +138,12 @@ export default function NavBar() {
             </Typography>
             {authState.statusAuth && (
               <div className="flex items-center gap-5">
+                <div className="relative cursor-pointer text-[25px] dark:text-white">
+                  <RiNotification3Line className="" />
+                  <p className="absolute  -top-1 -right-1 text-caption4 px-[5px] py-[0.3px] text-white bg-alert-danger rounded-full">
+                    1
+                  </p>
+                </div>
                 <div>
                   <div onClick={() => handleClickShowProfile(authState.id)}>
                     <Avatar
@@ -151,11 +171,21 @@ export default function NavBar() {
                     </div>
                   )}
                 </div>
+                <div
+                  id="menuBurger"
+                  className="toggle z-50 md:hidden"
+                  onClick={clickMenuBurger}
+                >
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
               </div>
             )}
           </div>
         </Container>
       </div>
+      {isMobile && authState.statusAuth && <LinkMobile />}
     </>
   );
 }

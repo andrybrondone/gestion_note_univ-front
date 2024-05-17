@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
+import DataEmpty from "../../../pages/DataEmpty";
 import { ListeNoteValues } from "../../../types/crud-props";
 import { Container } from "../../components/container/Container";
 import { Spinner } from "../../design-system/spinner/Spinner";
@@ -76,7 +77,7 @@ export default function ListeNoteByEtudiant() {
           </table>
         </div>
       ) : (
-        <div>non</div>
+        <DataEmpty />
       )}
 
       {data.length > 0 && (

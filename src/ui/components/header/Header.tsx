@@ -23,7 +23,7 @@ export default function Header({ name, info }: Props) {
             variant="h2"
             component="div"
             theme="gray"
-            className="max-sm:flex max-sm:items-center max-sm:justify-center max-sm:gap-3"
+            className="max-sm:flex max-sm:items-center max-sm:justify-center max-sm:gap-3 max-sm:flex-wrap"
           >
             Bienvenue
             <Typography

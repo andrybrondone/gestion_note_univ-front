@@ -11,19 +11,23 @@ export const onSubmitPersonne = (
 ) => {
   axios
     .post("http://localhost:3001/personne", data)
-    .then(() => {
-      toast.success("La personne a été ajouter avec succès");
+    .then((res) => {
+      if (res.data.error === "duplication") {
+        toast.error("L'adresse e-mail existe déjà, veuillez le changer");
+      } else {
+        toast.success("La personne a été ajouter avec succès");
 
-      // Pour afficher les formulaire etudiant et enseignant
-      if (data.statue == "etudiant") {
-        toggleFormEt();
-      }
-      if (data.statue == "enseignant") {
-        toggleFormEns();
-      }
+        // Pour afficher les formulaire etudiant et enseignant
+        if (data.statue == "etudiant") {
+          toggleFormEt();
+        }
+        if (data.statue == "enseignant") {
+          toggleFormEns();
+        }
 
-      // Pour effacer les champs dans le formulaire
-      actions.resetForm();
+        // Pour effacer les champs dans le formulaire
+        actions.resetForm();
+      }
     })
     .catch((error) => {
       if (error.message === "Network Error") {

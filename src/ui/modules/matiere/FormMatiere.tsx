@@ -87,10 +87,13 @@ export default function FormMatiere() {
     if (!isEditMatiereForm) {
       axios
         .post("http://localhost:3001/matiere", data)
-        .then(() => {
-          toast.success("La matière a été ajouter avec succès");
-          actions.resetForm();
-          //toggleFormMatiere();
+        .then((res) => {
+          if (res.data.error === "error") {
+            toast.error("Ce matière est déjà associé à ce module");
+          } else {
+            toast.success("Le matière a été ajouter avec succès");
+            actions.resetForm();
+          }
         })
         .catch((error) => {
           console.error("Error : ", error);
@@ -98,12 +101,16 @@ export default function FormMatiere() {
     } else {
       axios
         .put(`http://localhost:3001/matiere/${listMatiereById.id}`, data)
-        .then(() => {
-          toast.success("Le module a été modifié avec succès");
-          // Pour effacer fermer le formulaire
-          toggleFormMatiere();
-          // Pour remettre à false isEditModuleForm
-          toggleEditMatiereForm();
+        .then((res) => {
+          if (res.data.error === "error") {
+            toast.error("Ce matière est déjà associé à ce module");
+          } else {
+            toast.success("Le matière a été modifié avec succès");
+            // Pour effacer fermer le formulaire
+            toggleFormMatiere();
+            // Pour remettre à false isEditModuleForm
+            toggleEditMatiereForm();
+          }
         })
         .catch((error) => {
           console.error("Error : ", error);
@@ -120,7 +127,7 @@ export default function FormMatiere() {
             onClick={handleClick}
           ></div>
 
-          <div className="fixed w-[550px] max-sm:w-[90%] top-2 left-1/2 -translate-x-1/2  bg-white dark:bg-gray rounded shadow-xl p-6 z-50">
+          <div className="fixed w-[550px] max-sm:w-[90%] top-5 left-1/2 -translate-x-1/2  bg-white dark:bg-gray rounded shadow-xl p-6 z-50">
             <RiCloseFill
               className="text-xl bg-gray-500 rounded-full absolute top-2 right-2 cursor-pointer dark:bg-gray-800"
               onClick={handleClick}
@@ -143,12 +150,24 @@ export default function FormMatiere() {
                       : "Ajouter une matière"}
                   </Typography>
 
-                  <Input
-                    label="Nom de la matière"
-                    name="nom_mat"
-                    type="text"
-                    placeholder="ex. IHM"
-                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <Input
+                      label="Nom de la matière"
+                      name="nom_mat"
+                      type="text"
+                      placeholder="ex. IHM"
+                    />
+                    <Select label="Module" name="id_module">
+                      <option value="">Choisir un module</option>
+                      {listOfModule.map((item: FormModuleValues) => {
+                        return (
+                          <option key={item.id} value={item.id}>
+                            {item.nom_module}
+                          </option>
+                        );
+                      })}
+                    </Select>
+                  </div>
 
                   <Select label="Niveau" name="niveau_mat">
                     <option value="">Choisir un niveau pour la matière</option>
@@ -197,17 +216,6 @@ export default function FormMatiere() {
                           className=" capitalize"
                         >
                           {`${item.Personne.nom} ${item.Personne.prenom}`}
-                        </option>
-                      );
-                    })}
-                  </Select>
-
-                  <Select label="Module" name="id_module">
-                    <option value="">Choisir un module</option>
-                    {listOfModule.map((item: FormModuleValues) => {
-                      return (
-                        <option key={item.id} value={item.id}>
-                          {item.nom_module}
                         </option>
                       );
                     })}

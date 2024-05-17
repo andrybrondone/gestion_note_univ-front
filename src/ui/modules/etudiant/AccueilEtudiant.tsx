@@ -5,9 +5,9 @@ import { Ri24HoursFill } from "react-icons/ri";
 import { AuthContext } from "../../../context/AuthContext";
 import { Container } from "../../components/container/Container";
 import Header from "../../components/header/Header";
-import { Logo } from "../../design-system/logo/Logo";
 import ListeMatiereByNiveau from "../matiere/ListeMatiereByNiveau";
 import ListeNoteByEtudiant from "../note/ListeNoteByEtudiant";
+import ReleverNote from "../note/ReleverNote";
 
 const allData = [
   {
@@ -23,7 +23,7 @@ const allData = [
   {
     icon: <Ri24HoursFill />,
     label: "Relever de notes",
-    component: <Logo />,
+    component: <ReleverNote />,
   },
 ];
 

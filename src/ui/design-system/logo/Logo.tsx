@@ -1,10 +1,12 @@
+import clsx from "clsx";
 import noteImg from "/assets/images/note.png";
 
 interface Props {
   size?: "very-small" | "small" | "medium" | "large";
+  className?: string;
 }
 
-export const Logo = ({ size = "medium" }: Props) => {
+export const Logo = ({ size = "medium", className }: Props) => {
   let sizeLogo: number;
 
   switch (size) {
@@ -24,7 +26,12 @@ export const Logo = ({ size = "medium" }: Props) => {
 
   return (
     <>
-      <img src={noteImg} alt="Logo note" width={sizeLogo} />
+      <img
+        src={noteImg}
+        alt="Logo note"
+        width={sizeLogo}
+        className={clsx(className)}
+      />
     </>
   );
 };

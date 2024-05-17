@@ -6,6 +6,7 @@ import { Container } from "../../components/container/Container";
 import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
+import DataEmpty from "../../../pages/DataEmpty";
 
 export default function ListeMatiereByNiveau() {
   const { authState } = useContext(AuthContext);
@@ -79,7 +80,7 @@ export default function ListeMatiereByNiveau() {
           </table>
         </div>
       ) : (
-        <div>non</div>
+        <DataEmpty />
       )}
 
       {data.length > 0 && (

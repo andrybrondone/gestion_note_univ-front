@@ -17,7 +17,7 @@ export default function InfoCompteEtudiant() {
           theme="gray"
           component="h1"
           variant="display"
-          className="text-center mt-6 max-sm:text-6xl max-sm:font-bold"
+          className="text-center mt-6 max-sm:text-6xl max-sm:font-bold text-gray-600"
         >
           Vos informations
         </Typography>

@@ -17,7 +17,9 @@ interface FormValues {
 
 export default function FormEns() {
   const { isOpenFormEns, toggleFormEns } = useContext(ShowFormContext);
-  const [listOfPersonne, setListOfPersonne] = useState([]);
+  const [listOfPersonne, setListOfPersonne] = useState(
+    {} as FormPersonneValues
+  );
 
   // Recuperation de la dernière personne qui a été ajoutée
   useEffect(() => {
@@ -68,13 +70,9 @@ export default function FormEns() {
 
                 <Select label="Nom" name="id_pers">
                   <option value="">Choisir une personne</option>
-                  {listOfPersonne.map((item: FormPersonneValues) => {
-                    return (
-                      <option key={item.id} value={item.id}>
-                        {`${item.nom} ${item.prenom}`}
-                      </option>
-                    );
-                  })}
+                  <option key={listOfPersonne.id} value={listOfPersonne.id}>
+                    {`${listOfPersonne.nom} ${listOfPersonne.prenom}`}
+                  </option>
                 </Select>
 
                 <Input

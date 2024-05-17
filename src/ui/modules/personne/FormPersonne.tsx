@@ -42,7 +42,7 @@ export default function FormPersonne() {
           onSubmit={onSubmit}
           validationSchema={validationSchemaPersonne}
         >
-          {({ isSubmitting, setFieldValue, handleChange }) => (
+          {({ setFieldValue, handleChange }) => (
             <Form className="flex flex-col gap-5">
               <Typography
                 variant="h4"
@@ -86,7 +86,7 @@ export default function FormPersonne() {
                     placeholder="ex. andry.brondone@gmail.com"
                   />
 
-                  <Input name="mdp" type="text" classNameSpan="hidden" />
+                  <Input name="mdp" type="hidden" classNameSpan="hidden" />
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -121,12 +121,7 @@ export default function FormPersonne() {
               </div>
 
               <div className="flex justify-center items-center">
-                <Button
-                  disabled={isSubmitting}
-                  type="submit"
-                  variant="accent"
-                  className=" w-36"
-                >
+                <Button type="submit" variant="accent" className=" w-36">
                   Enregistrer
                 </Button>
               </div>

@@ -12,7 +12,7 @@ export const Avatar = ({ size = "medium", src, alt, className }: Props) => {
 
   switch (size) {
     case "small":
-      sizeStyle = "w-[40px] h-[40px]";
+      sizeStyle = "w-[40px] h-[40px] max-md:w-[33px] max-md:h-[33px]";
       break;
     case "medium": //default
       sizeStyle = "w-[60px] h-[60px]";

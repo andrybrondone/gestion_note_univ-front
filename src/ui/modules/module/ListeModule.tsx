@@ -10,6 +10,7 @@ import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext"
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
+import DataEmpty from "../../../pages/DataEmpty";
 import { FormModuleValues } from "../../../types/crud-props";
 import { Container } from "../../components/container/Container";
 import { Button } from "../../design-system/button/Button";
@@ -157,7 +158,7 @@ export default function ListeModule() {
           </table>
         </div>
       ) : (
-        <div>non</div>
+        <DataEmpty />
       )}
 
       {data.length > 0 && (
@@ -172,7 +173,7 @@ export default function ListeModule() {
 
       {isConfirmDialog && (
         <ConfirmModale
-          message="Voulez vous vraiment supprimer définitivement ce module ?"
+          message="Vous êtes sur le point de supprimer ce module, voulez-vous continuer ?"
           action={() => {
             deleteModule(refIdModule.current);
             toggleConfirmDialog();

@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
+import DataEmpty from "../../../pages/DataEmpty";
 import { Container } from "../../components/container/Container";
 import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
@@ -72,6 +73,7 @@ export default function ListeEtudiant() {
     <Container className="pt-8">
       <Typography
         weight="bold"
+        theme="gray"
         variant="h1"
         component="h1"
         className="mb-14 text-center"
@@ -79,9 +81,9 @@ export default function ListeEtudiant() {
         La liste des etudiants à l' ENI
       </Typography>
 
-      <div className="grid grid-cols-2 gap-4 max-[870px]:grid-cols-1">
-        {data.length > 0 ? (
-          data.map((value: EtudiantData) => {
+      {data.length > 0 ? (
+        <div className="grid grid-cols-2 gap-4 max-[870px]:grid-cols-1">
+          {data.map((value: EtudiantData) => {
             return (
               <ListInfoUser
                 key={value.id}
@@ -98,11 +100,11 @@ export default function ListeEtudiant() {
                 refetch={refetch}
               />
             );
-          })
-        ) : (
-          <div>non</div>
-        )}
-      </div>
+          })}
+        </div>
+      ) : (
+        <DataEmpty />
+      )}
 
       {data.length > 0 && (
         <ButtonPagination

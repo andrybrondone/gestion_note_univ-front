@@ -18,6 +18,7 @@ import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
 import FormMatiere from "./FormMatiere";
+import DataEmpty from "../../../pages/DataEmpty";
 
 export default function ListeMatiere() {
   // Hook pour savoir l'état du formulaire matiere
@@ -156,7 +157,7 @@ export default function ListeMatiere() {
           </table>
         </div>
       ) : (
-        <div>non</div>
+        <DataEmpty />
       )}
 
       {data.length > 0 && (

@@ -6,9 +6,15 @@ interface Props {
   href: string;
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }
 
-export default function ActiveLink({ href, children, className }: Props) {
+export default function ActiveLink({
+  href,
+  children,
+  className,
+  onClick,
+}: Props) {
   const location = useLocation();
 
   const isActive: boolean = useMemo(() => {
@@ -16,7 +22,11 @@ export default function ActiveLink({ href, children, className }: Props) {
   }, [location.pathname, href]);
 
   return (
-    <NavLink to={href} className={clsx(className, "relative group")}>
+    <NavLink
+      to={href}
+      className={clsx(className, "relative group")}
+      onClick={onClick}
+    >
       {children}
       <span
         className={clsx(

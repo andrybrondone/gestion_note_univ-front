@@ -1,5 +1,10 @@
 import * as Yup from "yup";
 
+///^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
+const emailRegex =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+const phoneRegex = /^(03[234])(?:\d{7}|\s?\d{2}\s?\d{3}\s?\d{2})$/;
+
 // Enseignant
 export const validationSchemaEns = Yup.object().shape({
   grade: Yup.string()
@@ -99,7 +104,7 @@ export const validationSchemaNote = Yup.object().shape({
 });
 
 // Personne
-export const validationSchemaPersonne = Yup.object().shape({
+/*export const validationSchemaPersonne = Yup.object().shape({
   nom: Yup.string()
     .min(3, "Un nom doit contenir au moin 3 caractères")
     .required("Ce champ est obligatoire"),
@@ -107,20 +112,84 @@ export const validationSchemaPersonne = Yup.object().shape({
     .min(3, "Un prénom doit contenir au moin 3 caractères")
     .required("Ce champ est obligatoire"),
   phone: Yup.string()
-    .min(10, "Un numéro de téléphone doit être composer de 10 chiffre")
-    .max(10, "Un numéro de téléphone doit être composer de 10 chiffre")
-    .required("Ce champ est obligatoire"),
+    .required("Ce champ est obligatoire")
+    .matches(
+      phoneRegex,
+      "Veuillez entrer un numéro de téléphone malagasy valide"
+    ),
   email: Yup.string()
-    .email("Entrez une adresse mail valide")
-    .required("Ce champ est obligatoire"),
+    .required("Ce champ est obligatoire")
+    .matches(emailRegex, "Veuillez entrer une adresse e-mail valide"),
   adresse: Yup.string()
     .min(4, "Une adresse doit contenir au moin 4 caractères")
     .required("Ce champ est obligatoire"),
   lieu_nais: Yup.string()
     .min(4, "Une ville doit contenir au moin 4 caractères")
     .required("Ce champ est obligatoire"),
-  date_nais: Yup.date().required("Ce champ est obligatoire"),
-  mdp: Yup.string().required("Ce champ est obligatoire"),
+  date_nais: Yup.date()
+    .required("Ce champ est obligatoire")
+    .test("age", "Vous devez avoir entre 18 et 65 ans", function (value) {
+      const now = new Date();
+      const birthDate = new Date(value);
+      const age = now.getFullYear() - birthDate.getFullYear();
+      const minAge = 18;
+      const maxAge = 65;
+
+      if (isNaN(age)) {
+        return false; // La date n'est pas valide
+      }
+
+      return age >= minAge && age <= maxAge;
+    }),
+  mdp: Yup.string(),
+  statue: Yup.string()
+    .oneOf(
+      ["etudiant", "enseignant", "administrateur"],
+      "Veuillez choisir le statut"
+    )
+    .required("Ce champ est obligatoire"),
+});*/
+export const validationSchemaPersonne = Yup.object().shape({
+  nom: Yup.string()
+    .min(3, "Un nom doit contenir au moins 3 caractères")
+    .required("Ce champ est obligatoire"),
+  prenom: Yup.string()
+    .min(3, "Un prénom doit contenir au moins 3 caractères")
+    .required("Ce champ est obligatoire"),
+  phone: Yup.string()
+    .required("Ce champ est obligatoire")
+    .matches(
+      phoneRegex,
+      "Veuillez entrer un numéro de téléphone malagasy valide"
+    ),
+  email: Yup.string()
+    .required("Ce champ est obligatoire")
+    .matches(emailRegex, "Veuillez entrer une adresse e-mail valide"),
+  adresse: Yup.string()
+    .min(4, "Une adresse doit contenir au moins 4 caractères")
+    .required("Ce champ est obligatoire"),
+  lieu_nais: Yup.string()
+    .min(4, "Une ville doit contenir au moins 4 caractères")
+    .required("Ce champ est obligatoire"),
+  date_nais: Yup.date()
+    .required("Ce champ est obligatoire")
+    .test(
+      "age",
+      "Veuillez entrer une année valide",
+      function (value, { parent }) {
+        const now = new Date();
+        const birthDate = new Date(value);
+        const age = now.getFullYear() - birthDate.getFullYear();
+        const minAge = parent.statue === "etudiant" ? 10 : 18; // Change minimum age based on statue
+
+        if (isNaN(age)) {
+          return false; // La date n'est pas valide
+        }
+
+        return age >= minAge;
+      }
+    ),
+  mdp: Yup.string(),
   statue: Yup.string()
     .oneOf(
       ["etudiant", "enseignant", "administrateur"],
@@ -138,9 +207,11 @@ export const validationSchemaAllInfoUser = Yup.object().shape({
     .min(3, "Un prénom doit contenir au moin 3 caractères")
     .required("Ce champ est obligatoire"),
   phone: Yup.string()
-    .min(10, "Un numéro de téléphone doit être composer de 10 chiffre")
-    .max(10, "Un numéro de téléphone doit être composer de 10 chiffre")
-    .required("Ce champ est obligatoire"),
+    .required("Ce champ est obligatoire")
+    .matches(
+      phoneRegex,
+      "Veuillez entrer un numéro de téléphone malagasy valide"
+    ),
   email: Yup.string()
     .email("Entrez une adresse mail valide")
     .required("Ce champ est obligatoire"),
@@ -150,7 +221,21 @@ export const validationSchemaAllInfoUser = Yup.object().shape({
   lieu_nais: Yup.string()
     .min(4, "Une ville doit contenir au moin 4 caractères")
     .required("Ce champ est obligatoire"),
-  date_nais: Yup.date().required("Ce champ est obligatoire"),
+  date_nais: Yup.date()
+    .required("Ce champ est obligatoire")
+    .test("age", "Vous devez avoir entre 18 et 65 ans", function (value) {
+      const now = new Date();
+      const birthDate = new Date(value);
+      const age = now.getFullYear() - birthDate.getFullYear();
+      const minAge = 18;
+      const maxAge = 65;
+
+      if (isNaN(age)) {
+        return false; // La date n'est pas valide
+      }
+
+      return age >= minAge && age <= maxAge;
+    }),
   matricule: Yup.string()
     .min(4, "Un matricule doit contenir au moin 4 caractères")
     .required("Ce champ est obligatoire"),
