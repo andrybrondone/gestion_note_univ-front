@@ -1,7 +1,7 @@
 import axios from "axios";
 import clsx from "clsx";
 import { useContext, useEffect } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import Accueil from "./pages/Accueil";
 import Enseignant from "./pages/Enseignant";
@@ -9,6 +9,7 @@ import Etudiant from "./pages/Etudiant";
 import InfoCompte from "./pages/InfoCompte";
 import Login from "./pages/Login";
 import { Page404 } from "./pages/Page404";
+import ReleverNotePage from "./pages/ReleverNotePage";
 import { DarkModeContext } from "./ui/components/darkMode/DarkModeGlobal";
 import { Navigation } from "./ui/components/navigation/Navigation";
 
@@ -27,7 +28,17 @@ const router = createBrowserRouter([
       },
       {
         path: "etudiants",
-        element: <Etudiant />,
+        element: <Outlet />,
+        children: [
+          {
+            path: "",
+            element: <Etudiant />,
+          },
+          {
+            path: "relever-de-note",
+            element: <ReleverNotePage />,
+          },
+        ],
       },
       {
         path: "enseignants",

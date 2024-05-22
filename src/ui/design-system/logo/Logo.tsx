@@ -14,7 +14,7 @@ export const Logo = ({ size = "medium", className }: Props) => {
       sizeLogo = 34;
       break;
     case "small":
-      sizeLogo = 38;
+      sizeLogo = 40;
       break;
     case "medium": //default
       sizeLogo = 88;

@@ -1,4 +1,5 @@
 import { Logo } from "../../design-system/logo/Logo";
+import { Typography } from "../../design-system/typography/Typography";
 import { Container } from "../container/Container";
 import { SocialNetworksButtons } from "./social-networks-buttons";
 
@@ -18,10 +19,14 @@ export const Footer = () => {
       </Container>
       <Container className="py-6">
         <hr className="text-gray-700" />
-        <p className="text-center text-caption2 pt-6 text-gray-600">
+        <Typography
+          variant="caption2"
+          component="p"
+          className="text-center pt-6 text-gray-600"
+        >
           Copyright &copy; {`${currentYear} `} | Réaliser par Brondone
           ANDRIAMBOLOLOMANANA
-        </p>
+        </Typography>
       </Container>
     </div>
   );

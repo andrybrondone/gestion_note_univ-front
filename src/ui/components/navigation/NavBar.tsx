@@ -94,13 +94,13 @@ export default function NavBar() {
       <div className="border-b-2 border-gray-400 dark:border-gray-800 dark:bg-gray-900">
         <Container className="flex items-center justify-between py-3 max-sm:py-2 gap-7 transition">
           <div className="flex items-center gap-2.5 max-sm:gap-1.5">
-            <Logo size="very-small" className="max-md:w-[25px]" />
+            <Logo size="small" className="max-md:w-[33px]" />
             <div className="flex flex-col">
               <Typography
                 weight="bold"
                 variant="h4"
                 component="h2"
-                className="text-gray dark:text-white max-[360px]:text-lg"
+                className="text-gray dark:text-white max-[418px]:hidden"
               >
                 Gestion de note
               </Typography>
@@ -114,14 +114,14 @@ export default function NavBar() {
             </div>
           </div>
           <div className="flex items-center gap-5">
+            <ToggleBtn />
+
             <Typography
               weight="medium"
               variant="caption1"
               component="div"
               className="flex items-center gap-5 dark:text-white max-md:hidden"
             >
-              <ToggleBtn />
-
               {authState.statusAuth && (
                 <>
                   <ActiveLink
@@ -138,9 +138,9 @@ export default function NavBar() {
             </Typography>
             {authState.statusAuth && (
               <div className="flex items-center gap-5">
-                <div className="relative cursor-pointer text-[25px] dark:text-white">
-                  <RiNotification3Line className="" />
-                  <p className="absolute  -top-1 -right-1 text-caption4 px-[5px] py-[0.3px] text-white bg-alert-danger rounded-full">
+                <div className="relative cursor-pointer text-[23px] dark:text-white">
+                  <RiNotification3Line />
+                  <p className="absolute  -top-1 -right-1 text-[10px] px-[5px] py-[0.3px] text-white bg-alert-danger rounded-full">
                     1
                   </p>
                 </div>
@@ -154,7 +154,11 @@ export default function NavBar() {
                     />
                   </div>
                   {menu && (
-                    <div className="absolute text-caption1 bg-white/80 px-6 py-2 shadow rounded leading-8 z-30 right-2">
+                    <Typography
+                      variant="caption1"
+                      component="div"
+                      className="absolute dark:bg-black bg-white/80 px-6 py-2 shadow rounded flex flex-col gap-2.5 z-30 right-2"
+                    >
                       <Link to="/information-compte" onClick={toggleMenu}>
                         <p className="flex items-center gap-2 hover:text-secondary-600 transition">
                           <RiAccountPinCircleLine className="text-base" /> Mon
@@ -168,7 +172,7 @@ export default function NavBar() {
                         <RiLogoutCircleLine className="text-base" />
                         Déconnexion
                       </p>
-                    </div>
+                    </Typography>
                   )}
                 </div>
                 <div

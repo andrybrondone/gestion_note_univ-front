@@ -116,7 +116,7 @@ export const Button = ({
       }
       if (iconTheme === "secondary") {
         variantStyle =
-          "bg-primary-200 hover:bg-primary-300/50 text-primary rounded-full";
+          "text-primary dark:text-primary-300 hover:bg-primary-400 dark:hover:bg-primary-400 dark:hover:text-white hover:text-white rounded-full border border-primary dark:border-primary-300 dark:hover:border-primary-400";
       }
       if (iconTheme === "gray") {
         variantStyle = "bg-gray-800 hover:bg-gray-700 text-white rounded-full";
@@ -130,28 +130,28 @@ export const Button = ({
     case "small":
       sizeStyle = `text-caption3 font-medium ${
         variant === "ico"
-          ? "flex items-center justify-center w-[50px] h-[50px]"
+          ? "flex items-center justify-center w-[40px] h-[40px]"
           : "flex justify-center items-center h-[42px] px-[12px]"
       }`;
-      variant === "ico" ? (icoSize = 22) : (icoSize = 19);
+      variant === "ico" ? (icoSize = 21) : (icoSize = 19);
       break;
 
     case "medium": // Default
       sizeStyle = `text-caption2 font-medium ${
         variant === "ico"
-          ? "flex items-center justify-center w-[54px] h-[54px]"
+          ? "flex items-center justify-center w-[46px] h-[46px]"
           : "flex justify-center items-center h-[45px] px-[16px]"
       }`;
-      variant === "ico" ? (icoSize = 24) : (icoSize = 21);
+      variant === "ico" ? (icoSize = 23) : (icoSize = 21);
       break;
 
     case "large":
       sizeStyle = `text-caption1 font-medium ${
         variant === "ico"
-          ? "flex items-center justify-center w-[58px] h-[58px]"
+          ? "flex items-center justify-center w-[49px] h-[49px]"
           : "flex justify-center items-center px-[17px] h-[47px]"
       }`;
-      variant === "ico" ? (icoSize = 26) : (icoSize = 22);
+      variant === "ico" ? (icoSize = 25) : (icoSize = 22);
       break;
   }
 

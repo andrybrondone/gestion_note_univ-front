@@ -1,11 +1,18 @@
 import axios from "axios";
 import { useContext } from "react";
-import { RiAddCircleLine, RiAddLine, RiDeleteBin2Line } from "react-icons/ri";
+import {
+  RiAddCircleLine,
+  RiAddLine,
+  RiDeleteBin2Line,
+  RiMoreFill,
+} from "react-icons/ri";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
+import useToggle from "../../../hook/useToggle";
 import { Avatar } from "../../design-system/avatar/Avatar";
 import { Button } from "../../design-system/button/Button";
 import ConfirmModale from "../../design-system/confirm-modale/ConfirmModale";
@@ -48,6 +55,8 @@ export default function ListInfoUser({
 
   const { toggleFormNote } = useContext(ShowFormContext);
 
+  const { value, toggleValue } = useToggle(false);
+
   const {
     listEtudiantById,
     getListEtudiantById,
@@ -65,6 +74,11 @@ export default function ListInfoUser({
     toggleConfirmDialog,
   } = useContext(ToggleEditFormContext);
 
+  const handleClickGetEt = async (id: number | undefined) => {
+    await getListEtudiantById(id);
+    toggleValue();
+  };
+
   const handleClickAddNote = async (id: number | undefined) => {
     await getListEtudiantById(id);
     toggleFormNote();
@@ -78,11 +92,6 @@ export default function ListInfoUser({
   const handleClickDeleteEt = async (id: number | undefined) => {
     await getListEtudiantById(id);
     toggleConfirmDialog();
-  };
-
-  const handleClickEditEt = async (id: number | undefined) => {
-    await getListEtudiantById(id);
-    toggleEditEtudiantForm();
   };
 
   const handleClickEditEns = async (id: number | undefined) => {
@@ -120,8 +129,8 @@ export default function ListInfoUser({
 
   return (
     <>
-      <div className="flex max-[870px]:justify-center gap-4 mb-3 bg-gray-300/50 p-6 max-lg:p-4 rounded shadow">
-        <div className="max-sm:hidden">
+      <div className="flex max-[870px]:justify-center gap-4 mb-3 bg-gray-300/50 dark:bg-gray-900 px-4 py-6 rounded shadow">
+        <div className="max-sm:hidden mt-5">
           <Avatar
             src={`http://localhost:3001/images/${photo}`}
             alt=""
@@ -131,14 +140,14 @@ export default function ListInfoUser({
         <div className="flex flex-col gap-2">
           {statut === "etudiant" && (
             <Typography
-              variant="caption1"
+              variant="caption2"
               theme="gray"
               component="div"
               className="flex items-center gap-3"
             >
               N° matricule :
               <Typography
-                variant="body-sm"
+                variant="caption1"
                 component="p"
                 weight="bold"
                 className="uppercase"
@@ -149,14 +158,14 @@ export default function ListInfoUser({
           )}
 
           <Typography
-            variant="caption1"
+            variant="caption2"
             theme="gray"
             component="div"
             className="flex items-center gap-3"
           >
             Nom :
             <Typography
-              variant="body-sm"
+              variant="caption1"
               component="p"
               weight="bold"
               className="uppercase"
@@ -166,14 +175,14 @@ export default function ListInfoUser({
           </Typography>
 
           <Typography
-            variant="caption1"
+            variant="caption2"
             theme="gray"
             component="div"
             className="flex items-center gap-3"
           >
             Prénom :
             <Typography
-              variant="body-sm"
+              variant="caption1"
               component="p"
               weight="bold"
               className=" capitalize"
@@ -184,14 +193,14 @@ export default function ListInfoUser({
 
           {statut === "etudiant" && (
             <Typography
-              variant="caption1"
+              variant="caption2"
               theme="gray"
               component="div"
               className="flex items-center gap-3"
             >
               Classe :
               <Typography
-                variant="body-sm"
+                variant="caption1"
                 component="p"
                 weight="bold"
                 className="capitalize"
@@ -204,14 +213,14 @@ export default function ListInfoUser({
           {statut === "enseignant" && (
             <>
               <Typography
-                variant="caption1"
+                variant="caption2"
                 theme="gray"
                 component="div"
                 className="flex items-center gap-3"
               >
                 Grade :
                 <Typography
-                  variant="body-sm"
+                  variant="caption1"
                   component="p"
                   weight="bold"
                   className="capitalize"
@@ -223,19 +232,19 @@ export default function ListInfoUser({
           )}
 
           <Typography
-            variant="caption1"
+            variant="caption2"
             theme="gray"
             component="div"
             className="flex items-center gap-3"
           >
             N° de téléphone :
-            <Typography variant="body-sm" component="p" weight="bold">
+            <Typography variant="caption1" component="p" weight="bold">
               {phone}
             </Typography>
           </Typography>
 
           <Typography
-            variant="caption1"
+            variant="caption2"
             theme="gray"
             component="div"
             className="flex items-center gap-3"
@@ -247,46 +256,6 @@ export default function ListInfoUser({
           </Typography>
 
           <div className=" flex items-center gap-3 mt-3">
-            {authState.statut === "enseignant" && (
-              <>
-                {statut === "etudiant" && (
-                  <Button
-                    variant="secondary"
-                    icon={{ icon: RiAddCircleLine }}
-                    action={() => {
-                      handleClickAddNote(idEt);
-                    }}
-                  >
-                    Ajouter note
-                  </Button>
-                )}
-              </>
-            )}
-
-            {statut === "etudiant" && (
-              <Button
-                variant="blue"
-                action={() => {
-                  handleClickEditEt(idEt);
-                }}
-                icon={{ icon: RiAddLine }}
-              >
-                Voir
-              </Button>
-            )}
-
-            {statut === "enseignant" && (
-              <Button
-                variant="blue"
-                action={() => {
-                  handleClickEditEns(idEns);
-                }}
-                icon={{ icon: RiAddLine }}
-              >
-                Voir
-              </Button>
-            )}
-
             {authState.statut === "administrateur" && (
               <>
                 {statut === "enseignant" && (
@@ -314,10 +283,78 @@ export default function ListInfoUser({
                 )}
               </>
             )}
+
+            {authState.statut === "enseignant" && (
+              <>
+                {statut === "etudiant" && (
+                  <Button
+                    variant="secondary"
+                    icon={{ icon: RiAddCircleLine }}
+                    action={() => {
+                      handleClickAddNote(idEt);
+                    }}
+                  >
+                    Ajouter note
+                  </Button>
+                )}
+              </>
+            )}
+
+            {statut === "etudiant" && (
+              <div
+                className="relative"
+                onClick={() => {
+                  handleClickGetEt(idEt);
+                }}
+              >
+                <Button
+                  variant="ico"
+                  iconTheme="secondary"
+                  icon={{ icon: RiMoreFill }}
+                />
+                {value && (
+                  <>
+                    <div
+                      className="anim-transition top-0 left-0 w-full h-[100vh] fixed z-20"
+                      onClick={toggleValue}
+                    />
+                    <Typography
+                      variant="caption2"
+                      component="div"
+                      className="absolute w-[180px] top-6 left-12 text-caption1 bg-white/80 dark:bg-black px-6 py-2 shadow rounded flex flex-col gap-2 z-30 "
+                    >
+                      <p
+                        className="cursor-pointer hover:text-secondary-300 transition"
+                        onClick={toggleEditEtudiantForm}
+                      >
+                        Voir +
+                      </p>
+                      <Link
+                        to="/etudiants/relever-de-note"
+                        className=" hover:text-secondary-300 transition"
+                      >
+                        Relever de notes
+                      </Link>
+                    </Typography>
+                  </>
+                )}
+              </div>
+            )}
+
+            {statut === "enseignant" && (
+              <Button
+                variant="blue"
+                action={() => {
+                  handleClickEditEns(idEns);
+                }}
+                icon={{ icon: RiAddLine }}
+              >
+                Voir
+              </Button>
+            )}
           </div>
         </div>
       </div>
-
       {statut === "etudiant" && <FormNote idEt={listEtudiantById.id} />}
 
       {statut === "etudiant" && isEditEtudiantForm && (
