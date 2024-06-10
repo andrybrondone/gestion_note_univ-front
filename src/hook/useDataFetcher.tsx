@@ -37,7 +37,6 @@ export function useDataFetcher<T>({
     }
   }, []);
 
-  //: Promise<EtudiantData[]>
   const fetchPageData = async ({ page = currentPage }) => {
     const limit = 10;
     const offset = (page - 1) * limit;

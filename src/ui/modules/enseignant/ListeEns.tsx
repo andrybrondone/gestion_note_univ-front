@@ -1,12 +1,14 @@
 import { useContext, useEffect } from "react";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
+import useSearch from "../../../hook/useSearch";
 import DataEmpty from "../../../pages/DataEmpty";
 import { Container } from "../../components/container/Container";
 import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
 import ListInfoUser from "../components/ListInfoUser";
+import SearchBar from "../components/SearchBar";
 
 interface EnseignantData {
   id: number;
@@ -23,6 +25,13 @@ interface EnseignantData {
 
 export default function ListeEns() {
   const { isEditEnseignantForm } = useContext(ToggleEditFormContext);
+  const { search, handleChangeSearch } = useSearch();
+
+  let url = `http://localhost:3001/enseignant/info`;
+
+  if (search !== "") {
+    url = `http://localhost:3001/enseignant/rechercher-ens/${search}`;
+  }
 
   const {
     isLoading,
@@ -33,7 +42,7 @@ export default function ListeEns() {
     setCurrentPage,
     refetch,
   } = useDataFetcher<EnseignantData[]>({
-    endpoint: `http://localhost:3001/enseignant/info`,
+    endpoint: url,
     processData: (data) => data.enseignants,
   });
 
@@ -69,15 +78,21 @@ export default function ListeEns() {
 
   return (
     <Container className="pt-8">
-      <Typography
-        weight="bold"
-        theme="gray"
-        variant="h1"
-        component="h1"
-        className="mb-14 text-center"
-      >
-        La liste des enseignants à l' ENI
-      </Typography>
+      <div className="flex justify-between gap-5 items-center max-md:flex-wrap max-md:justify-center mb-8">
+        <Typography
+          weight="bold"
+          theme="gray"
+          variant="h1"
+          component="h1"
+          className="max-md:text-center"
+        >
+          La liste des enseignants à l' ENI
+        </Typography>
+        <SearchBar
+          placeholder="Recherche par nom..."
+          onChangeSearch={handleChangeSearch}
+        />
+      </div>
 
       {data.length > 0 ? (
         <div className="grid grid-cols-2 gap-4 max-[870px]:grid-cols-1">

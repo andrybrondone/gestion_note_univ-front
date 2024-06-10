@@ -10,6 +10,8 @@ import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext"
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
+import useSearch from "../../../hook/useSearch";
+import DataEmpty from "../../../pages/DataEmpty";
 import { ListeMatiereValues } from "../../../types/crud-props";
 import { Container } from "../../components/container/Container";
 import { Button } from "../../design-system/button/Button";
@@ -17,8 +19,8 @@ import ConfirmModale from "../../design-system/confirm-modale/ConfirmModale";
 import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
+import TrieParNiveau from "../components/TrieParNiveau";
 import FormMatiere from "./FormMatiere";
-import DataEmpty from "../../../pages/DataEmpty";
 
 export default function ListeMatiere() {
   // Hook pour savoir l'état du formulaire matiere
@@ -31,6 +33,8 @@ export default function ListeMatiere() {
   const { toggleEditMatiereForm, isConfirmDialog, toggleConfirmDialog } =
     useContext(ToggleEditFormContext);
 
+  const { selectedNiveau, handleChangeNiveau } = useSearch();
+
   // Hoock pour la recupération des données et faire la pagination
   const {
     isLoading,
@@ -41,7 +45,7 @@ export default function ListeMatiere() {
     totalPage,
     setCurrentPage,
   } = useDataFetcher<ListeMatiereValues[]>({
-    endpoint: `http://localhost:3001/matiere`,
+    endpoint: `http://localhost:3001/matiere/recherche/${selectedNiveau}`,
     processData: (data) => data.matieres,
   });
 
@@ -98,7 +102,9 @@ export default function ListeMatiere() {
 
   return (
     <div className="w-[900px]">
-      <div className="flex justify-end">
+      <div className="flex justify-between items-center">
+        <TrieParNiveau onChangeNiveau={handleChangeNiveau} />
+
         <Button
           variant="secondary"
           icon={{ icon: RiAddCircleLine }}
@@ -133,7 +139,7 @@ export default function ListeMatiere() {
                     <td>{value.niveau_mat}</td>
                     <td>{value.parcours.join(", ")}</td>
                     <td>{value.credit}</td>
-                    <td>{`${value.Enseignant.Personne.nom} ${value.Enseignant.Personne.prenom}`}</td>
+                    <td>{`${value.Enseignant.Personne.nom}`}</td>
                     <td>{value.Module.nom_module}</td>
                     <td className="flex items-center justify-center py-2 text-3xl gap-2 max-sm:text-2xl">
                       <RiPencilFill

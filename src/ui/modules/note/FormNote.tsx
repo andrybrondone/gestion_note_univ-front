@@ -1,8 +1,9 @@
 import axios from "axios";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { useContext, useEffect, useState } from "react";
 import { RiCloseFill } from "react-icons/ri";
 import { toast } from "sonner";
+import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
@@ -18,32 +19,36 @@ interface Props {
 }
 
 export default function FormNote({ idEt }: Props) {
-  const { listEtudiantById } = useContext(DataFetcherByIdContext);
+  const { authState } = useContext(AuthContext);
+
+  const { listEtudiantById, listNoteById } = useContext(DataFetcherByIdContext);
+
   const { isOpenFormNote, toggleFormNote } = useContext(ShowFormContext);
 
   const [listOfMatiere, setListOfMatiere] = useState([]);
-
-  // Hook pour recupérer les données par son identifiant
-  const { listNoteById } = useContext(DataFetcherByIdContext);
 
   const { isEditNoteForm, toggleEditNoteForm } = useContext(
     ToggleEditFormContext
   );
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/matiere/nom/${listEtudiantById.niveau}`)
-      .then((response) => {
-        setListOfMatiere(response.data);
-      });
-  }, [listEtudiantById.niveau]);
+    if (authState.statut === "enseignant") {
+      axios
+        .get(
+          `http://localhost:3001/matiere/nom/${authState.id}/${listEtudiantById.niveau}`
+        )
+        .then((response) => {
+          setListOfMatiere(response.data);
+        });
+    }
+  }, [listEtudiantById.niveau, authState.id, authState.statut]);
 
   // valeur initial dans le formulaire
   let initialValues: FormNoteValues;
 
   if (isEditNoteForm) {
     initialValues = {
-      id_et: listNoteById.id,
+      id_et: listNoteById.EtudiantId,
       id_mat: listNoteById.MatiereId,
       note: listNoteById.note,
     };
@@ -62,7 +67,10 @@ export default function FormNote({ idEt }: Props) {
     }
   };
 
-  const onSubmit = (data: FormNoteValues) => {
+  const onSubmit = (
+    data: FormNoteValues,
+    actions: FormikHelpers<FormNoteValues>
+  ) => {
     if (!isEditNoteForm) {
       axios
         .post("http://localhost:3001/note", data)
@@ -73,7 +81,8 @@ export default function FormNote({ idEt }: Props) {
             );
           } else {
             toast.success("La note a été ajouter avec succès");
-            toggleFormNote();
+            //toggleFormNote();
+            actions.resetForm();
           }
         })
         .catch((error) => {
@@ -121,7 +130,7 @@ export default function FormNote({ idEt }: Props) {
 
                 <Input name="id_et" type="hidden" classNameSpan="hidden" />
 
-                <Select label="Matiere" name="id_mat">
+                <Select label="Matiere" name="id_mat" disabled={isEditNoteForm}>
                   <option value="">Choisir un Matiere</option>
                   {listOfMatiere.map((item: FormMatiereValues) => {
                     return (

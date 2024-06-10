@@ -64,7 +64,9 @@ function App() {
     axios
       .get("http://localhost:3001/personne/auth", {
         headers: {
-          accessToken: localStorage.getItem("accessToken"),
+          accessToken: localStorage.getItem("accessToken")
+            ? JSON.parse(localStorage.getItem("accessToken")).token
+            : null,
         },
       })
       .then((res) => {

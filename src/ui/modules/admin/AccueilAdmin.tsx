@@ -1,30 +1,42 @@
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext, useState } from "react";
-import { Ri24HoursFill } from "react-icons/ri";
+import { RiAddBoxLine, RiListUnordered } from "react-icons/ri";
 import { AuthContext } from "../../../context/AuthContext";
 import { Container } from "../../components/container/Container";
 import Header from "../../components/header/Header";
-import { Logo } from "../../design-system/logo/Logo";
 import ListeMatiere from "../matiere/ListeMatiere";
 import ListeModule from "../module/ListeModule";
 import ListeNote from "../note/ListeNote";
 import FormPersonne from "../personne/FormPersonne";
 
+// {
+//   icon: <Ri24HoursFill />,
+//   label: "Statistique",
+//   component: <Logo />,
+// },
+
 const allData = [
   {
-    icon: <Ri24HoursFill />,
-    label: "Statistique",
-    component: <Logo />,
-  },
-  {
-    icon: <Ri24HoursFill />,
+    icon: <RiAddBoxLine />,
     label: "Ajouter une personne",
     component: <FormPersonne />,
   },
-  { icon: "🧀", label: "Liste des modules", component: <ListeModule /> },
-  { icon: "🧀", label: "Liste des matières", component: <ListeMatiere /> },
-  { icon: "🧀", label: "Liste des notes", component: <ListeNote /> },
+  {
+    icon: <RiListUnordered />,
+    label: "Liste des modules",
+    component: <ListeModule />,
+  },
+  {
+    icon: <RiListUnordered />,
+    label: "Liste des matières",
+    component: <ListeMatiere />,
+  },
+  {
+    icon: <RiListUnordered />,
+    label: "Liste des notes",
+    component: <ListeNote />,
+  },
 ];
 
 const initialTabs = allData;

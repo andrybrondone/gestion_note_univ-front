@@ -1,6 +1,4 @@
 import clsx from "clsx";
-import { useContext } from "react";
-import { DarkModeContext } from "../../components/darkMode/DarkModeGlobal";
 
 interface Props {
   variant?:
@@ -41,8 +39,6 @@ export const Typography = ({
   className,
   children,
 }: Props) => {
-  const { isDarkMode } = useContext(DarkModeContext);
-
   let variantStyles: string = "",
     colorStyles: string = "",
     font: string = "";
@@ -130,15 +126,7 @@ export const Typography = ({
   }
 
   return (
-    <Component
-      className={clsx(
-        variantStyles,
-        colorStyles,
-        font,
-        className,
-        isDarkMode && "dark"
-      )}
-    >
+    <Component className={clsx(variantStyles, colorStyles, font, className)}>
       {children}
     </Component>
   );

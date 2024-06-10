@@ -1,12 +1,16 @@
 import { useContext, useEffect } from "react";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
+import useSearch from "../../../hook/useSearch";
 import DataEmpty from "../../../pages/DataEmpty";
 import { Container } from "../../components/container/Container";
 import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
 import ListInfoUser from "../components/ListInfoUser";
+import SearchBar from "../components/SearchBar";
+import TrieParNiveau from "../components/TrieParNiveau";
+import TrieParParcours from "../components/TrieParParcours";
 
 interface EtudiantData {
   id: number;
@@ -25,6 +29,20 @@ interface EtudiantData {
 
 export default function ListeEtudiant() {
   const { isEditEtudiantForm } = useContext(ToggleEditFormContext);
+  const {
+    search,
+    selectedNiveau,
+    selectedParcours,
+    handleChangeSearch,
+    handleChangeNiveau,
+    handleChangeParcours,
+  } = useSearch();
+
+  let url = `http://localhost:3001/etudiant/info/${selectedNiveau}/${selectedParcours}`;
+
+  if (search !== "") {
+    url = `http://localhost:3001/etudiant/rechercher-etudiant/${selectedNiveau}/${selectedParcours}/${search}`;
+  }
 
   const {
     isLoading,
@@ -35,7 +53,7 @@ export default function ListeEtudiant() {
     setCurrentPage,
     refetch,
   } = useDataFetcher<EtudiantData[]>({
-    endpoint: `http://localhost:3001/etudiant/info`,
+    endpoint: url,
     processData: (data) => data.etudiants,
   });
 
@@ -76,10 +94,29 @@ export default function ListeEtudiant() {
         theme="gray"
         variant="h1"
         component="h1"
-        className="mb-14 text-center"
+        className="mb-5 text-center"
       >
         La liste des etudiants à l' ENI
       </Typography>
+
+      <div className="flex justify-center items-center gap-7 flex-wrap mb-6">
+        <TrieParNiveau onChangeNiveau={handleChangeNiveau} />
+
+        <span className="font-bold text-primary text-2xl max-[375px]:hidden">
+          |
+        </span>
+
+        <TrieParParcours onChangeParcours={handleChangeParcours} />
+
+        <span className="font-bold text-primary text-2xl max-[375px]:hidden">
+          |
+        </span>
+
+        <SearchBar
+          onChangeSearch={handleChangeSearch}
+          placeholder="Recherche par nom ou matricule"
+        />
+      </div>
 
       {data.length > 0 ? (
         <div className="grid grid-cols-2 gap-4 max-[870px]:grid-cols-1">

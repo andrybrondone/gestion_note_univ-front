@@ -138,12 +138,12 @@ export default function NavBar() {
             </Typography>
             {authState.statusAuth && (
               <div className="flex items-center gap-5">
-                <div className="relative cursor-pointer text-[23px] dark:text-white">
+                {/* <div className="relative cursor-pointer text-[23px] dark:text-white">
                   <RiNotification3Line />
                   <p className="absolute  -top-1 -right-1 text-[10px] px-[5px] py-[0.3px] text-white bg-alert-danger rounded-full">
                     1
                   </p>
-                </div>
+                </div> */}
                 <div>
                   <div onClick={() => handleClickShowProfile(authState.id)}>
                     <Avatar

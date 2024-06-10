@@ -20,6 +20,7 @@ interface InfoAllUserProps {
   id?: number;
   PersonneId?: number;
   matricule?: string;
+  moyenne_pratique?: number;
   niveau: string;
   statut: string;
   parcours: string;
@@ -43,6 +44,7 @@ interface PersonnesProps {
   adresse: string;
   lieu_nais: string;
   date_nais: string;
+  photo: string;
 
   Etudiants?: [
     {

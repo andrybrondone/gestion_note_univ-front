@@ -20,6 +20,9 @@ export const ShowFormContext = createContext({
   // Note
   isOpenFormNote: false,
   toggleFormNote: () => {},
+  // Moyenne pratique
+  isOpenFromMoyennePratique: false,
+  toggleFromMoyennePratique: () => {},
 });
 
 export const ShowFormProvider = ({ children }: Props) => {
@@ -28,6 +31,8 @@ export const ShowFormProvider = ({ children }: Props) => {
   const [isOpenFormMatiere, setIsOpenFormMatiere] = useState(false);
   const [isOpenFormModule, setIsOpenFormModule] = useState(false);
   const [isOpenFormNote, setIsOpenFormNote] = useState(false);
+  const [isOpenFromMoyennePratique, setIsOpenFromMoyennePratique] =
+    useState(false);
 
   const toggleFormEt = () => {
     setIsOpenFormEt(!isOpenFormEt);
@@ -44,6 +49,9 @@ export const ShowFormProvider = ({ children }: Props) => {
   const toggleFormNote = () => {
     setIsOpenFormNote(!isOpenFormNote);
   };
+  const toggleFromMoyennePratique = () => {
+    setIsOpenFromMoyennePratique(!isOpenFromMoyennePratique);
+  };
 
   return (
     <ShowFormContext.Provider
@@ -58,6 +66,8 @@ export const ShowFormProvider = ({ children }: Props) => {
         toggleFormModule,
         isOpenFormNote,
         toggleFormNote,
+        isOpenFromMoyennePratique,
+        toggleFromMoyennePratique,
       }}
     >
       {children}

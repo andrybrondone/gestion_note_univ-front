@@ -30,8 +30,11 @@ export interface ListeNoteValues {
   id: number;
   note: string;
   MatiereId: string;
+  EtudiantId: number;
   Etudiant: {
+    id: number;
     matricule: string;
+    parcours: string;
     Personne: {
       nom: string;
       prenom: string;

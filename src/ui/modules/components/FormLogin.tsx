@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Form, Formik } from "formik";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -48,6 +48,7 @@ export default function FormLogin() {
     mdp: Yup.string().required("Ce champ est obligatoire"),
   });
 
+  // Fonction de soumission du formulaire
   const onSubmit = (data: LoginProps) => {
     axios
       .post("http://localhost:3001/personne/login", data)
@@ -55,15 +56,19 @@ export default function FormLogin() {
         if (res.data.error) {
           toast.error(res.data.error);
         } else {
-          localStorage.setItem("accessToken", res.data.token);
-          setAuthState({
+          const authData = {
+            token: res.data.token,
             nom: res.data.nom,
             id: res.data.id,
             statut: res.data.statut,
-            statusAuth: true,
             niveau: res.data.niveau,
             matricule: res.data.matricule,
             parcours: res.data.parcours,
+          };
+          localStorage.setItem("accessToken", JSON.stringify(authData));
+          setAuthState({
+            ...authData,
+            statusAuth: true,
           });
           navigate("/accueil");
         }
@@ -74,6 +79,18 @@ export default function FormLogin() {
         }
       });
   };
+
+  // Récupération des données d'authentification à la charge de l'application
+  useEffect(() => {
+    const storedAuthData = localStorage.getItem("accessToken");
+    if (storedAuthData) {
+      const parsedAuthData = JSON.parse(storedAuthData);
+      setAuthState({
+        ...parsedAuthData,
+        statusAuth: true,
+      });
+    }
+  }, []);
 
   return (
     <div className="bg-gray-400 relative dark:bg-black px-8 py-10 rounded shadow-lg">

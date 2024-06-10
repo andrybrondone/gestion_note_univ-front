@@ -1,14 +1,17 @@
 import { useContext } from "react";
 import { RiDeleteBin2Line, RiPencilLine } from "react-icons/ri";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import useSelecteImage from "../../../hook/useSelecteImage";
 import { Container } from "../../components/container/Container";
-import { Avatar } from "../../design-system/avatar/Avatar";
+import UploadAvatar from "../../components/upload-avatar/UploadAvatar";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import RowsTr from "../components/RowsTr";
 
 export default function InfoCompteEns() {
   const { listPersonneEnsById } = useContext(DataFetcherByIdContext);
+  const { selectedImage, imagePreview, handleImageSelect, handleUploadImage } =
+    useSelecteImage();
 
   return (
     <>
@@ -22,8 +25,20 @@ export default function InfoCompteEns() {
         >
           Vos informations
         </Typography>
+        <div className="flex justify-evenly items-center gap-5">
+          <UploadAvatar
+            photo={listPersonneEnsById.photo}
+            handleImageSelect={handleImageSelect}
+            imagePreview={imagePreview}
+          />
+          <Button
+            disabled={selectedImage === null ? Boolean(true) : Boolean(false)}
+            action={handleUploadImage}
+          >
+            Enregistrer la photo
+          </Button>
+        </div>
         <table className="flex items-center justify-center bg-gray-300 dark:bg-black rounded shadow-sm py-8 mt-3">
-          <Avatar src="" alt="" size="large" />
           {listPersonneEnsById.Enseignants?.map((value, i) => {
             return (
               <tbody key={i}>

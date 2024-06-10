@@ -152,8 +152,8 @@ export default function AllInfoUser({ statutPers }: Props) {
     <>
       {isEditEnseignantForm || isEditEtudiantForm ? (
         <>
-          <div className="anim-transition top-0 left-0 w-full h-[100vh] bg-gray/10 fixed"></div>
-          <Container className="select-none absolute top-7 left-0 right-0 z-20">
+          <div className="anim-transition top-0 left-0 w-full h-[100vh] bg-gray/10 fixed z-40"></div>
+          <Container className="select-none absolute top-7 left-0 right-0 z-50">
             <div className="bg-gray-00 dark:bg-black p-8 w-full text-caption1 bg-white rounded shadow-md">
               <div className="pb-8 flex items-center relative">
                 <RiArrowLeftLine

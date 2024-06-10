@@ -17,6 +17,7 @@ import { Avatar } from "../../design-system/avatar/Avatar";
 import { Button } from "../../design-system/button/Button";
 import ConfirmModale from "../../design-system/confirm-modale/ConfirmModale";
 import { Typography } from "../../design-system/typography/Typography";
+import FormMoyennePratique from "../etudiant/FormMoyennePratique";
 import FormNote from "../note/FormNote";
 import AllInfoUser from "./AllInfoUser";
 
@@ -53,7 +54,11 @@ export default function ListInfoUser({
 }: Props) {
   const { authState } = useContext(AuthContext);
 
-  const { toggleFormNote } = useContext(ShowFormContext);
+  const {
+    toggleFormNote,
+    isOpenFromMoyennePratique,
+    toggleFromMoyennePratique,
+  } = useContext(ShowFormContext);
 
   const { value, toggleValue } = useToggle(false);
 
@@ -321,7 +326,7 @@ export default function ListInfoUser({
                     <Typography
                       variant="caption2"
                       component="div"
-                      className="absolute w-[180px] top-6 left-12 text-caption1 bg-white/80 dark:bg-black px-6 py-2 shadow rounded flex flex-col gap-2 z-30 "
+                      className="absolute w-[200px] top-6 left-12 text-caption1 bg-white/80 dark:bg-black px-6 py-2 shadow rounded flex flex-col gap-2 z-30 "
                     >
                       <p
                         className="cursor-pointer hover:text-secondary-300 transition"
@@ -329,12 +334,22 @@ export default function ListInfoUser({
                       >
                         Voir +
                       </p>
-                      <Link
-                        to="/etudiants/relever-de-note"
-                        className=" hover:text-secondary-300 transition"
-                      >
-                        Relever de notes
-                      </Link>
+                      {authState.statut === "administrateur" && (
+                        <>
+                          <p
+                            className="cursor-pointer hover:text-secondary-300 transition"
+                            onClick={toggleFromMoyennePratique}
+                          >
+                            Moyenne pratique
+                          </p>
+                          <Link
+                            to="/etudiants/relever-de-note"
+                            className=" hover:text-secondary-300 transition"
+                          >
+                            Relever de notes
+                          </Link>
+                        </>
+                      )}
                     </Typography>
                   </>
                 )}
@@ -356,6 +371,10 @@ export default function ListInfoUser({
         </div>
       </div>
       {statut === "etudiant" && <FormNote idEt={listEtudiantById.id} />}
+
+      {statut === "etudiant" && isOpenFromMoyennePratique && (
+        <FormMoyennePratique idEt={listEtudiantById.id} />
+      )}
 
       {statut === "etudiant" && isEditEtudiantForm && (
         <AllInfoUser statutPers="etudiant" />

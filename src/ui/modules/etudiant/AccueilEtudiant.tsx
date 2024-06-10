@@ -1,29 +1,23 @@
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext, useState } from "react";
-import { Ri24HoursFill } from "react-icons/ri";
+import { RiListUnordered } from "react-icons/ri";
 import { AuthContext } from "../../../context/AuthContext";
 import { Container } from "../../components/container/Container";
 import Header from "../../components/header/Header";
 import ListeMatiereByNiveau from "../matiere/ListeMatiereByNiveau";
 import ListeNoteByEtudiant from "../note/ListeNoteByEtudiant";
-import ReleverNote from "../note/ReleverNote";
 
 const allData = [
   {
-    icon: <Ri24HoursFill />,
+    icon: <RiListUnordered />,
     label: "Matières",
     component: <ListeMatiereByNiveau />,
   },
   {
-    icon: <Ri24HoursFill />,
+    icon: <RiListUnordered />,
     label: "Notes par matières",
     component: <ListeNoteByEtudiant />,
-  },
-  {
-    icon: <Ri24HoursFill />,
-    label: "Relever de notes",
-    component: <ReleverNote />,
   },
 ];
 

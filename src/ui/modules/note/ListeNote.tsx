@@ -7,14 +7,18 @@ import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext"
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
+import useSearch from "../../../hook/useSearch";
+import DataEmpty from "../../../pages/DataEmpty";
 import { ListeNoteValues } from "../../../types/crud-props";
 import { Container } from "../../components/container/Container";
 import ConfirmModale from "../../design-system/confirm-modale/ConfirmModale";
 import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
+import SearchBar from "../components/SearchBar";
+import TrieParNiveau from "../components/TrieParNiveau";
+import TrieParParcours from "../components/TrieParParcours";
 import FormNote from "./FormNote";
-import DataEmpty from "../../../pages/DataEmpty";
 
 export default function ListeNote() {
   const { authState } = useContext(AuthContext);
@@ -23,11 +27,34 @@ export default function ListeNote() {
   const { isOpenFormNote, toggleFormNote } = useContext(ShowFormContext);
 
   // Hook pour recupérer les données par son identifiant
-  const { getListNoteById } = useContext(DataFetcherByIdContext);
+  const { getListNoteById, getListEtudiantById } = useContext(
+    DataFetcherByIdContext
+  );
 
   // Hook pour savoir si l'utilisateur à cliquer sur le boutton edit
   const { toggleEditNoteForm, isConfirmDialog, toggleConfirmDialog } =
     useContext(ToggleEditFormContext);
+
+  const {
+    search,
+    selectedNiveau,
+    selectedParcours,
+    handleChangeSearch,
+    handleChangeNiveau,
+    handleChangeParcours,
+  } = useSearch();
+
+  let url;
+
+  if (authState.statut === "enseignant") {
+    url = `http://localhost:3001/note/byEns/${authState.id}/${selectedNiveau}/${selectedParcours}`;
+  } else {
+    url = `http://localhost:3001/note/${selectedNiveau}`;
+
+    if (search !== "") {
+      url = `http://localhost:3001/note/recherche/${selectedNiveau}/${search}`;
+    }
+  }
 
   // Hoock pour la recupération des données et faire la pagination
   const {
@@ -39,7 +66,7 @@ export default function ListeNote() {
     totalPage,
     setCurrentPage,
   } = useDataFetcher<ListeNoteValues[]>({
-    endpoint: `http://localhost:3001/note`,
+    endpoint: url,
     processData: (data) => data.notes,
   });
 
@@ -53,6 +80,9 @@ export default function ListeNote() {
     await getListNoteById(id);
     toggleEditNoteForm();
     toggleFormNote();
+  };
+  const handleGetEtudiant = async (id: number | undefined) => {
+    await getListEtudiantById(id);
   };
 
   // Pour supprimer une note de la BD
@@ -96,6 +126,20 @@ export default function ListeNote() {
 
   return (
     <div className="w-[900px]">
+      <div className="mb-2 flex items-center justify-between gap-4">
+        <TrieParNiveau label="Niveau :" onChangeNiveau={handleChangeNiveau} />
+        {authState.statut === "enseignant" ? (
+          <TrieParParcours
+            onChangeParcours={handleChangeParcours}
+            label="Parcours :"
+          />
+        ) : (
+          <SearchBar
+            onChangeSearch={handleChangeSearch}
+            placeholder="Recherche par matricule"
+          />
+        )}
+      </div>
       {data.length > 0 ? (
         <div className="h-[469px] overflow-y-auto scroll border border-gray-400 rounded dark:text-white dark:border-gray-800/50">
           <table className="w-full max-sm:text-caption4">
@@ -104,6 +148,7 @@ export default function ListeNote() {
                 <th className="py-4">N° matricule</th>
                 <th>Nom</th>
                 <th>Prénom</th>
+                <th>Parcours</th>
                 <th>Matière</th>
                 <th>Note</th>
                 {authState.statut === "enseignant" && <th>Actions</th>}
@@ -119,6 +164,7 @@ export default function ListeNote() {
                     <td className="py-2"> {value.Etudiant.matricule}</td>
                     <td>{value.Etudiant.Personne.nom}</td>
                     <td>{value.Etudiant.Personne.prenom}</td>
+                    <td>{value.Etudiant.parcours}</td>
                     <td>{value.Matiere.nom_mat}</td>
                     <td>{value.note}</td>
                     {authState.statut === "enseignant" && (
@@ -127,6 +173,7 @@ export default function ListeNote() {
                           className="text-alert-warning cursor-pointer"
                           onClick={() => {
                             handleClicEdit(value.id);
+                            handleGetEtudiant(value.Etudiant.id);
                           }}
                         />
                         <RiDeleteBin2Fill

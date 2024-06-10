@@ -32,7 +32,7 @@ export default function Header({ name, info }: Props) {
               component="h1"
               className=" text-gray-900"
             >
-              {name} .
+              {name}
             </Typography>
           </Typography>
           <Typography variant="caption1" theme="gray">
