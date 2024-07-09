@@ -33,10 +33,12 @@ interface InfoAllUserProps {
     adresse: string;
     lieu_nais: string;
     date_nais: string;
+    photo: string;
   };
 }
 
 interface PersonnesProps {
+  id: number;
   nom: string;
   prenom: string;
   phone: string;
@@ -48,6 +50,7 @@ interface PersonnesProps {
 
   Etudiants?: [
     {
+      id: number;
       matricule: string;
       niveau: string;
       parcours: string;
@@ -63,6 +66,7 @@ interface PersonnesProps {
 }
 
 interface FormPersonneValues {
+  id: number;
   nom: string;
   prenom: string;
   phone: string;

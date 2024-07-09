@@ -4,7 +4,6 @@ import { jsPDF } from "jspdf";
 import { useContext, useEffect, useRef, useState } from "react";
 import { RiPrinterFill, RiRefreshLine, RiUploadFill } from "react-icons/ri";
 import { toast } from "sonner";
-import Swal from "sweetalert2";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import useSearch from "../../../hook/useSearch";
 import DataEmpty from "../../../pages/DataEmpty";
@@ -41,7 +40,9 @@ export const ReleverNote = () => {
   const { selectedNiveau, handleChangeNiveau } = useSearch();
   const [modules, setModules] = useState<ReleverNoteProps[]>([]);
   const [moyennePratique, setMoyennePratique] = useState();
-  const { listEtudiantById } = useContext(DataFetcherByIdContext);
+  const { listEtudiantById, getListEtudiantById } = useContext(
+    DataFetcherByIdContext
+  );
   const pdfRef = useRef<HTMLDivElement>(null);
 
   let semestre = "";
@@ -88,14 +89,18 @@ export const ReleverNote = () => {
   }, [listEtudiantById.matricule, selectedNiveau]);
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:3001/historique-niveau/byEtudiantId/${listEtudiantById.id}`
-      )
-      .then((res) => {
-        setMoyennePratique(res.data.moyenne_pratique);
-      });
-  }, [listEtudiantById.id]);
+    if (listEtudiantById.moyenne_pratique === null) {
+      axios
+        .get(
+          `http://localhost:3001/historique-niveau/byEtudiantId/${listEtudiantById.id}`
+        )
+        .then((res) => {
+          if (res.data !== null) {
+            setMoyennePratique(res.data.moyenne_pratique);
+          }
+        });
+    }
+  }, [listEtudiantById.id, listEtudiantById.moyenne_pratique]);
 
   const generatePdf = async () => {
     if (pdfRef.current) {
@@ -148,10 +153,12 @@ export const ReleverNote = () => {
   } else {
     moyenneGeneral = (moyenneTheorique + Number(moyennePratique)) / 2;
 
-    creditsGeneralObtenu = totaleCreditsObtenu + 5;
+    if (moyennePratique !== undefined) {
+      creditsGeneralObtenu = totaleCreditsObtenu + 5;
+    }
   }
 
-  let observationFinale;
+  let observationFinale = "";
   if (moyenneGeneral !== null) {
     observationFinale =
       moyenneGeneral >= 10 && creditsGeneralObtenu === totaleCredits + 5
@@ -167,13 +174,10 @@ export const ReleverNote = () => {
         .post(
           `http://localhost:3001/etudiant/promouvoir/${listEtudiantById.id}`
         )
-        .then(() => {
-          Swal.fire({
-            icon: "success",
-            title: "L'étudiant a bien été promu au niveau supérieur",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+        .then(async () => {
+          sendEmail();
+          await getListEtudiantById(listEtudiantById.id);
+          toast.success("L'étudiant a bien été promu(e) au niveau supérieur.");
         })
         .catch((error) => {
           if (error.message === "Network Error") {
@@ -188,20 +192,75 @@ export const ReleverNote = () => {
   const redoubler = () => {
     if (!hasEmptyNotes()) {
       axios
-        .post(
+        .put(
           `http://localhost:3001/etudiant/redoubler/${listEtudiantById.id}/Redoublant`
         )
-        .then(() => {
-          Swal.fire({
-            icon: "success",
-            title: "Le statut de l'étudiant à bien été modifier en redoublant",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+        .then(async () => {
+          sendEmail();
+          await getListEtudiantById(listEtudiantById.id);
+          toast.success("L'étudiant a bien été redoublé");
         })
         .catch((error) => {
           if (error.message === "Network Error") {
             toast.message("Verifier votre connexion internet !");
+          } else {
+            console.error("Error : ", error);
+          }
+        });
+    }
+  };
+  console.log(listEtudiantById.id);
+
+  let nouveauNiveau;
+  switch (listEtudiantById.niveau) {
+    case "L1":
+      nouveauNiveau = "deuxième année de licence professionnelle (L2)";
+      break;
+    case "L2":
+      nouveauNiveau = "troisième année de licence professionnelle (L3)";
+      break;
+    case "L3":
+      nouveauNiveau = "premère année de master professionnelle (M1)";
+      break;
+    case "M1":
+      nouveauNiveau = "deuxième année de master professionnelle (M2)";
+      break;
+    // Ajouter d'autres niveaux si nécessaire
+    default:
+      throw new Error("Niveau actuel inconnu");
+  }
+
+  const sendEmail = () => {
+    if (observationFinale === "Autorisé à redoubler") {
+      axios
+        .get(
+          `http://localhost:3001/send-email/redoubler/${listEtudiantById.Personne.email}/${listEtudiantById.Personne.nom}/${listEtudiantById.niveau}`
+        )
+        .then(() => {
+          toast.message("Un e-mail a été envoyé vers l'étudiant.");
+        })
+        .catch((error) => {
+          if (error.message === "Request failed with status code 500") {
+            toast.message(
+              "Erreur lors de l'envoi de l'e-mail. Veuillez vérifier votre connexion Internet."
+            );
+          } else {
+            console.error("Error : ", error);
+          }
+        });
+    } else {
+      axios
+        .get(
+          `http://localhost:3001/send-email/promouvoir/${listEtudiantById.Personne.email}/${listEtudiantById.Personne.nom}/${nouveauNiveau}`
+        )
+        .then(() => {
+          toast.message("Un e-mail a été envoyé vers l'étudiant.");
+        })
+        .catch((error) => {
+          if (error.message === "Request failed with status code 500") {
+            toast.message(
+              "Erreur lors de l'envoi de l'e-mail. Veuillez vérifier votre connexion Internet."
+            );
           } else {
             console.error("Error : ", error);
           }
@@ -219,7 +278,9 @@ export const ReleverNote = () => {
               disabled={
                 modules.length === 0 ||
                 hasEmptyNotes() ||
-                listEtudiantById.moyenne_pratique === null
+                listEtudiantById.moyenne_pratique === null ||
+                listEtudiantById.niveau !== selectedNiveau ||
+                listEtudiantById.statut === "Redoublant"
               }
               variant="secondary"
               action={redoubler}
@@ -242,11 +303,7 @@ export const ReleverNote = () => {
             </Button>
           )}
           <Button
-            disabled={
-              modules.length === 0 ||
-              hasEmptyNotes() ||
-              listEtudiantById.moyenne_pratique === null
-            }
+            disabled={modules.length === 0 || hasEmptyNotes()}
             action={generatePdf}
             icon={{ icon: RiPrinterFill }}
           >
@@ -258,8 +315,8 @@ export const ReleverNote = () => {
       {modules.length > 0 ? (
         <>
           {(hasEmptyNotes() ||
-            listEtudiantById.moyenne_pratique === null ||
-            moyennePratique === null) && (
+            (listEtudiantById.moyenne_pratique === null &&
+              moyennePratique === undefined)) && (
             <>
               <div className="anim-transition top-0 left-0 w-full h-[100vh] bg-gray/10 fixed z-20"></div>
               <Typography
@@ -466,7 +523,13 @@ export const ReleverNote = () => {
                             ? listEtudiantById.moyenne_pratique
                             : moyennePratique}
                         </td>
-                        <td>5/5</td>
+                        <td>
+                          {listEtudiantById.moyenne_pratique !== null ||
+                          moyennePratique !== undefined
+                            ? "5"
+                            : ""}
+                          /5
+                        </td>
                         <td>VALIDE</td>
                       </tr>
                       <tr>

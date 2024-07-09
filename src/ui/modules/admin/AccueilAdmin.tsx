@@ -10,12 +10,6 @@ import ListeModule from "../module/ListeModule";
 import ListeNote from "../note/ListeNote";
 import FormPersonne from "../personne/FormPersonne";
 
-// {
-//   icon: <Ri24HoursFill />,
-//   label: "Statistique",
-//   component: <Logo />,
-// },
-
 const allData = [
   {
     icon: <RiAddBoxLine />,
@@ -53,7 +47,7 @@ export default function AccueilAdmin() {
             la liste des étudiants, des enseignants et des matières et vous avez également le droit d'en ajouter des nouvelles !"
       />
       <Container className="mb-11 flex items-center justify-between gap-4">
-        <div className="flex flex-col gap-5 ">
+        <div className="flex flex-col gap-5 dark:text-white">
           {initialTabs.map((item) => (
             <div className="relative group" key={item.label}>
               <p

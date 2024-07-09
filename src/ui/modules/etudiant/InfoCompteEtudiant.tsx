@@ -1,6 +1,9 @@
+import axios from "axios";
 import { useContext } from "react";
-import { RiDeleteBin2Line, RiPencilLine } from "react-icons/ri";
+import { RiDeleteBin2Line, RiPencilLine, RiSave2Line } from "react-icons/ri";
+import { toast } from "sonner";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import { ToggleStateContext } from "../../../context/ToggleStateContext";
 import useSelecteImage from "../../../hook/useSelecteImage";
 import { Container } from "../../components/container/Container";
 import UploadAvatar from "../../components/upload-avatar/UploadAvatar";
@@ -9,9 +12,32 @@ import { Typography } from "../../design-system/typography/Typography";
 import RowsTr from "../components/RowsTr";
 
 export default function InfoCompteEtudiant() {
-  const { listPersonneEtById } = useContext(DataFetcherByIdContext);
-  const { selectedImage, imagePreview, handleImageSelect, handleUploadImage } =
+  const { listPersonneEtById, getListPersonneEtById } = useContext(
+    DataFetcherByIdContext
+  );
+  const { imagePreview, handleImageSelect, handleUploadImage, value } =
     useSelecteImage();
+
+  const { toggleState } = useContext(ToggleStateContext);
+
+  const deletePhoto = () => {
+    if (listPersonneEtById.photo !== "default_photo.jpg") {
+      axios
+        .put(
+          `http://localhost:3001/personne/delete-photo/${listPersonneEtById.id}`
+        )
+        .then(async () => {
+          toggleState();
+          await getListPersonneEtById(listPersonneEtById.id);
+          toast.success("Votre photo à été supprimer avec succès");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      toast.message("Votre photo à déjà été supprimer");
+    }
+  };
 
   return (
     <>
@@ -31,12 +57,23 @@ export default function InfoCompteEtudiant() {
             handleImageSelect={handleImageSelect}
             imagePreview={imagePreview}
           />
-          <Button
-            disabled={selectedImage === null ? Boolean(true) : Boolean(false)}
-            action={handleUploadImage}
-          >
-            Enregistrer la photo
-          </Button>
+          <div className="flex flex-col gap-3">
+            <Button
+              icon={{ icon: RiSave2Line }}
+              disabled={value}
+              variant="secondary"
+              action={handleUploadImage}
+            >
+              Enregistrer la photo
+            </Button>
+            <Button
+              icon={{ icon: RiDeleteBin2Line }}
+              variant="delete"
+              action={deletePhoto}
+            >
+              Supprimer la photo
+            </Button>
+          </div>
         </div>
         <table className="flex items-center justify-center bg-gray-300 dark:bg-black rounded shadow-sm py-8 mt-3">
           {listPersonneEtById.Etudiants?.map((value) => {

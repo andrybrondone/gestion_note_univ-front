@@ -1,11 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
-import {
-  RiAccountPinCircleLine,
-  RiLogoutCircleLine,
-  RiNotification3Line,
-} from "react-icons/ri";
+import { RiAccountPinCircleLine, RiLogoutCircleLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
@@ -18,6 +14,7 @@ import { Container } from "../container/Container";
 import { ToggleBtn } from "../darkMode/ToggleBtn";
 import ActiveLink from "./ActiveLink";
 import LinkMobile from "./LinkMobile";
+import { ToggleStateContext } from "../../../context/ToggleStateContext";
 
 interface PhotoProps {
   photo: string;
@@ -25,6 +22,7 @@ interface PhotoProps {
 
 export default function NavBar() {
   const { isMobile, toggleNav } = useContext(ToggleNavContext);
+  const { isState } = useContext(ToggleStateContext);
 
   const [photoById, setPhotoById] = useState({} as PhotoProps);
 
@@ -68,14 +66,14 @@ export default function NavBar() {
     if (authState.id !== 0) {
       axios
         .get(`http://localhost:3001/personne/photo/${authState.id}`)
-        .then((response) => {
+        .then(async (response) => {
           setPhotoById(response.data);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-  }, [authState.id]);
+  }, [authState.id, isState]);
 
   const clickMenuBurger = () => {
     const menutoggel = document.getElementById("menuBurger");
@@ -157,7 +155,7 @@ export default function NavBar() {
                     <Typography
                       variant="caption1"
                       component="div"
-                      className="absolute dark:bg-black bg-white/80 px-6 py-2 shadow rounded flex flex-col gap-2.5 z-30 right-2"
+                      className="absolute dark:bg-black bg-white/80 px-6 py-2 shadow rounded flex flex-col gap-2.5 right-2 z-[100]"
                     >
                       <Link to="/information-compte" onClick={toggleMenu}>
                         <p className="flex items-center gap-2 hover:text-secondary-600 transition">

@@ -185,7 +185,7 @@ export default function AllInfoUser({ statutPers }: Props) {
               </div>
               <div className="flex justify-center items-center mb-5">
                 <Avatar
-                  src={`http://localhost:3001/images/default_photo.jpg`}
+                  src={`http://localhost:3001/images/${listEtudiantById.Personne.photo}`}
                   alt=""
                   size="very-large"
                 />

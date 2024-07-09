@@ -34,7 +34,7 @@ export default function AccueilEns() {
         info="En tant qu'enseignant de l'ENI, vous avez les droits d'ajouter les notes de chaque étudiant qui sont inscrit aux matières que vous enseignez !"
       />
 
-      <Container className="mb-11 flex justify-between items-center gap-4">
+      <Container className="mb-11 flex justify-between items-center gap-4 dark:text-white">
         <div className="flex flex-col gap-7 ">
           {initialTabs.map((item) => (
             <div className="relative group" key={item.label}>

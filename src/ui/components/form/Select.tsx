@@ -17,7 +17,7 @@ export function Select({
   const [field, meta] = useField(props as FieldAttributes<string>);
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 dark:text-white">
       <label className="max-md:text-caption2 max-sm:text-caption4">
         {label}{" "}
         <span className={clsx("text-alert-danger", classNameSpan)}>*</span>

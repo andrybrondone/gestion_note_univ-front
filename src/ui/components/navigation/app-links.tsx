@@ -22,45 +22,7 @@ const footerApplicationLinks: AppLinks[] = [
     type: "internal",
   },
 ];
-/*const footerUsersLinks: AppLinks[] = [
-  {
-    label: "Mon espace",
-    baseUrl: "/#",
-    type: "internal",
-  },
-  {
-    label: "Connexion",
-    baseUrl: "/#",
-    type: "internal",
-  },
-  {
-    label: "Inscription",
-    baseUrl: "/#",
-    type: "internal",
-  },
-  {
-    label: "Mot de passe oublié",
-    baseUrl: "/#",
-    type: "internal",
-  },
-];
-const fooInformationLink: AppLinks[] = [
-  {
-    label: "CGU",
-    baseUrl: "/#",
-    type: "internal",
-  },
-  {
-    label: "Confidentialité",
-    baseUrl: "/a-propos",
-    type: "internal",
-  },
-  {
-    label: "Contact",
-    baseUrl: "/competence",
-    type: "internal",
-  },
-];*/
+
 export const footerSocialNetworksLink: AppLinks[] = [
   {
     label: "Facebook",

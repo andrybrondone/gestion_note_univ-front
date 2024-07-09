@@ -34,7 +34,7 @@ export default function AccueilEtudiant() {
         info="En tant qu'etudiant de l'ENI, vous avez les droits de consulter la liste des enseignants, de voir vos notes dès qu'ils sont disponnibles et aussi de générer votre relever de note."
       />
       <Container className="mb-11 flex justify-between items-center gap-4">
-        <div className="flex flex-col gap-7 ">
+        <div className="flex flex-col gap-7 dark:text-white">
           {initialTabs.map((item) => (
             <div className="relative group" key={item.label}>
               <p

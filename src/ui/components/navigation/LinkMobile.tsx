@@ -20,7 +20,7 @@ export default function LinkMobile() {
         onClick={clickMenuBurger}
       ></div>
 
-      <div className="bg-gray-300/60 backdrop-blur-sm shadow-lg dark:bg-black/60 dark-transition absolute top-[75px] rounded flex flex-col items-center gap-6 py-6 px-10 anim-transition w-full z-50 animation-nav">
+      <div className="bg-gray-300/60 backdrop-blur-sm shadow-lg dark:text-white dark:bg-black/60 dark-transition absolute top-[75px] rounded flex flex-col items-center gap-6 py-6 px-10 anim-transition w-full z-50 animation-nav">
         <ActiveLink
           href="/accueil"
           className="flex justify-center items-center gap-1"

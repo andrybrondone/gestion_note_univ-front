@@ -19,7 +19,7 @@ export function CheckBox({
   const [field, meta] = useField(props as FieldAttributes<string>);
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 dark:text-white">
       <div className="flex items-center gap-2">
         <input
           {...field}
