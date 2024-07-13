@@ -10,6 +10,7 @@ import UploadAvatar from "../../components/upload-avatar/UploadAvatar";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import RowsTr from "../components/RowsTr";
+import { url_api } from "../../../utils/url-api";
 
 export default function InfoCompteAdmin() {
   const { listPersonneById, getListPersonneById } = useContext(
@@ -22,7 +23,7 @@ export default function InfoCompteAdmin() {
 
   const deletePhoto = () => {
     axios
-      .put(`http://localhost:3001/personne/delete-photo/${listPersonneById.id}`)
+      .put(`${url_api}/personne/delete-photo/${listPersonneById.id}`)
       .then(async () => {
         toggleState();
         await getListPersonneById(listPersonneById.id);

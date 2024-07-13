@@ -6,6 +6,8 @@ import { Toaster } from "sonner";
 import App from "./App.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { DataFetcherByIdProvider } from "./context/DataFetcherByIdContext.tsx";
+import { DataUserProvider } from "./context/DataUserContext.tsx";
+import { LoadingProvider } from "./context/LoadingContext.tsx";
 import { ShowFormProvider } from "./context/ShowFormContext.tsx";
 import { ToggleEditFormProvider } from "./context/ToggleEditFormContext.tsx";
 import { ToggleNavProvider } from "./context/ToggleNavContext.tsx";
@@ -24,15 +26,19 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <ShowFormProvider>
               <DataFetcherByIdProvider>
                 <ToggleEditFormProvider>
-                  <AuthProvider>
-                    <App />
-                    <Toaster
-                      richColors
-                      position="top-center"
-                      duration={6000}
-                      closeButton
-                    />
-                  </AuthProvider>
+                  <LoadingProvider>
+                    <DataUserProvider>
+                      <AuthProvider>
+                        <App />
+                        <Toaster
+                          richColors
+                          position="top-center"
+                          duration={6000}
+                          closeButton
+                        />
+                      </AuthProvider>
+                    </DataUserProvider>
+                  </LoadingProvider>
                 </ToggleEditFormProvider>
               </DataFetcherByIdProvider>
             </ShowFormProvider>

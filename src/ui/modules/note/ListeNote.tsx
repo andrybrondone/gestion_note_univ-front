@@ -2,14 +2,15 @@ import axios from "axios";
 import { useContext, useEffect, useRef } from "react";
 import { RiDeleteBin2Fill, RiPencilFill } from "react-icons/ri";
 import { toast } from "sonner";
-import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import { DataUserContext } from "../../../context/DataUserContext";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
 import useSearch from "../../../hook/useSearch";
 import DataEmpty from "../../../pages/DataEmpty";
 import { ListeNoteValues } from "../../../types/crud-props";
+import { url_api } from "../../../utils/url-api";
 import { Container } from "../../components/container/Container";
 import ConfirmModale from "../../design-system/confirm-modale/ConfirmModale";
 import { Spinner } from "../../design-system/spinner/Spinner";
@@ -21,7 +22,7 @@ import TrieParParcours from "../components/TrieParParcours";
 import FormNote from "./FormNote";
 
 export default function ListeNote() {
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
 
   // Hook pour savoir l'état du formulaire matiere
   const { isOpenFormNote, toggleFormNote } = useContext(ShowFormContext);
@@ -46,13 +47,13 @@ export default function ListeNote() {
 
   let url;
 
-  if (authState.statut === "enseignant") {
-    url = `http://localhost:3001/note/byEns/${authState.id}/${selectedNiveau}/${selectedParcours}`;
+  if (dataUser.statut === "enseignant") {
+    url = `${url_api}/note/byEns/${dataUser.id}/${selectedNiveau}/${selectedParcours}`;
   } else {
-    url = `http://localhost:3001/note/${selectedNiveau}`;
+    url = `${url_api}/note/${selectedNiveau}`;
 
     if (search !== "") {
-      url = `http://localhost:3001/note/recherche/${selectedNiveau}/${search}`;
+      url = `${url_api}/note/recherche/${selectedNiveau}/${search}`;
     }
   }
 
@@ -88,7 +89,7 @@ export default function ListeNote() {
   // Pour supprimer une note de la BD
   const deleteNote = (id: number | undefined) => {
     axios
-      .delete(`http://localhost:3001/note/${id}`)
+      .delete(`${url_api}/note/${id}`)
       .then(() => {
         toast.success("La note a été supprimé avec succès");
         refetch();
@@ -128,7 +129,7 @@ export default function ListeNote() {
     <div className="w-[900px]">
       <div className="mb-2 flex items-center justify-between gap-4">
         <TrieParNiveau label="Niveau :" onChangeNiveau={handleChangeNiveau} />
-        {authState.statut === "enseignant" ? (
+        {dataUser.statut === "enseignant" ? (
           <TrieParParcours
             onChangeParcours={handleChangeParcours}
             label="Parcours :"
@@ -151,7 +152,7 @@ export default function ListeNote() {
                 <th>Parcours</th>
                 <th>Matière</th>
                 <th>Note</th>
-                {authState.statut === "enseignant" && <th>Actions</th>}
+                {dataUser.statut === "enseignant" && <th>Actions</th>}
               </tr>
             </thead>
             <tbody className="text-center capitalize">
@@ -167,7 +168,7 @@ export default function ListeNote() {
                     <td>{value.Etudiant.parcours}</td>
                     <td>{value.Matiere.nom_mat}</td>
                     <td>{value.note}</td>
-                    {authState.statut === "enseignant" && (
+                    {dataUser.statut === "enseignant" && (
                       <td className="flex items-center justify-center py-2 text-3xl gap-2 max-sm:text-2xl">
                         <RiPencilFill
                           className="text-alert-warning cursor-pointer"

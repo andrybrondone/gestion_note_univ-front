@@ -10,6 +10,7 @@ import UploadAvatar from "../../components/upload-avatar/UploadAvatar";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import RowsTr from "../components/RowsTr";
+import { url_api } from "../../../utils/url-api";
 
 export default function InfoCompteEtudiant() {
   const { listPersonneEtById, getListPersonneEtById } = useContext(
@@ -23,9 +24,7 @@ export default function InfoCompteEtudiant() {
   const deletePhoto = () => {
     if (listPersonneEtById.photo !== "default_photo.jpg") {
       axios
-        .put(
-          `http://localhost:3001/personne/delete-photo/${listPersonneEtById.id}`
-        )
+        .put(`${url_api}/personne/delete-photo/${listPersonneEtById.id}`)
         .then(async () => {
           toggleState();
           await getListPersonneEtById(listPersonneEtById.id);

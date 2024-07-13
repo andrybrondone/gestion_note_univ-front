@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { AuthContext } from "../../../context/AuthContext";
+import { DataUserContext } from "../../../context/DataUserContext";
 import { useDataFetcher } from "../../../hook/useDataFetcher";
 import useSearch from "../../../hook/useSearch";
 import DataEmpty from "../../../pages/DataEmpty";
 import { ListeMatiereValues } from "../../../types/crud-props";
+import { url_api } from "../../../utils/url-api";
 import { Container } from "../../components/container/Container";
 import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
@@ -11,14 +12,14 @@ import { ButtonPagination } from "../components/ButtonPagination";
 import TrieParNiveau from "../components/TrieParNiveau";
 
 export default function ListeMatiereParEns() {
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
 
   const { selectedNiveau, handleChangeNiveau } = useSearch();
 
   // Hoock pour la recupération des données et faire la pagination
   const { isLoading, isError, data, currentPage, totalPage, setCurrentPage } =
     useDataFetcher<ListeMatiereValues[]>({
-      endpoint: `http://localhost:3001/matiere/byEns/${authState.id}/${selectedNiveau}`,
+      endpoint: `${url_api}/matiere/byEns/${dataUser.id}/${selectedNiveau}`,
       processData: (data) => data.matieresParEns,
     });
 

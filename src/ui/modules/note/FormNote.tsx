@@ -3,11 +3,12 @@ import { Form, Formik, FormikHelpers } from "formik";
 import { useContext, useEffect, useState } from "react";
 import { RiCloseFill } from "react-icons/ri";
 import { toast } from "sonner";
-import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import { DataUserContext } from "../../../context/DataUserContext";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { FormMatiereValues, FormNoteValues } from "../../../types/crud-props";
+import { url_api } from "../../../utils/url-api";
 import { Input } from "../../components/form/Input";
 import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
@@ -19,7 +20,7 @@ interface Props {
 }
 
 export default function FormNote({ idEt }: Props) {
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
 
   const { listEtudiantById, listNoteById } = useContext(DataFetcherByIdContext);
 
@@ -32,16 +33,14 @@ export default function FormNote({ idEt }: Props) {
   );
 
   useEffect(() => {
-    if (authState.statut === "enseignant") {
+    if (dataUser.statut === "enseignant") {
       axios
-        .get(
-          `http://localhost:3001/matiere/nom/${authState.id}/${listEtudiantById.niveau}`
-        )
+        .get(`${url_api}/matiere/nom/${dataUser.id}/${listEtudiantById.niveau}`)
         .then((response) => {
           setListOfMatiere(response.data);
         });
     }
-  }, [listEtudiantById.niveau, authState.id, authState.statut]);
+  }, [listEtudiantById.niveau, dataUser.id, dataUser.statut]);
 
   // valeur initial dans le formulaire
   let initialValues: FormNoteValues;
@@ -73,7 +72,7 @@ export default function FormNote({ idEt }: Props) {
   ) => {
     if (!isEditNoteForm) {
       axios
-        .post("http://localhost:3001/note", data)
+        .post(`${url_api}/note`, data)
         .then((res) => {
           if (res.data.error === "error") {
             toast.error(
@@ -90,7 +89,7 @@ export default function FormNote({ idEt }: Props) {
         });
     } else {
       axios
-        .put(`http://localhost:3001/note/${listNoteById.id}`, data)
+        .put(`${url_api}/note/${listNoteById.id}`, data)
         .then(() => {
           toast.success("La note de cette étudiant a été modifié avec succès");
           // Pour effacer fermer le formulaire

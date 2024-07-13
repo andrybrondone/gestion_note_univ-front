@@ -8,11 +8,12 @@ import {
 } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import { DataUserContext } from "../../../context/DataUserContext";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import useToggle from "../../../hook/useToggle";
+import { url_api } from "../../../utils/url-api";
 import { Avatar } from "../../design-system/avatar/Avatar";
 import { Button } from "../../design-system/button/Button";
 import ConfirmModale from "../../design-system/confirm-modale/ConfirmModale";
@@ -52,7 +53,7 @@ export default function ListInfoUser({
   idEns,
   refetch,
 }: Props) {
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
 
   const {
     toggleFormNote,
@@ -106,7 +107,7 @@ export default function ListInfoUser({
 
   const hardDeleteEtudiant = (id: number | undefined) => {
     axios
-      .delete(`http://localhost:3001/personne/${id}`)
+      .delete(`${url_api}/personne/${id}`)
       .then(() => {
         toast.success(
           "Les informations sur cette étudiant ont été supprimé définitivement"
@@ -120,7 +121,7 @@ export default function ListInfoUser({
 
   const updateStatutEns = (id: number | undefined) => {
     axios
-      .put(`http://localhost:3001/enseignant/statut/${id}`)
+      .put(`${url_api}/enseignant/statut/${id}`)
       .then(() => {
         toast.success(
           "L'enseignant a été supprimer de la liste des enseignants actif de l'ENI"
@@ -136,11 +137,7 @@ export default function ListInfoUser({
     <>
       <div className="flex max-[870px]:justify-center gap-4 mb-3 bg-gray-300/50 dark:bg-gray-900 px-4 py-6 rounded shadow">
         <div className="max-sm:hidden mt-5">
-          <Avatar
-            src={`http://localhost:3001/images/${photo}`}
-            alt=""
-            size="very-large"
-          />
+          <Avatar src={`${url_api}/images/${photo}`} alt="" size="very-large" />
         </div>
         <div className="flex flex-col gap-2">
           {statut === "etudiant" && (
@@ -261,7 +258,7 @@ export default function ListInfoUser({
           </Typography>
 
           <div className=" flex items-center gap-3 mt-3">
-            {authState.statut === "administrateur" && (
+            {dataUser.statut === "administrateur" && (
               <>
                 {statut === "enseignant" && (
                   <Button
@@ -289,7 +286,7 @@ export default function ListInfoUser({
               </>
             )}
 
-            {authState.statut === "enseignant" && (
+            {dataUser.statut === "enseignant" && (
               <>
                 {statut === "etudiant" && (
                   <Button
@@ -334,7 +331,7 @@ export default function ListInfoUser({
                       >
                         Voir +
                       </p>
-                      {authState.statut === "administrateur" && (
+                      {dataUser.statut === "administrateur" && (
                         <>
                           <p
                             className="cursor-pointer hover:text-secondary-300 transition"

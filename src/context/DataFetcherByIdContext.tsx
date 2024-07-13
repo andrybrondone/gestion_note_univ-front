@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useState } from "react";
 import { FormModuleValues, ListeNoteValues } from "../types/crud-props";
+import { url_api } from "../utils/url-api";
 
 interface Props {
   children: React.ReactNode;
@@ -128,7 +129,7 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
 
   const getListPersonneById = (id: number | undefined) => {
     return axios
-      .get(`http://localhost:3001/personne/byId/${id}`)
+      .get(`${url_api}/personne/byId/${id}`)
       .then((response) => {
         setPersonneListById(response.data);
       })
@@ -139,7 +140,7 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
 
   const getListPersonneEtById = (id: number | undefined) => {
     return axios
-      .get(`http://localhost:3001/personne/etudiant/byId/${id}`)
+      .get(`${url_api}/personne/etudiant/byId/${id}`)
       .then((response) => {
         setPersonneEtListById(response.data);
       })
@@ -150,7 +151,7 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
 
   const getListPersonneEnsById = (id: number | undefined) => {
     return axios
-      .get(`http://localhost:3001/personne/enseignant/byId/${id}`)
+      .get(`${url_api}/personne/enseignant/byId/${id}`)
       .then((response) => {
         setPersonneEnsListById(response.data);
       })
@@ -161,7 +162,7 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
 
   const getListEtudiantById = (id: number | undefined) => {
     return axios
-      .get(`http://localhost:3001/etudiant/byId/${id}`)
+      .get(`${url_api}/etudiant/byId/${id}`)
       .then((response) => {
         setEtudiantListById(response.data);
       })
@@ -172,7 +173,7 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
 
   const getListEnseignantById = (id: number | undefined) => {
     return axios
-      .get(`http://localhost:3001/enseignant/byId/${id}`)
+      .get(`${url_api}/enseignant/byId/${id}`)
       .then((response) => {
         setEnseignantListById(response.data);
       })
@@ -183,7 +184,7 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
 
   const getListModuleById = (id: number | undefined) => {
     return axios
-      .get(`http://localhost:3001/module/byId/${id}`)
+      .get(`${url_api}/module/byId/${id}`)
       .then((response) => {
         setModuleListById(response.data);
       })
@@ -194,7 +195,7 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
 
   const getListMatiereById = (id: number | undefined) => {
     return axios
-      .get(`http://localhost:3001/matiere/byId/${id}`)
+      .get(`${url_api}/matiere/byId/${id}`)
       .then((response) => {
         setMatiereListById(response.data);
       })
@@ -205,7 +206,7 @@ export const DataFetcherByIdProvider = ({ children }: Props) => {
 
   const getListNoteById = (id: number | undefined) => {
     return axios
-      .get(`http://localhost:3001/note/byId/${id}`)
+      .get(`${url_api}/note/byId/${id}`)
       .then((response) => {
         setNoteListById(response.data);
       })

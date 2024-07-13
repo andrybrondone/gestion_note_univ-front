@@ -1,21 +1,21 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { DataUserContext } from "../context/DataUserContext";
 import { ReleverNote } from "../ui/modules/note/ReleverNote";
 
 export default function ReleverNotePage() {
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authState.statut === "") {
+    if (dataUser.statut === "") {
       navigate("/");
     }
-  }, [authState.statut, navigate]);
+  }, [dataUser.statut, navigate]);
 
   return (
     <>
-      {authState.statut === "administrateur" && (
+      {dataUser.statut === "administrateur" && (
         <>
           <ReleverNote />
         </>

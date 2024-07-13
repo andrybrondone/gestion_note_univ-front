@@ -4,11 +4,12 @@ import { Form, Formik } from "formik";
 import { useContext } from "react";
 import { RiArrowLeftLine, RiSave2Line } from "react-icons/ri";
 import { toast } from "sonner";
-import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import { DataUserContext } from "../../../context/DataUserContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import useToggle from "../../../hook/useToggle";
 import { FormAllUsersValues } from "../../../types/crud-props";
+import { url_api } from "../../../utils/url-api";
 import { Container } from "../../components/container/Container";
 import { Input } from "../../components/form/Input";
 import { Select } from "../../components/form/Select";
@@ -22,7 +23,7 @@ interface Props {
 }
 
 export default function AllInfoUser({ statutPers }: Props) {
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
   const { value: disabled, toggleValue: toggleDisabled } = useToggle(true);
 
   // Hook pour savoir si l'utilisateur à cliquer sur le boutton edit
@@ -95,16 +96,13 @@ export default function AllInfoUser({ statutPers }: Props) {
   const onSubmit = (data: FormAllUsersValues) => {
     if (isEditEnseignantForm) {
       axios
-        .put(`http://localhost:3001/enseignant/${listEnseignantById.id}`, data)
+        .put(`${url_api}/enseignant/${listEnseignantById.id}`, data)
         .then(() => {})
         .catch((error) => {
           console.error("Error : ", error);
         });
       axios
-        .put(
-          `http://localhost:3001/personne/${listEnseignantById.PersonneId}`,
-          data
-        )
+        .put(`${url_api}/personne/${listEnseignantById.PersonneId}`, data)
         .then(() => {
           toast.success(
             "Les informations sur l'enseignant ont été modifié avec succès"
@@ -117,16 +115,13 @@ export default function AllInfoUser({ statutPers }: Props) {
     }
     if (isEditEtudiantForm) {
       axios
-        .put(`http://localhost:3001/etudiant/${listEtudiantById.id}`, data)
+        .put(`${url_api}/etudiant/${listEtudiantById.id}`, data)
         .then(() => {})
         .catch((error) => {
           console.error("Error : ", error);
         });
       axios
-        .put(
-          `http://localhost:3001/personne/${listEtudiantById.PersonneId}`,
-          data
-        )
+        .put(`${url_api}/personne/${listEtudiantById.PersonneId}`, data)
         .then(() => {
           toast.success(
             "Les informations sur l'étudiant ont été modifié avec succès"
@@ -185,7 +180,7 @@ export default function AllInfoUser({ statutPers }: Props) {
               </div>
               <div className="flex justify-center items-center mb-5">
                 <Avatar
-                  src={`http://localhost:3001/images/${listEtudiantById.Personne.photo}`}
+                  src={`${url_api}/images/${listEtudiantById.Personne.photo}`}
                   alt=""
                   size="very-large"
                 />
@@ -355,7 +350,7 @@ export default function AllInfoUser({ statutPers }: Props) {
                       </div>
                     </div>
 
-                    {authState.statut === "administrateur" && (
+                    {dataUser.statut === "administrateur" && (
                       <div className="flex justify-between items-center mt-5 gap-4">
                         <div onClick={toggleDisabled}>
                           <Typography

@@ -1,25 +1,25 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { DataUserContext } from "../context/DataUserContext";
 import AccueilAdmin from "../ui/modules/admin/AccueilAdmin";
 import AccueilEns from "../ui/modules/enseignant/AccueilEns";
 import AccueilEtudiant from "../ui/modules/etudiant/AccueilEtudiant";
 
 export default function Accueil() {
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authState.statut === "") {
+    if (dataUser.statut === "") {
       navigate("/");
     }
-  }, [authState.statut, navigate]);
+  }, [dataUser.statut, navigate]);
 
   return (
     <>
-      {authState.statut === "etudiant" && <AccueilEtudiant />}
-      {authState.statut === "enseignant" && <AccueilEns />}
-      {authState.statut === "administrateur" && <AccueilAdmin />}
+      {dataUser.statut === "etudiant" && <AccueilEtudiant />}
+      {dataUser.statut === "enseignant" && <AccueilEns />}
+      {dataUser.statut === "administrateur" && <AccueilAdmin />}
     </>
   );
 }

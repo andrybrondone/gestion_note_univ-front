@@ -2,6 +2,7 @@ import axios from "axios";
 import { FormikHelpers } from "formik";
 import { toast } from "sonner";
 import { FormAllUsersValues, FormPersonneValues } from "../types/crud-props";
+import { url_api } from "../utils/url-api";
 
 export const onSubmitPersonne = (
   data: FormPersonneValues,
@@ -10,7 +11,7 @@ export const onSubmitPersonne = (
   toggleFormEns: () => void
 ) => {
   axios
-    .post("http://localhost:3001/personne", data)
+    .post(`${url_api}/personne`, data)
     .then((res) => {
       if (res.data.error === "duplication") {
         toast.error("L'adresse e-mail existe déjà, veuillez le changer");
@@ -43,7 +44,7 @@ export const onSubmitUsersInfo = (
   actions: FormikHelpers<FormAllUsersValues>
 ) => {
   axios
-    .post("http://localhost:3001/personne", data)
+    .post(`${url_api}/personne`, data)
     .then(() => {
       toast.success("La personne a été ajouter avec succès");
 

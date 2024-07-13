@@ -12,6 +12,7 @@ import ActiveLink from "../../components/navigation/ActiveLink";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import TrieParNiveau from "../components/TrieParNiveau";
+import { url_api } from "../../../utils/url-api";
 
 interface ReleverNoteProps {
   id: number;
@@ -81,7 +82,7 @@ export const ReleverNote = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:3001/note/releverNote/${listEtudiantById.matricule}/${selectedNiveau}`
+        `${url_api}/note/releverNote/${listEtudiantById.matricule}/${selectedNiveau}`
       )
       .then((res) => {
         setModules(res.data.modules);
@@ -91,9 +92,7 @@ export const ReleverNote = () => {
   useEffect(() => {
     if (listEtudiantById.moyenne_pratique === null) {
       axios
-        .get(
-          `http://localhost:3001/historique-niveau/byEtudiantId/${listEtudiantById.id}`
-        )
+        .get(`${url_api}/historique-niveau/byEtudiantId/${listEtudiantById.id}`)
         .then((res) => {
           if (res.data !== null) {
             setMoyennePratique(res.data.moyenne_pratique);
@@ -171,9 +170,7 @@ export const ReleverNote = () => {
   const promouvoir = () => {
     if (!hasEmptyNotes()) {
       axios
-        .post(
-          `http://localhost:3001/etudiant/promouvoir/${listEtudiantById.id}`
-        )
+        .post(`${url_api}/etudiant/promouvoir/${listEtudiantById.id}`)
         .then(async () => {
           sendEmail();
           await getListEtudiantById(listEtudiantById.id);
@@ -192,9 +189,7 @@ export const ReleverNote = () => {
   const redoubler = () => {
     if (!hasEmptyNotes()) {
       axios
-        .put(
-          `http://localhost:3001/etudiant/redoubler/${listEtudiantById.id}/Redoublant`
-        )
+        .put(`${url_api}/etudiant/redoubler/${listEtudiantById.id}/Redoublant`)
         .then(async () => {
           sendEmail();
           await getListEtudiantById(listEtudiantById.id);
@@ -211,7 +206,7 @@ export const ReleverNote = () => {
   };
   console.log(listEtudiantById.id);
 
-  let nouveauNiveau;
+  let nouveauNiveau: string;
   switch (listEtudiantById.niveau) {
     case "L1":
       nouveauNiveau = "deuxième année de licence professionnelle (L2)";
@@ -234,7 +229,7 @@ export const ReleverNote = () => {
     if (observationFinale === "Autorisé à redoubler") {
       axios
         .get(
-          `http://localhost:3001/send-email/redoubler/${listEtudiantById.Personne.email}/${listEtudiantById.Personne.nom}/${listEtudiantById.niveau}`
+          `${url_api}/send-email/redoubler/${listEtudiantById.Personne.email}/${listEtudiantById.Personne.nom}/${listEtudiantById.niveau}`
         )
         .then(() => {
           toast.message("Un e-mail a été envoyé vers l'étudiant.");
@@ -251,7 +246,7 @@ export const ReleverNote = () => {
     } else {
       axios
         .get(
-          `http://localhost:3001/send-email/promouvoir/${listEtudiantById.Personne.email}/${listEtudiantById.Personne.nom}/${nouveauNiveau}`
+          `${url_api}/send-email/promouvoir/${listEtudiantById.Personne.email}/${listEtudiantById.Personne.nom}/${nouveauNiveau}`
         )
         .then(() => {
           toast.message("Un e-mail a été envoyé vers l'étudiant.");

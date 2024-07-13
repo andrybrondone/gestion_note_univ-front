@@ -11,6 +11,7 @@ import ListInfoUser from "../components/ListInfoUser";
 import SearchBar from "../components/SearchBar";
 import TrieParNiveau from "../components/TrieParNiveau";
 import TrieParParcours from "../components/TrieParParcours";
+import { url_api } from "../../../utils/url-api";
 
 interface EtudiantData {
   id: number;
@@ -38,10 +39,10 @@ export default function ListeEtudiant() {
     handleChangeParcours,
   } = useSearch();
 
-  let url = `http://localhost:3001/etudiant/info/${selectedNiveau}/${selectedParcours}`;
+  let url = `${url_api}/etudiant/info/${selectedNiveau}/${selectedParcours}`;
 
   if (search !== "") {
-    url = `http://localhost:3001/etudiant/rechercher-etudiant/${selectedNiveau}/${selectedParcours}/${search}`;
+    url = `${url_api}/etudiant/rechercher-etudiant/${selectedNiveau}/${selectedParcours}/${search}`;
   }
 
   const {

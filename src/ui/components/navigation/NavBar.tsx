@@ -5,8 +5,11 @@ import { RiAccountPinCircleLine, RiLogoutCircleLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
+import { DataUserContext } from "../../../context/DataUserContext";
 import { ToggleNavContext } from "../../../context/ToggleNavContext";
+import { ToggleStateContext } from "../../../context/ToggleStateContext";
 import useToggle from "../../../hook/useToggle";
+import { url_api } from "../../../utils/url-api";
 import { Avatar } from "../../design-system/avatar/Avatar";
 import { Logo } from "../../design-system/logo/Logo";
 import { Typography } from "../../design-system/typography/Typography";
@@ -14,7 +17,6 @@ import { Container } from "../container/Container";
 import { ToggleBtn } from "../darkMode/ToggleBtn";
 import ActiveLink from "./ActiveLink";
 import LinkMobile from "./LinkMobile";
-import { ToggleStateContext } from "../../../context/ToggleStateContext";
 
 interface PhotoProps {
   photo: string;
@@ -29,17 +31,18 @@ export default function NavBar() {
   const { value: menu, toggleValue: toggleMenu } = useToggle(false);
   const { getListPersonneEtById, getListPersonneEnsById, getListPersonneById } =
     useContext(DataFetcherByIdContext);
-  const { authState, setAuthState } = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
+  const { dataUser, setDataUser } = useContext(DataUserContext);
   const navigate = useNavigate();
 
   const handleClickShowProfile = async (id: number) => {
-    if (authState.statut === "etudiant") {
+    if (dataUser.statut === "etudiant") {
       await getListPersonneEtById(id);
       toggleMenu();
-    } else if (authState.statut === "enseignant") {
+    } else if (dataUser.statut === "enseignant") {
       await getListPersonneEnsById(id);
       toggleMenu();
-    } else if (authState.statut === "administrateur") {
+    } else if (dataUser.statut === "administrateur") {
       await getListPersonneById(id);
       toggleMenu();
     } else {
@@ -48,8 +51,8 @@ export default function NavBar() {
   };
 
   const logOut = () => {
-    localStorage.removeItem("accessToken");
-    setAuthState({
+    setToken(null);
+    setDataUser({
       nom: "",
       id: 0,
       statut: "",
@@ -63,9 +66,9 @@ export default function NavBar() {
   };
 
   useEffect(() => {
-    if (authState.id !== 0) {
+    if (dataUser.id !== 0) {
       axios
-        .get(`http://localhost:3001/personne/photo/${authState.id}`)
+        .get(`${url_api}/personne/photo/${dataUser.id}`)
         .then(async (response) => {
           setPhotoById(response.data);
         })
@@ -73,7 +76,7 @@ export default function NavBar() {
           console.log(error);
         });
     }
-  }, [authState.id, isState]);
+  }, [dataUser.id, isState]);
 
   const clickMenuBurger = () => {
     const menutoggel = document.getElementById("menuBurger");
@@ -120,7 +123,7 @@ export default function NavBar() {
               component="div"
               className="flex items-center gap-5 dark:text-white max-md:hidden"
             >
-              {authState.statusAuth && (
+              {dataUser.statusAuth && (
                 <>
                   <ActiveLink
                     href="/accueil"
@@ -134,7 +137,7 @@ export default function NavBar() {
                 </>
               )}
             </Typography>
-            {authState.statusAuth && (
+            {dataUser.statusAuth && (
               <div className="flex items-center gap-5">
                 {/* <div className="relative cursor-pointer text-[23px] dark:text-white">
                   <RiNotification3Line />
@@ -143,10 +146,10 @@ export default function NavBar() {
                   </p>
                 </div> */}
                 <div>
-                  <div onClick={() => handleClickShowProfile(authState.id)}>
+                  <div onClick={() => handleClickShowProfile(dataUser.id)}>
                     <Avatar
                       size="small"
-                      src={`http://localhost:3001/images/${photoById.photo}`}
+                      src={`${url_api}/images/${photoById.photo}`}
                       alt=""
                       className="cursor-pointer"
                     />
@@ -187,7 +190,7 @@ export default function NavBar() {
           </div>
         </Container>
       </div>
-      {isMobile && authState.statusAuth && <LinkMobile />}
+      {isMobile && dataUser.statusAuth && <LinkMobile />}
     </>
   );
 }

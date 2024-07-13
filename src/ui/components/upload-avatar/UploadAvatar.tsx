@@ -1,6 +1,7 @@
 import React from "react";
 import { RiCameraFill } from "react-icons/ri";
 import { Avatar } from "../../design-system/avatar/Avatar";
+import { url_api } from "../../../utils/url-api";
 
 interface Props {
   handleImageSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,7 +22,7 @@ export default function UploadAvatar({
             ? typeof imagePreview === "string"
               ? imagePreview
               : String(imagePreview)
-            : `http://localhost:3001/images/${photo}`
+            : `${url_api}/images/${photo}`
         }
         alt="Avatar"
         size="very-large"

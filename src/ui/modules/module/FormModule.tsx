@@ -11,6 +11,7 @@ import { Input } from "../../components/form/Input";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaModule } from "../validation-schemas-yup/ValidationSchemasYup";
+import { url_api } from "../../../utils/url-api";
 
 export default function FormModule() {
   const { isOpenFormModule, toggleFormModule } = useContext(ShowFormContext);
@@ -49,7 +50,7 @@ export default function FormModule() {
   ) => {
     if (!isEditModuleForm) {
       axios
-        .post("http://localhost:3001/module", data)
+        .post(`${url_api}/module`, data)
         .then((res) => {
           if (res.data.Status === "Success") {
             toast.success("Le module a été ajouté avec succès");
@@ -64,7 +65,7 @@ export default function FormModule() {
         });
     } else {
       axios
-        .put(`http://localhost:3001/module/${listModuleById.id}`, data)
+        .put(`${url_api}/module/${listModuleById.id}`, data)
         .then((res) => {
           if (res.data.Status === "Success") {
             toast.success("Le module a été modifié avec succès");

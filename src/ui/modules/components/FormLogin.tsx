@@ -1,12 +1,13 @@
 import axios, { AxiosResponse } from "axios";
 import { Form, Formik } from "formik";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import * as Yup from "yup";
 import { AuthContext } from "../../../context/AuthContext";
 import useToggle from "../../../hook/useToggle";
+import { url_api } from "../../../utils/url-api";
 import { Input } from "../../components/form/Input";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
@@ -28,7 +29,7 @@ interface AxiosResponseProps {
 }
 
 export default function FormLogin() {
-  const { setAuthState } = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
   const { value: eyeClick, toggleValue: toggleEyeClick } = useToggle(false);
   const navigate = useNavigate();
   let typePwd: string = "password";
@@ -51,25 +52,12 @@ export default function FormLogin() {
   // Fonction de soumission du formulaire
   const onSubmit = (data: LoginProps) => {
     axios
-      .post("http://localhost:3001/personne/login", data)
+      .post(`${url_api}/personne/login`, data)
       .then((res: AxiosResponse<AxiosResponseProps>) => {
         if (res.data.error) {
           toast.error(res.data.error);
         } else {
-          const authData = {
-            token: res.data.token,
-            nom: res.data.nom,
-            id: res.data.id,
-            statut: res.data.statut,
-            niveau: res.data.niveau,
-            matricule: res.data.matricule,
-            parcours: res.data.parcours,
-          };
-          localStorage.setItem("accessToken", JSON.stringify(authData));
-          setAuthState({
-            ...authData,
-            statusAuth: true,
-          });
+          setToken(res.data.token);
           navigate("/accueil");
         }
       })
@@ -79,18 +67,6 @@ export default function FormLogin() {
         }
       });
   };
-
-  // Récupération des données d'authentification à la charge de l'application
-  useEffect(() => {
-    const storedAuthData = localStorage.getItem("accessToken");
-    if (storedAuthData) {
-      const parsedAuthData = JSON.parse(storedAuthData);
-      setAuthState({
-        ...parsedAuthData,
-        statusAuth: true,
-      });
-    }
-  }, []);
 
   return (
     <div className="bg-gray-400 relative dark:bg-black px-8 py-10 rounded shadow-lg">

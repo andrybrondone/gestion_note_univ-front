@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext, useState } from "react";
 import { RiListUnordered } from "react-icons/ri";
-import { AuthContext } from "../../../context/AuthContext";
+import { DataUserContext } from "../../../context/DataUserContext";
 import { Container } from "../../components/container/Container";
 import Header from "../../components/header/Header";
 import ListeMatiereParEns from "../matiere/ListeMatiereParEns";
@@ -25,12 +25,12 @@ const initialTabs = allData;
 
 export default function AccueilEns() {
   const [selectedTab, setSelectedTab] = useState(initialTabs[0]);
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
 
   return (
     <>
       <Header
-        name={authState.nom.toUpperCase()}
+        name={dataUser.nom.toUpperCase()}
         info="En tant qu'enseignant de l'ENI, vous avez les droits d'ajouter les notes de chaque étudiant qui sont inscrit aux matières que vous enseignez !"
       />
 

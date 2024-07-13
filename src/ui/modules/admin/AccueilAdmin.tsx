@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext, useState } from "react";
 import { RiAddBoxLine, RiListUnordered } from "react-icons/ri";
-import { AuthContext } from "../../../context/AuthContext";
+import { DataUserContext } from "../../../context/DataUserContext";
 import { Container } from "../../components/container/Container";
 import Header from "../../components/header/Header";
 import ListeMatiere from "../matiere/ListeMatiere";
@@ -37,12 +37,12 @@ const initialTabs = allData;
 
 export default function AccueilAdmin() {
   const [selectedTab, setSelectedTab] = useState(initialTabs[0]);
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
 
   return (
     <>
       <Header
-        name={authState.nom.toUpperCase()}
+        name={dataUser.nom.toUpperCase()}
         info="En tant qu'administrateur de cette application, vous avez le droit de consulter
             la liste des étudiants, des enseignants et des matières et vous avez également le droit d'en ajouter des nouvelles !"
       />

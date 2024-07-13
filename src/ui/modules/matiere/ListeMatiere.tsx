@@ -21,6 +21,7 @@ import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
 import TrieParNiveau from "../components/TrieParNiveau";
 import FormMatiere from "./FormMatiere";
+import { url_api } from "../../../utils/url-api";
 
 export default function ListeMatiere() {
   // Hook pour savoir l'état du formulaire matiere
@@ -45,7 +46,7 @@ export default function ListeMatiere() {
     totalPage,
     setCurrentPage,
   } = useDataFetcher<ListeMatiereValues[]>({
-    endpoint: `http://localhost:3001/matiere/recherche/${selectedNiveau}`,
+    endpoint: `${url_api}/matiere/recherche/${selectedNiveau}`,
     processData: (data) => data.matieres,
   });
 
@@ -64,7 +65,7 @@ export default function ListeMatiere() {
   // Pour supprimer une module de la BD
   const deleteModule = (id: number | undefined) => {
     axios
-      .delete(`http://localhost:3001/matiere/${id}`)
+      .delete(`${url_api}/matiere/${id}`)
       .then(() => {
         toast.success("La matière a été supprimé avec succès");
         refetch();

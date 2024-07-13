@@ -1,27 +1,29 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { DataUserContext } from "../context/DataUserContext";
 import { Container } from "../ui/components/container/Container";
 import { Typography } from "../ui/design-system/typography/Typography";
 import FormLogin from "../ui/modules/components/FormLogin";
 import LogoENI from "/assets/images/logoENI.png";
 
 export default function Login() {
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authState.statut !== "") {
+    if (dataUser.statut !== "") {
       navigate("/accueil");
     }
-  }, [authState.statut, navigate]);
+  }, [dataUser.statut, navigate]);
 
   return (
     <>
-      {authState.statut === "" && (
+      {dataUser.statut === "" && (
         <Container className="dark:text-white grid grid-cols-2 max-md:grid-cols-1 items-center gap-10 max-lg:gap-3 pt-14 pb-6  max-[500px]:px-5">
           <div className="flex items-center gap-4 flex-col text-center max-md:hidden">
-            <img src={LogoENI} alt="Logo ENI" width={150} />
+            <div className="w-40 h-36">
+              <img src={LogoENI} alt="Logo ENI" width={150} />
+            </div>
             <Typography
               variant="body-sm"
               component="p"

@@ -1,8 +1,8 @@
-import axios from "axios";
 import clsx from "clsx";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { AuthContext } from "./context/AuthContext";
+import { DataUserContext } from "./context/DataUserContext";
+import { LoadingContext } from "./context/LoadingContext";
 import Accueil from "./pages/Accueil";
 import Enseignant from "./pages/Enseignant";
 import Etudiant from "./pages/Etudiant";
@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import { Page404 } from "./pages/Page404";
 import ReleverNotePage from "./pages/ReleverNotePage";
 import { DarkModeContext } from "./ui/components/darkMode/DarkModeGlobal";
+import Loading from "./ui/components/loading/Loading";
 import { Navigation } from "./ui/components/navigation/Navigation";
 
 const router = createBrowserRouter([
@@ -58,33 +59,14 @@ const router = createBrowserRouter([
 
 function App() {
   const { isDarkMode } = useContext(DarkModeContext);
-  const { authState, setAuthState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
+  console.log(dataUser);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/personne/auth", {
-        headers: {
-          accessToken: localStorage.getItem("accessToken")
-            ? JSON.parse(localStorage.getItem("accessToken")).token
-            : null,
-        },
-      })
-      .then((res) => {
-        if (res.data.error) {
-          setAuthState({ ...authState, statusAuth: false });
-        } else {
-          setAuthState({
-            nom: res.data.nom,
-            id: res.data.id,
-            statut: res.data.statut,
-            statusAuth: true,
-            niveau: res.data.niveau,
-            matricule: res.data.matricule,
-            parcours: res.data.parcours,
-          });
-        }
-      });
-  }, []);
+  const { isLoading } = useContext(LoadingContext);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className={clsx(isDarkMode && "dark")}>

@@ -10,6 +10,7 @@ import { Input } from "../../components/form/Input";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaMoyennePratique } from "../validation-schemas-yup/ValidationSchemasYup";
+import { url_api } from "../../../utils/url-api";
 
 interface Props {
   idEt: number | undefined;
@@ -59,7 +60,7 @@ export default function FormMoyennePratique({ idEt }: Props) {
     if (!isEditNoteForm) {
       if (listEtudiantById.moyenne_pratique === null) {
         axios
-          .put("http://localhost:3001/etudiant/moyenne-pratique", convertedData)
+          .put(`${url_api}/etudiant/moyenne-pratique`, convertedData)
           .then(() => {
             toast.success("La moyenne pratique a été ajoutée avec succès");
             toggleFromMoyennePratique();
@@ -74,7 +75,7 @@ export default function FormMoyennePratique({ idEt }: Props) {
       }
     } else {
       axios
-        .put(`http://localhost:3001/note/${listNoteById.id}`, convertedData)
+        .put(`${url_api}/note/${listNoteById.id}`, convertedData)
         .then(() => {
           toast.success("La note de cet étudiant a été modifiée avec succès");
           toggleFromMoyennePratique();

@@ -7,6 +7,7 @@ interface UseDataFetcherProps<T> {
   queryParameters?: Record<string, any>;
   processData?: (data: any) => T;
 }
+
 export function useDataFetcher<T>({
   endpoint,
   queryParameters = {},
@@ -37,7 +38,7 @@ export function useDataFetcher<T>({
     }
   }, []);
 
-  const fetchPageData = async ({ page = currentPage }) => {
+  const fetchPageData = async (page = currentPage) => {
     const limit = 10;
     const offset = (page - 1) * limit;
     const response = await axios.get(endpoint, {

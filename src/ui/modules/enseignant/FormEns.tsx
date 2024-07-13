@@ -9,6 +9,7 @@ import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaEns } from "../validation-schemas-yup/ValidationSchemasYup";
+import { url_api } from "../../../utils/url-api";
 
 interface FormValues {
   grade: string;
@@ -24,7 +25,7 @@ export default function FormEns() {
   // Recuperation de la dernière personne qui a été ajoutée
   useEffect(() => {
     if (isOpenFormEns) {
-      axios.get("http://localhost:3001/personne").then((response) => {
+      axios.get(`${url_api}/personne`).then((response) => {
         setListOfPersonne(response.data);
       });
     }
@@ -37,7 +38,7 @@ export default function FormEns() {
 
   const onSubmit = (data: FormValues) => {
     axios
-      .post("http://localhost:3001/enseignant", data)
+      .post(`${url_api}/enseignant`, data)
       .then(() => {
         toast.success("L'enseignant a été ajouter avec succès");
         toggleFormEns();

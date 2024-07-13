@@ -17,6 +17,7 @@ import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaMatiere } from "../validation-schemas-yup/ValidationSchemasYup";
+import { url_api } from "../../../utils/url-api";
 
 const parcoursOptions = [
   { value: "IG", label: "IG" },
@@ -42,10 +43,10 @@ export default function FormMatiere() {
   );
 
   useEffect(() => {
-    axios.get("http://localhost:3001/enseignant").then((response) => {
+    axios.get(`${url_api}/enseignant`).then((response) => {
       setNameOfEnseignant(response.data);
     });
-    axios.get("http://localhost:3001/module").then((response) => {
+    axios.get(`${url_api}/module`).then((response) => {
       setListOfModule(response.data);
     });
   }, []);
@@ -86,7 +87,7 @@ export default function FormMatiere() {
   ) => {
     if (!isEditMatiereForm) {
       axios
-        .post("http://localhost:3001/matiere", data)
+        .post(`${url_api}/matiere`, data)
         .then((res) => {
           if (res.data.error === "error") {
             toast.error("Ce matière est déjà associé à ce module");
@@ -100,7 +101,7 @@ export default function FormMatiere() {
         });
     } else {
       axios
-        .put(`http://localhost:3001/matiere/${listMatiereById.id}`, data)
+        .put(`${url_api}/matiere/${listMatiereById.id}`, data)
         .then((res) => {
           if (res.data.error === "error") {
             toast.error("Ce matière est déjà associé à ce module");

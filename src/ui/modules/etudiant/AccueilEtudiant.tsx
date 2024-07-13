@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext, useState } from "react";
 import { RiListUnordered } from "react-icons/ri";
-import { AuthContext } from "../../../context/AuthContext";
+import { DataUserContext } from "../../../context/DataUserContext";
 import { Container } from "../../components/container/Container";
 import Header from "../../components/header/Header";
 import ListeMatiereByNiveau from "../matiere/ListeMatiereByNiveau";
@@ -25,12 +25,12 @@ const initialTabs = allData;
 
 export default function AccueilEtudiant() {
   const [selectedTab, setSelectedTab] = useState(initialTabs[0]);
-  const { authState } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
 
   return (
     <>
       <Header
-        name={authState.nom.toUpperCase()}
+        name={dataUser.nom.toUpperCase()}
         info="En tant qu'etudiant de l'ENI, vous avez les droits de consulter la liste des enseignants, de voir vos notes dès qu'ils sont disponnibles et aussi de générer votre relever de note."
       />
       <Container className="mb-11 flex justify-between items-center gap-4">

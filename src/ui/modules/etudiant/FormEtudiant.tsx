@@ -9,6 +9,7 @@ import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaEtudiant } from "../validation-schemas-yup/ValidationSchemasYup";
+import { url_api } from "../../../utils/url-api";
 
 interface FormValues {
   id_pers: string;
@@ -27,7 +28,7 @@ export default function FormEtudiant() {
   // Recuperation de la dernière personne qui a été ajoutée
   useEffect(() => {
     if (isOpenFormEt) {
-      axios.get("http://localhost:3001/personne").then((response) => {
+      axios.get(`${url_api}/personne`).then((response) => {
         setListOfPersonne(response.data);
       });
     }
@@ -44,7 +45,7 @@ export default function FormEtudiant() {
 
   const onSubmit = (data: FormValues) => {
     axios
-      .post("http://localhost:3001/etudiant", data)
+      .post(`${url_api}/etudiant`, data)
       .then((res) => {
         if (res.data.error === "duplication") {
           toast.error("Le numéro matricule existe déjà, veuillez le modifier");

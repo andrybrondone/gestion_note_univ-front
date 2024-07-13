@@ -9,6 +9,7 @@ import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
 import ListInfoUser from "../components/ListInfoUser";
 import SearchBar from "../components/SearchBar";
+import { url_api } from "../../../utils/url-api";
 
 interface EnseignantData {
   id: number;
@@ -27,10 +28,10 @@ export default function ListeEns() {
   const { isEditEnseignantForm } = useContext(ToggleEditFormContext);
   const { search, handleChangeSearch } = useSearch();
 
-  let url = `http://localhost:3001/enseignant/info`;
+  let url = `${url_api}/enseignant/info`;
 
   if (search !== "") {
-    url = `http://localhost:3001/enseignant/rechercher-ens/${search}`;
+    url = `${url_api}/enseignant/rechercher-ens/${search}`;
   }
 
   const {

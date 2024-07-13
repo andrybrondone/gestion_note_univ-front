@@ -19,6 +19,7 @@ import { Spinner } from "../../design-system/spinner/Spinner";
 import { Typography } from "../../design-system/typography/Typography";
 import { ButtonPagination } from "../components/ButtonPagination";
 import FormModule from "./FormModule";
+import { url_api } from "../../../utils/url-api";
 
 export default function ListeModule() {
   // Hook pour savoir l'état du formulaire module
@@ -41,7 +42,7 @@ export default function ListeModule() {
     totalPage,
     setCurrentPage,
   } = useDataFetcher<FormModuleValues[]>({
-    endpoint: `http://localhost:3001/module/info`,
+    endpoint: `${url_api}/module/info`,
     processData: (data) => data.modules,
   });
 
@@ -61,18 +62,16 @@ export default function ListeModule() {
   // Pour supprimer une module de la BD
   const deleteModule = (id: number | undefined) => {
     axios
-      .delete(`http://localhost:3001/module/${id}`)
+      .delete(`${url_api}/module/${id}`)
       .then((res) => {
         if (res.data.Message !== "Error") {
           toast.success("Le module a été supprimé définitivement");
           refetch();
         } else {
-          axios
-            .put(`http://localhost:3001/module/softdelete/${id}`)
-            .then(() => {
-              toast.success("Le module a été supprimé avec succès");
-              refetch();
-            });
+          axios.put(`${url_api}/module/softdelete/${id}`).then(() => {
+            toast.success("Le module a été supprimé avec succès");
+            refetch();
+          });
         }
       })
       .catch((e) => {
