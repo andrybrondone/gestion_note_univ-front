@@ -1,16 +1,16 @@
 import axios from "axios";
 import { useContext } from "react";
-import { RiDeleteBin2Line, RiPencilLine, RiSave2Line } from "react-icons/ri";
+import { RiDeleteBin2Line, RiSave2Line } from "react-icons/ri";
 import { toast } from "sonner";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { ToggleStateContext } from "../../../context/ToggleStateContext";
 import useSelecteImage from "../../../hook/useSelecteImage";
+import { url_api } from "../../../utils/url-api";
 import { Container } from "../../components/container/Container";
 import UploadAvatar from "../../components/upload-avatar/UploadAvatar";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import RowsTr from "../components/RowsTr";
-import { url_api } from "../../../utils/url-api";
 
 export default function InfoCompteEns() {
   const { listPersonneEnsById, getListPersonneEnsById } = useContext(
@@ -102,7 +102,7 @@ export default function InfoCompteEns() {
             );
           })}
         </table>
-        <div className="mt-10 flex items-center justify-center gap-7 max-sm:gap-5 max-sm:flex-col">
+        {/* <div className="mt-10 flex items-center justify-center gap-7 max-sm:gap-5 max-sm:flex-col">
           <Button
             variant="update"
             icon={{ icon: RiPencilLine }}
@@ -119,7 +119,7 @@ export default function InfoCompteEns() {
           >
             Supprimer votre compte
           </Button>
-        </div>
+        </div> */}
       </Container>
     </>
   );
