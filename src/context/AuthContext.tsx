@@ -45,8 +45,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.error) {
-          console.log("erroggggg");
-          console.log(response.data.error);
           setDataUser({
             ...dataUser,
             statusAuth: false,
@@ -56,7 +54,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
             setToken(null);
           }
         } else {
-          console.log(response.data);
           setDataUser({
             id: response.data.id,
             nom: response.data.nom,
