@@ -1,16 +1,16 @@
 import axios from "axios";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { useContext } from "react";
 import { RiCloseFill } from "react-icons/ri";
 import { toast } from "sonner";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
+import { url_api } from "../../../utils/url-api";
 import { Input } from "../../components/form/Input";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaMoyennePratique } from "../validation-schemas-yup/ValidationSchemasYup";
-import { url_api } from "../../../utils/url-api";
 
 interface Props {
   idEt: number | undefined;
@@ -50,7 +50,10 @@ export default function FormMoyennePratique({ idEt }: Props) {
     }
   };
 
-  const onSubmit = (data: MoyennePratiqueProps) => {
+  const onSubmit = (
+    data: MoyennePratiqueProps,
+    { setSubmitting }: FormikHelpers<MoyennePratiqueProps>
+  ) => {
     // Convertir la virgule en point avant d'envoyer les données à la base de données
     const convertedData = {
       ...data,
@@ -67,7 +70,8 @@ export default function FormMoyennePratique({ idEt }: Props) {
           })
           .catch((error) => {
             console.error("Error : ", error);
-          });
+          })
+          .finally(() => setSubmitting(false));
       } else {
         toast.error(
           "Vous avez déjà attribuer la moyenne pratique de cette étudiant"
@@ -83,7 +87,8 @@ export default function FormMoyennePratique({ idEt }: Props) {
         })
         .catch((error) => {
           console.error("Error : ", error);
-        });
+        })
+        .finally(() => setSubmitting(false));
     }
   };
 
@@ -104,27 +109,34 @@ export default function FormMoyennePratique({ idEt }: Props) {
           onSubmit={onSubmit}
           validationSchema={validationSchemaMoyennePratique}
         >
-          <Form className="flex flex-col gap-2">
-            <Typography variant="h4" component="h4" className="text-center">
-              {isEditNoteForm
-                ? "Modifier la moyenne pratique"
-                : "Ajouter une moyenne pratique"}
-            </Typography>
+          {({ isSubmitting }) => (
+            <Form className="flex flex-col gap-2">
+              <Typography variant="h4" component="h4" className="text-center">
+                {isEditNoteForm
+                  ? "Modifier la moyenne pratique"
+                  : "Ajouter une moyenne pratique"}
+              </Typography>
 
-            <Input name="id_et" type="hidden" classNameSpan="hidden" />
-            <Input
-              label="Moyenne pratique"
-              name="moyenne_pratique"
-              type="text"
-              placeholder="ex. 16.53"
-            />
+              <Input name="id_et" type="hidden" classNameSpan="hidden" />
+              <Input
+                label="Moyenne pratique"
+                name="moyenne_pratique"
+                type="text"
+                placeholder="ex. 16.53"
+              />
 
-            <div className="flex justify-center items-center mt-4">
-              <Button type="submit" variant="accent" className="w-36">
-                Enregistrer
-              </Button>
-            </div>
-          </Form>
+              <div className="flex justify-center items-center mt-4">
+                <Button
+                  isLoading={isSubmitting}
+                  type="submit"
+                  variant="accent"
+                  className="w-36"
+                >
+                  Enregistrer
+                </Button>
+              </div>
+            </Form>
+          )}
         </Formik>
       </div>
     </>

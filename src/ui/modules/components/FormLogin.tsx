@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import { Form, Formik } from "formik";
-import { useContext, useState } from "react";
+import { Form, Formik, FormikHelpers } from "formik";
+import { useContext } from "react";
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -33,7 +33,6 @@ export default function FormLogin() {
   const { setToken } = useContext(AuthContext);
   const { value: eyeClick, toggleValue: toggleEyeClick } = useToggle(false);
   const navigate = useNavigate();
-  const [error, setError] = useState(true);
   const { setIsLoading } = useContext(LoadingContext);
 
   let typePwd: string = "password";
@@ -54,17 +53,18 @@ export default function FormLogin() {
   });
 
   // Fonction de soumission du formulaire
-  const onSubmit = (data: LoginProps) => {
+  const onSubmit = (
+    data: LoginProps,
+    { setSubmitting }: FormikHelpers<LoginProps>
+  ) => {
     axios
       .post(`${url_api}/personne/login`, data)
       .then((res: AxiosResponse<AxiosResponseProps>) => {
         if (res.data.error) {
           toast.error(res.data.error);
-          setError(false);
         } else {
           setToken(res.data.token);
           navigate("/accueil");
-          setError(false);
           setIsLoading(true);
         }
       })
@@ -72,7 +72,8 @@ export default function FormLogin() {
         if (err.message === "Network Error") {
           toast.message("Verifier votre connexion internet !");
         }
-      });
+      })
+      .finally(() => setSubmitting(false));
   };
 
   return (
@@ -127,8 +128,8 @@ export default function FormLogin() {
                 type="submit"
                 variant="accent"
                 className=" w-36"
-                isLoading={isSubmitting && error ? true : false}
-                disabled={isSubmitting && error ? true : false}
+                isLoading={isSubmitting}
+                disabled={isSubmitting}
               >
                 Se connecter
               </Button>

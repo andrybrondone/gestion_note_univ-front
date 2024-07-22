@@ -7,11 +7,11 @@ import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext"
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { ToggleEditFormContext } from "../../../context/ToggleEditFormContext";
 import { FormModuleValues } from "../../../types/crud-props";
+import { url_api } from "../../../utils/url-api";
 import { Input } from "../../components/form/Input";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaModule } from "../validation-schemas-yup/ValidationSchemasYup";
-import { url_api } from "../../../utils/url-api";
 
 export default function FormModule() {
   const { isOpenFormModule, toggleFormModule } = useContext(ShowFormContext);
@@ -62,7 +62,8 @@ export default function FormModule() {
         })
         .catch((error) => {
           console.error("Error : ", error);
-        });
+        })
+        .finally(() => actions.setSubmitting(false));
     } else {
       axios
         .put(`${url_api}/module/${listModuleById.id}`, data)
@@ -79,7 +80,8 @@ export default function FormModule() {
         })
         .catch((error) => {
           console.error("Error : ", error);
-        });
+        })
+        .finally(() => actions.setSubmitting(false));
     }
   };
 
@@ -102,30 +104,37 @@ export default function FormModule() {
               onSubmit={onSubmit}
               validationSchema={validationSchemaModule}
             >
-              <Form className="flex flex-col gap-5">
-                <Typography
-                  variant="h4"
-                  component="h4"
-                  className="text-center mb-5"
-                >
-                  {isEditModuleForm
-                    ? "Modifier la module"
-                    : "Ajouter une module"}
-                </Typography>
+              {({ isSubmitting }) => (
+                <Form className="flex flex-col gap-5">
+                  <Typography
+                    variant="h4"
+                    component="h4"
+                    className="text-center mb-5"
+                  >
+                    {isEditModuleForm
+                      ? "Modifier la module"
+                      : "Ajouter une module"}
+                  </Typography>
 
-                <Input
-                  label="Nom du module"
-                  name="nom_module"
-                  type="text"
-                  placeholder="ex. IHM"
-                />
+                  <Input
+                    label="Nom du module"
+                    name="nom_module"
+                    type="text"
+                    placeholder="ex. IHM"
+                  />
 
-                <div className="flex justify-center items-center mt-4">
-                  <Button type="submit" variant="accent" className=" w-36">
-                    Enregistrer
-                  </Button>
-                </div>
-              </Form>
+                  <div className="flex justify-center items-center mt-4">
+                    <Button
+                      type="submit"
+                      variant="accent"
+                      isLoading={isSubmitting}
+                      className=" w-36"
+                    >
+                      Enregistrer
+                    </Button>
+                  </div>
+                </Form>
+              )}
             </Formik>
           </div>
         </>

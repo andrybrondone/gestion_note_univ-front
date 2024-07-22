@@ -36,7 +36,8 @@ export const onSubmitPersonne = (
       } else {
         console.error("Error : ", error);
       }
-    });
+    })
+    .finally(() => actions.setSubmitting(false));
 };
 
 export const onSubmitUsersInfo = (
@@ -57,5 +58,6 @@ export const onSubmitUsersInfo = (
       } else {
         console.error("Error : ", error);
       }
-    });
+    })
+    .finally(() => actions.setSubmitting(false));
 };

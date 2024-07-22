@@ -86,7 +86,8 @@ export default function FormNote({ idEt }: Props) {
         })
         .catch((error) => {
           console.error("Error : ", error);
-        });
+        })
+        .finally(() => actions.setSubmitting(false));
     } else {
       axios
         .put(`${url_api}/note/${listNoteById.id}`, data)
@@ -99,7 +100,8 @@ export default function FormNote({ idEt }: Props) {
         })
         .catch((error) => {
           console.error("Error : ", error);
-        });
+        })
+        .finally(() => actions.setSubmitting(false));
     }
   };
 
@@ -122,39 +124,54 @@ export default function FormNote({ idEt }: Props) {
               onSubmit={onSubmit}
               validationSchema={validationSchemaNote}
             >
-              <Form className="flex flex-col gap-2">
-                <Typography variant="h4" component="h4" className="text-center">
-                  {isEditNoteForm ? "Modifier la note" : "Ajouter une note"}
-                </Typography>
+              {({ isSubmitting }) => (
+                <Form className="flex flex-col gap-2">
+                  <Typography
+                    variant="h4"
+                    component="h4"
+                    className="text-center"
+                  >
+                    {isEditNoteForm ? "Modifier la note" : "Ajouter une note"}
+                  </Typography>
 
-                <Input name="id_et" type="hidden" classNameSpan="hidden" />
+                  <Input name="id_et" type="hidden" classNameSpan="hidden" />
 
-                <Select label="Matiere" name="id_mat" disabled={isEditNoteForm}>
-                  <option value="">Choisir un Matiere</option>
-                  {listOfMatiere.map((item: FormMatiereValues) => {
-                    return (
-                      <option key={item.id} value={item.id}>
-                        {item.nom_mat}
-                      </option>
-                    );
-                  })}
-                </Select>
+                  <Select
+                    label="Matiere"
+                    name="id_mat"
+                    disabled={isEditNoteForm}
+                  >
+                    <option value="">Choisir un Matiere</option>
+                    {listOfMatiere.map((item: FormMatiereValues) => {
+                      return (
+                        <option key={item.id} value={item.id}>
+                          {item.nom_mat}
+                        </option>
+                      );
+                    })}
+                  </Select>
 
-                <Input
-                  label="Note"
-                  name="note"
-                  type="number"
-                  min={0}
-                  max={20}
-                  placeholder="ex. 12"
-                />
+                  <Input
+                    label="Note"
+                    name="note"
+                    type="number"
+                    min={0}
+                    max={20}
+                    placeholder="ex. 12"
+                  />
 
-                <div className="flex justify-center items-center mt-4">
-                  <Button type="submit" variant="accent" className=" w-36">
-                    Enregistrer
-                  </Button>
-                </div>
-              </Form>
+                  <div className="flex justify-center items-center mt-4">
+                    <Button
+                      isLoading={isSubmitting}
+                      type="submit"
+                      variant="accent"
+                      className=" w-36"
+                    >
+                      Enregistrer
+                    </Button>
+                  </div>
+                </Form>
+              )}
             </Formik>
           </div>
         </>

@@ -1,15 +1,15 @@
 import axios from "axios";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { FormPersonneValues } from "../../../types/crud-props";
+import { url_api } from "../../../utils/url-api";
 import { Input } from "../../components/form/Input";
 import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaEtudiant } from "../validation-schemas-yup/ValidationSchemasYup";
-import { url_api } from "../../../utils/url-api";
 
 interface FormValues {
   id_pers: string;
@@ -43,7 +43,10 @@ export default function FormEtudiant() {
     statut: "",
   };
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (
+    data: FormValues,
+    { setSubmitting }: FormikHelpers<FormValues>
+  ) => {
     axios
       .post(`${url_api}/etudiant`, data)
       .then((res) => {
@@ -56,7 +59,8 @@ export default function FormEtudiant() {
       })
       .catch((error) => {
         console.error("Error : ", error);
-      });
+      })
+      .finally(() => setSubmitting(false));
   };
 
   return (
@@ -71,60 +75,67 @@ export default function FormEtudiant() {
               onSubmit={onSubmit}
               validationSchema={validationSchemaEtudiant}
             >
-              <Form className="flex flex-col gap-2">
-                <Typography
-                  variant="lead"
-                  component="h4"
-                  className="text-center"
-                >
-                  Ajout d'autre information sur l'étudiant
-                </Typography>
+              {({ isSubmitting }) => (
+                <Form className="flex flex-col gap-2">
+                  <Typography
+                    variant="lead"
+                    component="h4"
+                    className="text-center"
+                  >
+                    Ajout d'autre information sur l'étudiant
+                  </Typography>
 
-                <Select label="Nom" name="id_pers">
-                  <option value="">Choisir une personne</option>
-                  <option key={listOfPersonne.id} value={listOfPersonne.id}>
-                    {`${listOfPersonne.nom} ${listOfPersonne.prenom}`}
-                  </option>
-                </Select>
+                  <Select label="Nom" name="id_pers">
+                    <option value="">Choisir une personne</option>
+                    <option key={listOfPersonne.id} value={listOfPersonne.id}>
+                      {`${listOfPersonne.nom} ${listOfPersonne.prenom}`}
+                    </option>
+                  </Select>
 
-                <Input
-                  label="Matricule"
-                  name="matricule"
-                  type="text"
-                  placeholder="ex. 1332 H-F"
-                />
+                  <Input
+                    label="Matricule"
+                    name="matricule"
+                    type="text"
+                    placeholder="ex. 1332 H-F"
+                  />
 
-                <Select label="Niveau" name="niveau">
-                  <option value="">Choisir le niveau</option>
-                  <option value="L1">L1</option>
-                  <option value="L2">L2</option>
-                  <option value="L3">L3</option>
-                  <option value="M1">M1</option>
-                  <option value="M2">M2</option>
-                </Select>
+                  <Select label="Niveau" name="niveau">
+                    <option value="">Choisir le niveau</option>
+                    <option value="L1">L1</option>
+                    <option value="L2">L2</option>
+                    <option value="L3">L3</option>
+                    <option value="M1">M1</option>
+                    <option value="M2">M2</option>
+                  </Select>
 
-                <Select label="Parcours" name="parcours">
-                  <option value="">Choisir le parcours</option>
-                  <option value="IG">IG</option>
-                  <option value="GBD">GBD</option>
-                  <option value="ASR">ASR</option>
-                  <option value="GID">GID</option>
-                  <option value="OCC">OCC</option>
-                </Select>
+                  <Select label="Parcours" name="parcours">
+                    <option value="">Choisir le parcours</option>
+                    <option value="IG">IG</option>
+                    <option value="GBD">GBD</option>
+                    <option value="ASR">ASR</option>
+                    <option value="GID">GID</option>
+                    <option value="OCC">OCC</option>
+                  </Select>
 
-                <Select label="Statut de l'étudiant" name="statut">
-                  <option value="">Choisir le statut</option>
-                  <option value="Passant">Passant</option>
-                  <option value="Redoublant">Redoublant</option>
-                  <option value="Diplômé">Diplômé</option>
-                </Select>
+                  <Select label="Statut de l'étudiant" name="statut">
+                    <option value="">Choisir le statut</option>
+                    <option value="Passant">Passant</option>
+                    <option value="Redoublant">Redoublant</option>
+                    <option value="Diplômé">Diplômé</option>
+                  </Select>
 
-                <div className="flex justify-center items-center mt-2">
-                  <Button type="submit" variant="accent" className=" w-36">
-                    Enregistrer
-                  </Button>
-                </div>
-              </Form>
+                  <div className="flex justify-center items-center mt-2">
+                    <Button
+                      type="submit"
+                      variant="accent"
+                      className=" w-36"
+                      isLoading={isSubmitting}
+                    >
+                      Enregistrer
+                    </Button>
+                  </div>
+                </Form>
+              )}
             </Formik>
           </div>
         </>

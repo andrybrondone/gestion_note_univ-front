@@ -1,15 +1,15 @@
 import axios from "axios";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ShowFormContext } from "../../../context/ShowFormContext";
 import { FormPersonneValues } from "../../../types/crud-props";
+import { url_api } from "../../../utils/url-api";
 import { Input } from "../../components/form/Input";
 import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaEns } from "../validation-schemas-yup/ValidationSchemasYup";
-import { url_api } from "../../../utils/url-api";
 
 interface FormValues {
   grade: string;
@@ -36,7 +36,10 @@ export default function FormEns() {
     id_pers: "",
   };
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (
+    data: FormValues,
+    { setSubmitting }: FormikHelpers<FormValues>
+  ) => {
     axios
       .post(`${url_api}/enseignant`, data)
       .then(() => {
@@ -45,7 +48,8 @@ export default function FormEns() {
       })
       .catch((error) => {
         console.error("Error : ", error);
-      });
+      })
+      .finally(() => setSubmitting(false));
   };
 
   return (
@@ -60,35 +64,42 @@ export default function FormEns() {
               onSubmit={onSubmit}
               validationSchema={validationSchemaEns}
             >
-              <Form className="flex flex-col gap-5">
-                <Typography
-                  variant="lead"
-                  component="h4"
-                  className="text-center mb-5"
-                >
-                  Ajout d'autre information sur l'enseignant
-                </Typography>
+              {({ isSubmitting }) => (
+                <Form className="flex flex-col gap-5">
+                  <Typography
+                    variant="lead"
+                    component="h4"
+                    className="text-center mb-5"
+                  >
+                    Ajout d'autre information sur l'enseignant
+                  </Typography>
 
-                <Select label="Nom" name="id_pers">
-                  <option value="">Choisir une personne</option>
-                  <option key={listOfPersonne.id} value={listOfPersonne.id}>
-                    {`${listOfPersonne.nom} ${listOfPersonne.prenom}`}
-                  </option>
-                </Select>
+                  <Select label="Nom" name="id_pers">
+                    <option value="">Choisir une personne</option>
+                    <option key={listOfPersonne.id} value={listOfPersonne.id}>
+                      {`${listOfPersonne.nom} ${listOfPersonne.prenom}`}
+                    </option>
+                  </Select>
 
-                <Input
-                  label="Grade"
-                  name="grade"
-                  type="text"
-                  placeholder="ex. Maître de conférence"
-                />
+                  <Input
+                    label="Grade"
+                    name="grade"
+                    type="text"
+                    placeholder="ex. Maître de conférence"
+                  />
 
-                <div className="flex justify-center items-center mt-5">
-                  <Button type="submit" variant="accent" className=" w-36">
-                    Enregistrer
-                  </Button>
-                </div>
-              </Form>
+                  <div className="flex justify-center items-center mt-5">
+                    <Button
+                      isLoading={isSubmitting}
+                      type="submit"
+                      variant="accent"
+                      className=" w-36"
+                    >
+                      Enregistrer
+                    </Button>
+                  </div>
+                </Form>
+              )}
             </Formik>
           </div>
         </>

@@ -11,13 +11,13 @@ import {
   FormModuleValues,
   InfoEnsProps,
 } from "../../../types/crud-props";
+import { url_api } from "../../../utils/url-api";
 import { CheckBox } from "../../components/form/CheckBox";
 import { Input } from "../../components/form/Input";
 import { Select } from "../../components/form/Select";
 import { Button } from "../../design-system/button/Button";
 import { Typography } from "../../design-system/typography/Typography";
 import { validationSchemaMatiere } from "../validation-schemas-yup/ValidationSchemasYup";
-import { url_api } from "../../../utils/url-api";
 
 const parcoursOptions = [
   { value: "IG", label: "IG" },
@@ -98,7 +98,8 @@ export default function FormMatiere() {
         })
         .catch((error) => {
           console.error("Error : ", error);
-        });
+        })
+        .finally(() => actions.setSubmitting(false));
     } else {
       axios
         .put(`${url_api}/matiere/${listMatiereById.id}`, data)
@@ -115,7 +116,8 @@ export default function FormMatiere() {
         })
         .catch((error) => {
           console.error("Error : ", error);
-        });
+        })
+        .finally(() => actions.setSubmitting(false));
     }
   };
 
@@ -139,7 +141,7 @@ export default function FormMatiere() {
               onSubmit={onSubmit}
               validationSchema={validationSchemaMatiere}
             >
-              {({ values, handleChange }) => (
+              {({ isSubmitting, values, handleChange }) => (
                 <Form className="flex flex-col gap-2">
                   <Typography
                     variant="h5"
@@ -223,7 +225,12 @@ export default function FormMatiere() {
                   </Select>
 
                   <div className="flex justify-center items-center mt-2">
-                    <Button type="submit" variant="accent" className=" w-36">
+                    <Button
+                      type="submit"
+                      variant="accent"
+                      className=" w-36"
+                      isLoading={isSubmitting}
+                    >
                       Enregistrer
                     </Button>
                   </div>

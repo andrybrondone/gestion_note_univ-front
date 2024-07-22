@@ -42,7 +42,7 @@ export default function FormPersonne() {
           onSubmit={onSubmit}
           validationSchema={validationSchemaPersonne}
         >
-          {({ setFieldValue, handleChange }) => (
+          {({ isSubmitting, setFieldValue, handleChange }) => (
             <Form className="flex flex-col gap-5">
               <Typography
                 variant="h4"
@@ -121,7 +121,12 @@ export default function FormPersonne() {
               </div>
 
               <div className="flex justify-center items-center">
-                <Button type="submit" variant="accent" className=" w-36">
+                <Button
+                  isLoading={isSubmitting}
+                  type="submit"
+                  variant="accent"
+                  className=" w-36"
+                >
                   Enregistrer
                 </Button>
               </div>
