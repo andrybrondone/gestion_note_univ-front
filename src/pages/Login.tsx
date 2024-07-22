@@ -35,8 +35,16 @@ export default function Login() {
               l'université de Fianarantsoa a été choisi pour la réalisation de
               ce projet .
             </Typography>
+            <span className="text-start text-caption4 leading-6 font-bold mt-5 max-md:hidden">
+              PS : Pour accéder a l'application <br />
+              e-mail: brondone@gmail.com | mot de passe : admin123
+            </span>
           </div>
           <FormLogin />
+          <span className="text-start text-caption4 leading-6 font-bold mt-5 md:hidden">
+            PS : Pour acceder au l'application <br />
+            e-mail: brondone@gmail.com | mot de passe : admin123
+          </span>
         </Container>
       )}
     </>

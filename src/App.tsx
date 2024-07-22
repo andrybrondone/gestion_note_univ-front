@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useContext } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { DataUserContext } from "./context/DataUserContext";
 import { LoadingContext } from "./context/LoadingContext";
 import Accueil from "./pages/Accueil";
 import Enseignant from "./pages/Enseignant";
@@ -59,8 +58,6 @@ const router = createBrowserRouter([
 
 function App() {
   const { isDarkMode } = useContext(DarkModeContext);
-  const { dataUser } = useContext(DataUserContext);
-  console.log(dataUser);
 
   const { isLoading } = useContext(LoadingContext);
 

@@ -204,7 +204,6 @@ export const ReleverNote = () => {
         });
     }
   };
-  console.log(listEtudiantById.id);
 
   let nouveauNiveau: string;
   switch (listEtudiantById.niveau) {

@@ -22,12 +22,13 @@ export default function useSelecteImage() {
     getListPersonneById,
     getListPersonneEnsById,
   } = useContext(DataFetcherByIdContext);
-  const { value, toggleValue } = useToggle(true);
+  const { value: isdisabled, toggleValue: toggleisDisabled } = useToggle(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      toggleValue();
+      toggleisDisabled();
       setSelectedImage(file);
 
       const render = new FileReader();
@@ -46,6 +47,7 @@ export default function useSelecteImage() {
 
   const handleUploadImage = () => {
     if (selectedImage) {
+      setLoading(true);
       const formdata = new FormData();
       formdata.append("photo", selectedImage);
       axios
@@ -62,11 +64,13 @@ export default function useSelecteImage() {
               await getListPersonneById(listPersonneById.id);
             }
             toggleState();
-            toggleValue();
+            toggleisDisabled();
+            setImagePreview(null);
             toast.success("Votre photo de profile a été modifiée avec succès");
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .finally(() => setLoading(false));
     } else {
       console.log("Aucune image sélectionnée");
     }
@@ -77,6 +81,7 @@ export default function useSelecteImage() {
     imagePreview,
     handleImageSelect,
     handleUploadImage,
-    value,
+    isdisabled,
+    loading,
   };
 }

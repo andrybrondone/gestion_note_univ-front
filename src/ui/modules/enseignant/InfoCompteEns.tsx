@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { RiDeleteBin2Line, RiSave2Line } from "react-icons/ri";
 import { toast } from "sonner";
 import { DataFetcherByIdContext } from "../../../context/DataFetcherByIdContext";
@@ -16,22 +16,39 @@ export default function InfoCompteEns() {
   const { listPersonneEnsById, getListPersonneEnsById } = useContext(
     DataFetcherByIdContext
   );
-  const { value, imagePreview, handleImageSelect, handleUploadImage } =
-    useSelecteImage();
+  const {
+    isdisabled,
+    loading,
+    imagePreview,
+    handleImageSelect,
+    handleUploadImage,
+  } = useSelecteImage();
 
   const { toggleState } = useContext(ToggleStateContext);
+  const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
 
   const deletePhoto = () => {
-    axios
-      .put(`${url_api}/personne/delete-photo/${listPersonneEnsById.id}`)
-      .then(async () => {
-        toggleState();
-        await getListPersonneEnsById(listPersonneEnsById.id);
-        toast.success("Votre photo à été supprimer avec succès");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (listPersonneEnsById.photo !== "default_photo.jpg") {
+      setLoadingDelete(true);
+
+      axios
+        .put(`${url_api}/personne/delete-photo/${listPersonneEnsById.id}`)
+        .then(async (res) => {
+          if (res.data.Status === "empty") {
+            toast.info(res.data.message);
+          } else {
+            toggleState();
+            await getListPersonneEnsById(listPersonneEnsById.id);
+            toast.success("Votre photo à été supprimer avec succès");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => setLoadingDelete(false));
+    } else {
+      toast.info("Aucune photo à supprimer");
+    }
   };
 
   return (
@@ -56,7 +73,8 @@ export default function InfoCompteEns() {
           <div className="flex flex-col gap-3">
             <Button
               icon={{ icon: RiSave2Line }}
-              disabled={value}
+              disabled={isdisabled}
+              isLoading={loading}
               variant="secondary"
               action={handleUploadImage}
             >
@@ -65,6 +83,7 @@ export default function InfoCompteEns() {
             <Button
               icon={{ icon: RiDeleteBin2Line }}
               variant="delete"
+              disabled={loadingDelete}
               action={deletePhoto}
             >
               Supprimer la photo
