@@ -46,13 +46,13 @@ export default function AccueilAdmin() {
         info="En tant qu'administrateur de cette application, vous avez le droit de consulter
             la liste des étudiants, des enseignants et des matières et vous avez également le droit d'en ajouter des nouvelles !"
       />
-      <Container className="mt-11 flex items-center justify-between gap-4 max-lg:flex-col">
-        <div className="flex lg:flex-col gap-5 max-sm:gap-0 max-sm:justify-between dark:text-white">
+      <Container className="mt-11 flex items-center justify-between gap-4 max-[1230px]:flex-col">
+        <div className="flex flex-col max-[1230px]:flex-row gap-5 max-sm:gap-0 max-sm:justify-between dark:text-white">
           {initialTabs.map((item) => (
             <div className="relative group" key={item.label}>
               <p
                 className={clsx(
-                  "px-8 max-sm:px-5 py-4 cursor-pointer flex items-center gap-2 text-caption1 font-medium",
+                  "px-8 max-sm:px-5 py-4 cursor-pointer flex items-center gap-2 text-caption4 font-medium",
                   item === selectedTab
                     ? "selecte bg-secondary-200/10"
                     : " hover:bg-secondary-200/10 transition"

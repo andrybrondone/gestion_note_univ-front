@@ -179,11 +179,20 @@ export default function AllInfoUser({ statutPers }: Props) {
                 </Typography>
               </div>
               <div className="flex justify-center items-center mb-5">
-                <Avatar
-                  src={`${url_api}/images/${listEtudiantById.Personne.photo}`}
-                  alt=""
-                  size="very-large"
-                />
+                {statutPers === "etudiant" && (
+                  <Avatar
+                    src={`${url_api}/images/${listEtudiantById.Personne.photo}`}
+                    alt=""
+                    size="very-large"
+                  />
+                )}
+                {statutPers === "enseignant" && (
+                  <Avatar
+                    src={`${url_api}/images/${listEnseignantById.Personne.photo}`}
+                    alt=""
+                    size="very-large"
+                  />
+                )}
               </div>
               <Formik
                 initialValues={initialValues}

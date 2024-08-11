@@ -49,10 +49,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
             ...dataUser,
             statusAuth: false,
           });
-          setIsLoading(false);
           if (token) {
             setToken(null);
           }
+          setIsLoading(false);
         } else {
           setDataUser({
             id: response.data.id,
@@ -63,6 +63,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
             matricule: response.data.matricule,
             statusAuth: true,
           });
+          await axios.get(`${url_api}/personne/undefined-person`);
           setIsLoading(false);
         }
       } catch (error) {

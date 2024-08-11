@@ -1,6 +1,8 @@
 import clsx from "clsx";
 import { useContext } from "react";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { AuthContext } from "./context/AuthContext";
+import { DataUserContext } from "./context/DataUserContext";
 import { LoadingContext } from "./context/LoadingContext";
 import Accueil from "./pages/Accueil";
 import Enseignant from "./pages/Enseignant";
@@ -60,8 +62,13 @@ function App() {
   const { isDarkMode } = useContext(DarkModeContext);
 
   const { isLoading } = useContext(LoadingContext);
+  const { token } = useContext(AuthContext);
+  const { dataUser } = useContext(DataUserContext);
 
   if (isLoading) {
+    return <Loading />;
+  }
+  if (!dataUser.statusAuth && token) {
     return <Loading />;
   }
 
